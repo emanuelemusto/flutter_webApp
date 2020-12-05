@@ -55,10 +55,11 @@ class _MyHomePageState extends State<MyHomePage> {
   List<dynamic> data = new List<dynamic>();
 
   Map<String, dynamic> list;
+
   Future<List<dynamic>> getData(String name) async {
 
     var response = await http.get(
-        Uri.encodeFull("http://192.168.1.8:8183/STU3/Patient?family=" + name),
+        Uri.encodeFull("http://192.168.1.14:8183/STU3/Patient?family=" + name),
         headers: {
           "Accept": "application/json"
         }
@@ -123,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     print(list["entry"][index]);
                     Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => SecondRoute(id: int.parse(list["entry"][index]["resource"]["id"]))),
+                        MaterialPageRoute(builder: (context) => SecondRoute(data: list["entry"][index]["resource"])),
                     );
                   },
                   child: PatientListItem(
@@ -327,11 +328,12 @@ class _PatientListItemState extends State<PatientListItem> {
   }
 }
 
-class SecondRoute extends StatelessWidget {
+/*
+class SecondRoutetttt extends StatelessWidget {
   final int id;
 
   // receive data from the FirstScreen as a parameter
-  SecondRoute({Key key, @required this.id}) : super(key: key);
+  SecondRoutetttt({Key key, @required this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -357,3 +359,228 @@ class SecondRoute extends StatelessWidget {
     );
   }
 }
+*/
+
+class SecondRoute extends StatelessWidget {
+
+  var COLORS = {
+    "male": Color(0xFF9ae1ca),
+    "female": Color(0xFFDF53A6),
+    "?": Color(0xFFC8B2BB)
+  };
+  var IMAGE = {
+    "male": "https://p.kindpng.com/picc/s/78-786207_user-avatar-png-user-avatar-icon-png-transparent.png",
+    "female": "https://www.kindpng.com/picc/m/163-1636340_user-avatar-icon-avatar-transparent-user-icon-png.png",
+    "?": "https://p.kindpng.com/picc/s/78-786207_user-avatar-png-user-avatar-icon-png-transparent.png",
+    "null" : "https://vistapointe.net/images/white-wallpaper-8.jpg"
+  };
+
+
+  Map<String, dynamic> list;
+  var data;
+
+  // receive data from the FirstScreen as a parameter
+  SecondRoute({Key key, @required this.data}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: <Widget>[
+          Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [COLORS[data["gender"]], COLORS[data["gender"]]]
+                  )
+              ),
+              child: Container(
+                width: double.infinity,
+                height: 350.0,
+                child: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(
+                          IMAGE[data["gender"]],
+                        ),
+                        radius: 50.0,
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Text(
+                        data["name"][0]["family"] + " " + data["name"][0]["given"][0],
+                        style: TextStyle(
+                          fontSize: 22.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Card(
+                        margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 5.0),
+                        clipBehavior: Clip.antiAlias,
+                        color: Colors.white,
+                        elevation: 5.0,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 22.0),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Column(
+
+                                  children: <Widget>[
+                                    Text(
+                                      "Gender",
+                                      style: TextStyle(
+                                          color: Colors.grey.shade800,
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 5.0,
+                                    ),
+                                    Text(
+                                      data["gender"],
+                                      style: TextStyle(
+                                          color: Colors.grey.shade800,
+                                          fontSize: 18.0,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+
+                                  children: <Widget>[
+                                    Text(
+                                      "BirthDate",
+                                      style: TextStyle(
+                                          color: Colors.grey.shade800,
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 5.0,
+                                    ),
+                                    Text(
+                                      data["birthDate"],
+                                      style: TextStyle(
+                                          color: Colors.grey.shade800,
+                                          fontSize: 18.0,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+
+                                  children: <Widget>[
+                                    Text(
+                                      "Resource Type",
+                                      style: TextStyle(
+                                          color: Colors.grey.shade800,
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 5.0,
+                                    ),
+                                    Text(
+                                      data["resourceType"],
+                                      style: TextStyle(
+                                        color: Colors.grey.shade800,
+                                        fontSize: 18.0,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+          ),
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 30.0,horizontal: 16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "More info:",
+                    style: TextStyle(
+                        color: Colors.grey.shade800,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Text('Adress: 123 Main Street, New York, NY 10030,\n'
+                      'Telecom: 1-541-754-3010\n',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.grey.shade800,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          Container(
+            width: 300.00,
+
+            child: RaisedButton(
+                onPressed: (){},
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(80.0)
+                ),
+                elevation: 0.0,
+                padding: EdgeInsets.all(0.0),
+                child: Ink(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.centerRight,
+                        end: Alignment.centerLeft,
+                        colors: [COLORS[data["gender"]], COLORS[data["gender"]]]
+                    ),
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  child: Container(
+                    constraints: BoxConstraints(maxWidth: 300.0, minHeight: 50.0),
+                    alignment: Alignment.center,
+                    child: Text("switch button ",
+                      style: TextStyle(color: Colors.white, fontSize: 26.0, fontWeight:FontWeight.w300),
+                    ),
+                  ),
+                )
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+
