@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'medicview/createPatient.dart';
 
 void main() => runApp(new MyApp());
 
@@ -59,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<List<dynamic>> getData(String name) async {
 
     var response = await http.get(
-        Uri.encodeFull("http://192.168.1.14:8183/STU3/Patient?family=" + name),
+        Uri.encodeFull("http://192.168.1.15:8183/STU3/Patient?family=" + name),
         headers: {
           "Accept": "application/json"
         }
@@ -104,6 +105,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return new Scaffold(
       backgroundColor: Colors.white,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SignupPage()), //TODO
+          );
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.teal,
+      ),
       appBar: new AppBar(
         elevation: 0.0,
         title: new Text(
@@ -361,6 +372,7 @@ class SecondRoutetttt extends StatelessWidget {
 }
 */
 
+// ignore: must_be_immutable
 class SecondRoute extends StatelessWidget {
 
   var COLORS = {
@@ -385,6 +397,7 @@ class SecondRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: Column(
         children: <Widget>[
           Container(
@@ -522,24 +535,37 @@ class SecondRoute extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    "More info:",
-                    style: TextStyle(
-                        color: Colors.grey.shade800,
+                  ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: data["telecom"] == null ? 0 : data["telecom"].length,
+                  itemBuilder: (BuildContext content, int index) {
+                    return ListTile(
+                      leading: Icon(Icons.phone_rounded),
+                      title: Text(data["telecom"][index]["value"] + ' (' +  data["telecom"][index]["use"] + ')',
+                        style: TextStyle(
                         fontSize: 18.0,
-                        fontWeight: FontWeight.bold
-                    ),
+                        color: Colors.grey.shade800,
+                      ),
+                      ),
+                    );
+                     }
                   ),
-                  SizedBox(
-                    height: 10.0,
+                  ListView.builder(
+                      shrinkWrap: true,
+                      itemCount:  data["address"] == null ? 0 : data["address"].length,
+                      itemBuilder: (BuildContext content, int index) {
+                        return ListTile(
+                          leading: Icon(Icons.home),
+                          title: Text(data["address"][index]["line"][0] + ', ' + data["address"][index]["city"] + ', ' +  data["address"][index]["postalCode"] + ' (' + data["address"][index]["use"] + ')',
+                            style: TextStyle(
+                            fontSize: 18.0,
+                            color: Colors.grey.shade800,
+                          ),
+                        ),
+                        );
+                      }
                   ),
-                  Text('Adress: 123 Main Street, New York, NY 10030,\n'
-                      'Telecom: 1-541-754-3010\n',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.grey.shade800,
-                    ),
-                  ),
+
                 ],
               ),
             ),
@@ -549,6 +575,7 @@ class SecondRoute extends StatelessWidget {
           ),
           Container(
             width: 300.00,
+
 
             child: RaisedButton(
                 onPressed: (){},
