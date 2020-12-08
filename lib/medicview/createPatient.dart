@@ -1,3 +1,9 @@
+import 'dart:math';
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -10,10 +16,45 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
 
+  TextEditingController familynameController = TextEditingController();
+  TextEditingController firstnameController = TextEditingController();
+  String gender;
+  TextEditingController dateController = TextEditingController();
+  TextEditingController telecomValueController = TextEditingController();
+  String telecomUse;
+  TextEditingController addressLineController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController postCodeController = TextEditingController();
+  TextEditingController countryController = TextEditingController();
+  String addressUse;
+
+  Future<http.Response> createPatient() {
+    return http.post(
+      'http://192.168.1.15:8183/addpatient',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'firstname': firstnameController.text,
+        'familyname': familynameController.text,
+        'gender': gender,
+        'date': dateController.text,
+        'telecomValue': telecomValueController.text,
+        'telecomUse': telecomUse,
+        'addressLine': addressLineController.text,
+        'city':  cityController.text,
+        'postCode': postCodeController.text,
+        'country': countryController.text,
+        'addressUse': addressUse,
+      }),
+    );
+  }
+
   @override
   void initState() {
     SystemChrome.setEnabledSystemUIOverlays([]);
     super.initState();
+    String dropdownValue = 'One';
   }
 
   String dropdownValue;
@@ -96,6 +137,7 @@ class _SignupPageState extends State<SignupPage> {
                         ]
                     ),
                     child: TextField(
+                      controller: familynameController,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Family name',
@@ -124,6 +166,7 @@ class _SignupPageState extends State<SignupPage> {
                         ]
                     ),
                     child: TextField(
+                      controller: firstnameController,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'First name',
@@ -133,6 +176,52 @@ class _SignupPageState extends State<SignupPage> {
                   SizedBox(
                     height: 5,
                   ),
+
+                  Container(
+                    width: MediaQuery.of(context).size.width/1.2,
+                    height: 45,
+                    padding: EdgeInsets.only(
+                        top: 4,left: 16, right: 16, bottom: 4
+                    ),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(50)
+                        ),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 5
+                          )
+                        ]
+                    ),
+                    child: DropdownButton<String>(
+                      hint:  Text("Gender"),
+                      value: gender,
+                      icon: Align(
+                          alignment: Alignment.centerRight,
+                          child: Icon(Icons.arrow_downward,
+                              size: 24,
+                              color: Colors.teal)),
+
+                      onChanged: (String newValue) {
+                        setState(() {
+                          gender = newValue;
+                        });
+                      },
+                      items: <String>['male', 'female', 'other']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+
                   Container(
                     width: MediaQuery.of(context).size.width/1.2,
                     height: 45,
@@ -152,6 +241,37 @@ class _SignupPageState extends State<SignupPage> {
                         ]
                     ),
                     child: TextField(
+                      controller: dateController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Date of birth',
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+
+                  Container(
+                    width: MediaQuery.of(context).size.width/1.2,
+                    height: 45,
+                    padding: EdgeInsets.only(
+                        top: 4,left: 16, right: 16, bottom: 4
+                    ),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(50)
+                        ),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 5
+                          )
+                        ]
+                    ),
+                    child: TextField(
+                      controller: telecomValueController,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Telecom value',
@@ -179,11 +299,27 @@ class _SignupPageState extends State<SignupPage> {
                           )
                         ]
                     ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Telecom use',
-                      ),
+                    child: DropdownButton<String>(
+                      hint:  Text("Telecom use"),
+                      value: telecomUse,
+                      icon: Align(
+                          alignment: Alignment.centerRight,
+                          child: Icon(Icons.arrow_downward,
+                              size: 24,
+                              color: Colors.teal)),
+
+                      onChanged: (String newValue) {
+                        setState(() {
+                          telecomUse = newValue;
+                        });
+                      },
+                      items: <String>['home', 'work', 'old', 'mobile']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
                     ),
                   ),
                   SizedBox(
@@ -208,6 +344,7 @@ class _SignupPageState extends State<SignupPage> {
                         ]
                     ),
                     child: TextField(
+                      controller: addressLineController,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Address line',
@@ -236,6 +373,7 @@ class _SignupPageState extends State<SignupPage> {
                         ]
                     ),
                     child: TextField(
+                      controller: cityController,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'City',
@@ -264,6 +402,7 @@ class _SignupPageState extends State<SignupPage> {
                         ]
                     ),
                     child: TextField(
+                      controller: postCodeController,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Post code',
@@ -292,6 +431,7 @@ class _SignupPageState extends State<SignupPage> {
                         ]
                     ),
                     child: TextField(
+                      controller: countryController,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Country',
@@ -319,51 +459,21 @@ class _SignupPageState extends State<SignupPage> {
                           )
                         ]
                     ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Address use',
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-
-
-                  Container(
-                    width: MediaQuery.of(context).size.width/1.2,
-                    height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
                     child: DropdownButton<String>(
-                      hint:  Text("Select item"),
-                      value: dropdownValue,
+                      hint:  Text("Address use"),
+                      value: addressUse,
                       icon: Align(
                           alignment: Alignment.centerRight,
                           child: Icon(Icons.arrow_downward,
-                            size: 24,
-                            color: Colors.teal)),
+                              size: 24,
+                              color: Colors.teal)),
 
                       onChanged: (String newValue) {
                         setState(() {
-                          dropdownValue = newValue;
+                          addressUse = newValue;
                         });
                       },
-                      items: <String>['One', 'Two', 'Free', 'Four']
+                      items: <String>['home', 'work', 'old']
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -373,13 +483,13 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                   ),
                   SizedBox(
-                    height: 5,
+                    height: 20,
                   ),
 
 
                   InkWell(
                     onTap: (){
-                      Navigator.pushNamed(context, '/');
+                      this.createPatient();
                     },
                     child: Container(
                       height: 45,
