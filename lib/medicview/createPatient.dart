@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 export 'createPatient.dart';
 
@@ -27,6 +29,19 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController postCodeController = TextEditingController();
   TextEditingController countryController = TextEditingController();
   String addressUse;
+
+  final format = DateFormat("dd/MM/yyyy");
+  bool _validate = false;
+  bool _validate2 = false;
+  bool _validate3 = false;
+  bool _validate4 = false;
+  bool _validate5 = false;
+  bool _validate6 = false;
+  bool _validate7 = false;
+  bool _validate8 = false;
+  bool _validate9 = false;
+  bool _validate10 = false;
+  bool _validate11 = false;
 
   Future<http.Response> createPatient() {
     return http.post(
@@ -125,6 +140,40 @@ class _SignupPageState extends State<SignupPage> {
                         top: 4,left: 16, right: 16, bottom: 4
                     ),
                     decoration: BoxDecoration(
+
+                        border: Border.all(color: _validate ? Colors.red : Colors.white),
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(50)
+                        ),
+
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 5
+                          )
+                        ]
+                    ),
+                    child: TextField(
+                      controller: firstnameController,
+                      decoration: InputDecoration(
+                        suffixIcon: Icon(Icons.drive_file_rename_outline),
+                        border: InputBorder.none,
+                        hintText: 'First name',
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width/1.2,
+                    height: 45,
+                    padding: EdgeInsets.only(
+                        top: 4,left: 16, right: 16, bottom: 4
+                    ),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: _validate2 ? Colors.red : Colors.white),
                         borderRadius: BorderRadius.all(
                             Radius.circular(50)
                         ),
@@ -139,6 +188,7 @@ class _SignupPageState extends State<SignupPage> {
                     child: TextField(
                       controller: familynameController,
                       decoration: InputDecoration(
+                        suffixIcon: Icon(Icons.drive_file_rename_outline),
                         border: InputBorder.none,
                         hintText: 'Family name',
                       ),
@@ -147,35 +197,7 @@ class _SignupPageState extends State<SignupPage> {
                   SizedBox(
                     height: 5,
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width/1.2,
-                    height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
-                    child: TextField(
-                      controller: firstnameController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'First name',
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
+
 
                   Container(
                     width: MediaQuery.of(context).size.width/1.2,
@@ -184,6 +206,7 @@ class _SignupPageState extends State<SignupPage> {
                         top: 4,left: 16, right: 16, bottom: 4
                     ),
                     decoration: BoxDecoration(
+                        border: Border.all(color: _validate3 ? Colors.red : Colors.white),
                         borderRadius: BorderRadius.all(
                             Radius.circular(50)
                         ),
@@ -196,14 +219,20 @@ class _SignupPageState extends State<SignupPage> {
                         ]
                     ),
                     child: DropdownButton<String>(
-                      hint:  Text("Gender"),
+                      hint: Text("Gender"),
+
+                      underline: Container(
+                        height: 0,
+                        color: Colors.tealAccent,
+
+                      ),
                       value: gender,
-                      icon: Align(
+                      /*icon: Align(
                           alignment: Alignment.centerRight,
                           child: Icon(Icons.arrow_downward,
                               size: 24,
-                              color: Colors.teal)),
-
+                              color: Colors.teal)
+                      ),*/
                       onChanged: (String newValue) {
                         setState(() {
                           gender = newValue;
@@ -228,7 +257,9 @@ class _SignupPageState extends State<SignupPage> {
                     padding: EdgeInsets.only(
                         top: 4,left: 16, right: 16, bottom: 4
                     ),
+
                     decoration: BoxDecoration(
+                        border: Border.all(color: _validate4 ? Colors.red : Colors.white),
                         borderRadius: BorderRadius.all(
                             Radius.circular(50)
                         ),
@@ -240,12 +271,24 @@ class _SignupPageState extends State<SignupPage> {
                           )
                         ]
                     ),
-                    child: TextField(
+                    child: DateTimeField(
+                      format: format,
                       controller: dateController,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Date of birth',
+                        suffixIcon: Icon(Icons.calendar_today_sharp,
+                                size: 24,
+                        ),
                       ),
+
+                      onShowPicker: (context, currentValue) {
+                        return showDatePicker(
+                            context: context,
+                            firstDate: DateTime(1900),
+                            initialDate: currentValue ?? DateTime.now(),
+                            lastDate: DateTime(2100));
+                      },
                     ),
                   ),
                   SizedBox(
@@ -259,6 +302,7 @@ class _SignupPageState extends State<SignupPage> {
                         top: 4,left: 16, right: 16, bottom: 4
                     ),
                     decoration: BoxDecoration(
+                        border: Border.all(color: _validate5 ? Colors.red : Colors.white),
                         borderRadius: BorderRadius.all(
                             Radius.circular(50)
                         ),
@@ -275,6 +319,7 @@ class _SignupPageState extends State<SignupPage> {
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Telecom value',
+                        suffixIcon: Icon(Icons.phone_rounded),
                       ),
                     ),
                   ),
@@ -288,6 +333,7 @@ class _SignupPageState extends State<SignupPage> {
                         top: 4,left: 16, right: 16, bottom: 4
                     ),
                     decoration: BoxDecoration(
+                        border: Border.all(color: _validate6 ? Colors.red : Colors.white),
                         borderRadius: BorderRadius.all(
                             Radius.circular(50)
                         ),
@@ -302,12 +348,10 @@ class _SignupPageState extends State<SignupPage> {
                     child: DropdownButton<String>(
                       hint:  Text("Telecom use"),
                       value: telecomUse,
-                      icon: Align(
-                          alignment: Alignment.centerRight,
-                          child: Icon(Icons.arrow_downward,
-                              size: 24,
-                              color: Colors.teal)),
-
+                      underline: Container(
+                        height: 0,
+                        color: Colors.tealAccent,
+                      ),
                       onChanged: (String newValue) {
                         setState(() {
                           telecomUse = newValue;
@@ -332,6 +376,7 @@ class _SignupPageState extends State<SignupPage> {
                         top: 4,left: 16, right: 16, bottom: 4
                     ),
                     decoration: BoxDecoration(
+                        border: Border.all(color: _validate7 ? Colors.red : Colors.white),
                         borderRadius: BorderRadius.all(
                             Radius.circular(50)
                         ),
@@ -348,6 +393,7 @@ class _SignupPageState extends State<SignupPage> {
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Address line',
+                        suffixIcon: Icon(Icons.add_road),
                       ),
                     ),
                   ),
@@ -361,6 +407,7 @@ class _SignupPageState extends State<SignupPage> {
                         top: 4,left: 16, right: 16, bottom: 4
                     ),
                     decoration: BoxDecoration(
+                        border: Border.all(color: _validate8 ? Colors.red : Colors.white),
                         borderRadius: BorderRadius.all(
                             Radius.circular(50)
                         ),
@@ -377,6 +424,7 @@ class _SignupPageState extends State<SignupPage> {
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'City',
+                        suffixIcon: Icon(Icons.location_city_sharp)
                       ),
                     ),
                   ),
@@ -390,6 +438,7 @@ class _SignupPageState extends State<SignupPage> {
                         top: 4,left: 16, right: 16, bottom: 4
                     ),
                     decoration: BoxDecoration(
+                        border: Border.all(color: _validate9 ? Colors.red : Colors.white),
                         borderRadius: BorderRadius.all(
                             Radius.circular(50)
                         ),
@@ -406,6 +455,7 @@ class _SignupPageState extends State<SignupPage> {
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Post code',
+                        suffixIcon: Icon(Icons.local_post_office_outlined)
                       ),
                     ),
                   ),
@@ -419,6 +469,7 @@ class _SignupPageState extends State<SignupPage> {
                         top: 4,left: 16, right: 16, bottom: 4
                     ),
                     decoration: BoxDecoration(
+                        border: Border.all(color: _validate10 ? Colors.red : Colors.white),
                         borderRadius: BorderRadius.all(
                             Radius.circular(50)
                         ),
@@ -435,6 +486,7 @@ class _SignupPageState extends State<SignupPage> {
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Country',
+                        suffixIcon: Icon(Icons.flag_outlined)
                       ),
                     ),
                   ),
@@ -448,6 +500,7 @@ class _SignupPageState extends State<SignupPage> {
                         top: 4,left: 16, right: 16, bottom: 4
                     ),
                     decoration: BoxDecoration(
+                        border: Border.all(color: _validate11 ? Colors.red : Colors.white),
                         borderRadius: BorderRadius.all(
                             Radius.circular(50)
                         ),
@@ -462,11 +515,10 @@ class _SignupPageState extends State<SignupPage> {
                     child: DropdownButton<String>(
                       hint:  Text("Address use"),
                       value: addressUse,
-                      icon: Align(
-                          alignment: Alignment.centerRight,
-                          child: Icon(Icons.arrow_downward,
-                              size: 24,
-                              color: Colors.teal)),
+                      underline: Container(
+                        height: 0,
+                        color: Colors.tealAccent,
+                      ),
 
                       onChanged: (String newValue) {
                         setState(() {
@@ -489,7 +541,67 @@ class _SignupPageState extends State<SignupPage> {
 
                   InkWell(
                     onTap: (){
-                      this.createPatient();
+                      setState(() {
+                        firstnameController.text.isEmpty ? _validate = true : _validate = false;
+                        familynameController.text.isEmpty ? _validate2 = true : _validate = false;
+                        gender == null ? _validate3 = true : _validate = false;
+                        dateController.text.isEmpty ? _validate4 = true : _validate = false;
+                        telecomValueController.text.isEmpty ? _validate5 = true : _validate = false;
+                        telecomUse == null ? _validate6 = true : _validate = false;
+                        addressLineController.text.isEmpty ? _validate7 = true : _validate = false;
+                        cityController.text.isEmpty ? _validate8 = true : _validate = false;
+                        postCodeController.text.isEmpty ? _validate9 = true : _validate = false;
+                        countryController.text.isEmpty ? _validate10 = true : _validate = false;
+                        addressUse == null ? _validate11 = true : _validate = false;
+
+                      });
+
+                      if(_validate & _validate2 & _validate3 & _validate4 & _validate5 & _validate6 & _validate7 & _validate8 & _validate9
+                      & _validate10 & _validate11) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            // return object of type Dialog
+                            return AlertDialog(
+                              title: new Text("Form Error"),
+                              content: new Text("All fields must be completed"),
+                              actions: <Widget>[
+                                // usually buttons at the bottom of the dialog
+                                new FlatButton(
+                                  child: new Text("Close"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            // return object of type Dialog
+                            return AlertDialog(
+                              title: new Text("Form Success"),
+                              content: new Text("New patient created successfully"),
+                              actions: <Widget>[
+                                // usually buttons at the bottom of the dialog
+                                new FlatButton(
+                                  child: new Text("Close"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+
+                        this.createPatient();
+
+                      }
+
                     },
                     child: Container(
                       height: 45,
