@@ -15,7 +15,6 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-
   TextEditingController familynameController = TextEditingController();
   TextEditingController firstnameController = TextEditingController();
   String gender;
@@ -30,7 +29,7 @@ class _SignupPageState extends State<SignupPage> {
 
   Future<http.Response> createPatient() {
     return http.post(
-      'http://192.168.1.15:8183/addpatient',
+      'http://192.168.1.5:8183/addpatient',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -42,7 +41,7 @@ class _SignupPageState extends State<SignupPage> {
         'telecomValue': telecomValueController.text,
         'telecomUse': telecomUse,
         'addressLine': addressLineController.text,
-        'city':  cityController.text,
+        'city': cityController.text,
         'postCode': postCodeController.text,
         'country': countryController.text,
         'addressUse': addressUse,
@@ -67,17 +66,13 @@ class _SignupPageState extends State<SignupPage> {
           children: <Widget>[
             Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height/5.5,
+              height: MediaQuery.of(context).size.height / 5.5,
               decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.teal,
-                      Colors.teal
-                    ],
-                  ),
-
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.teal, Colors.teal],
+                ),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -85,57 +80,45 @@ class _SignupPageState extends State<SignupPage> {
                   Spacer(),
                   Align(
                     alignment: Alignment.center,
-                    child: Icon(Icons.person,
+                    child: Icon(
+                      Icons.person,
                       size: 45,
                       color: Colors.white,
                     ),
                   ),
                   Spacer(),
-
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          bottom: 32,
-                          right: 32
-                      ),
-                      child: Text('Create new Patient',
+                      padding: const EdgeInsets.only(bottom: 32, right: 32),
+                      child: Text(
+                        'Create new Patient',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
-                            fontWeight: FontWeight.bold
-                        ),
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-
             Container(
-
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.only(top: 62),
               child: Column(
                 children: <Widget>[
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: TextField(
                       controller: familynameController,
                       decoration: InputDecoration(
@@ -148,23 +131,16 @@ class _SignupPageState extends State<SignupPage> {
                     height: 5,
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: TextField(
                       controller: firstnameController,
                       decoration: InputDecoration(
@@ -176,34 +152,24 @@ class _SignupPageState extends State<SignupPage> {
                   SizedBox(
                     height: 5,
                   ),
-
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: DropdownButton<String>(
-                      hint:  Text("Gender"),
+                      hint: Text("Gender"),
                       value: gender,
                       icon: Align(
                           alignment: Alignment.centerRight,
                           child: Icon(Icons.arrow_downward,
-                              size: 24,
-                              color: Colors.teal)),
-
+                              size: 24, color: Colors.teal)),
                       onChanged: (String newValue) {
                         setState(() {
                           gender = newValue;
@@ -221,25 +187,17 @@ class _SignupPageState extends State<SignupPage> {
                   SizedBox(
                     height: 5,
                   ),
-
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: TextField(
                       controller: dateController,
                       decoration: InputDecoration(
@@ -251,25 +209,17 @@ class _SignupPageState extends State<SignupPage> {
                   SizedBox(
                     height: 5,
                   ),
-
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: TextField(
                       controller: telecomValueController,
                       decoration: InputDecoration(
@@ -282,32 +232,23 @@ class _SignupPageState extends State<SignupPage> {
                     height: 5,
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: DropdownButton<String>(
-                      hint:  Text("Telecom use"),
+                      hint: Text("Telecom use"),
                       value: telecomUse,
                       icon: Align(
                           alignment: Alignment.centerRight,
                           child: Icon(Icons.arrow_downward,
-                              size: 24,
-                              color: Colors.teal)),
-
+                              size: 24, color: Colors.teal)),
                       onChanged: (String newValue) {
                         setState(() {
                           telecomUse = newValue;
@@ -326,23 +267,16 @@ class _SignupPageState extends State<SignupPage> {
                     height: 5,
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: TextField(
                       controller: addressLineController,
                       decoration: InputDecoration(
@@ -355,23 +289,16 @@ class _SignupPageState extends State<SignupPage> {
                     height: 5,
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: TextField(
                       controller: cityController,
                       decoration: InputDecoration(
@@ -384,23 +311,16 @@ class _SignupPageState extends State<SignupPage> {
                     height: 5,
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: TextField(
                       controller: postCodeController,
                       decoration: InputDecoration(
@@ -413,23 +333,16 @@ class _SignupPageState extends State<SignupPage> {
                     height: 5,
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: TextField(
                       controller: countryController,
                       decoration: InputDecoration(
@@ -442,32 +355,23 @@ class _SignupPageState extends State<SignupPage> {
                     height: 5,
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: DropdownButton<String>(
-                      hint:  Text("Address use"),
+                      hint: Text("Address use"),
                       value: addressUse,
                       icon: Align(
                           alignment: Alignment.centerRight,
                           child: Icon(Icons.arrow_downward,
-                              size: 24,
-                              color: Colors.teal)),
-
+                              size: 24, color: Colors.teal)),
                       onChanged: (String newValue) {
                         setState(() {
                           addressUse = newValue;
@@ -485,15 +389,13 @@ class _SignupPageState extends State<SignupPage> {
                   SizedBox(
                     height: 20,
                   ),
-
-
                   InkWell(
-                    onTap: (){
+                    onTap: () {
                       this.createPatient();
                     },
                     child: Container(
                       height: 45,
-                      width: MediaQuery.of(context).size.width/1.2,
+                      width: MediaQuery.of(context).size.width / 1.2,
                       decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
@@ -501,16 +403,12 @@ class _SignupPageState extends State<SignupPage> {
                               Colors.teal,
                             ],
                           ),
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(50)
-                          )
-                      ),
+                          borderRadius: BorderRadius.all(Radius.circular(50))),
                       child: Center(
-                        child: Text('Create'.toUpperCase(),
+                        child: Text(
+                          'Create'.toUpperCase(),
                           style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold
-                          ),
+                              color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -521,9 +419,7 @@ class _SignupPageState extends State<SignupPage> {
                 ],
               ),
             ),
-
           ],
-
         ),
       ),
     );
