@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_webapp/main.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -590,7 +591,10 @@ class _SignupPageState extends State<SignupPage> {
                                 new FlatButton(
                                   child: new Text("Close"),
                                   onPressed: () {
-                                    Navigator.of(context).pop();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => MyHomePage()), //TODO
+                                    );
                                   },
                                 ),
                               ],
