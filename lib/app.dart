@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webapp/constants.dart';
 import 'login.dart';
+import 'Screens/Welcome/welcome_screen.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -7,10 +9,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Medici',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        primaryColor: kPrimaryColor,
+        scaffoldBackgroundColor: Colors.white,
       ),
-      home: MyHomePage(title: 'FHIR Application'),
+      home: WelcomeScreen(),
     );
   }
 }
