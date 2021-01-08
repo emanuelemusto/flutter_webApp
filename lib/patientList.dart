@@ -3,9 +3,11 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_webapp/medicview/createSchedule.dart';
 import 'package:http/http.dart' as http;
 import 'medicview/createPatient.dart';
 import 'patientdetails.dart';
+import 'medicview/createSchedule.dart';
 
 void main() => runApp(new MyApp());
 
@@ -106,6 +108,63 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
 
     return new Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('Options menu',
+                style: TextStyle(color: Colors.white,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold),
+              ),
+              decoration: BoxDecoration(
+                color: Colors.teal,
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.person_rounded),
+              title: Text('My Profile'),
+              onTap: () {
+                // Update the state of the app
+                // ...
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Schedule'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateSchedule()), //TODO
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.list_alt_rounded),
+              title: Text('My Schedule'),
+              onTap: () {
+                // Update the state of the app
+                // ...
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Patient'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SignupPage()), //TODO
+                );
+              },
+            ),
+          ],
+        ),
+      ),
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
