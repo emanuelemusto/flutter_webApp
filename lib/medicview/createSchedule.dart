@@ -92,11 +92,11 @@ class _CreateSchedule extends State<CreateSchedule> {
   String equalsName(String value) {
 
     String id;
-    var compare = 0;
+    bool compare = false;
     var i = 0;
-    while (i < list["total"]) {
-      compare = data[i].compareTo(value);
-      if(compare != 0) {
+    while (i < data.length) {
+      compare = data[i] == (value);
+      if(compare) {
         id = list["entry"][i]["resource"]["id"];
       }
       i=i+1;
@@ -296,7 +296,7 @@ class _CreateSchedule extends State<CreateSchedule> {
                       onShowPicker: (context, currentValue) {
                         return showDatePicker(
                             context: context,
-                            firstDate: DateTime(1900),
+                            firstDate: DateTime.now(),
                             initialDate: currentValue ?? DateTime.now(),
                             lastDate: DateTime(2100));
                       },

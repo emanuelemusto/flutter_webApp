@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'medicview/createPatient.dart';
 import 'patientdetails.dart';
 import 'medicview/createSchedule.dart';
+import 'medicview/createDiagnosticReport.dart';
+import 'medicview/createCondition.dart';
 
 void main() => runApp(new MyApp());
 
@@ -158,7 +160,47 @@ class _MyHomePageState extends State<MyHomePage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SignupPage()), //TODO
+                  MaterialPageRoute(builder: (context) => CreatePatient()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Diagnostic Report'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateDiagnosticReport()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Condition'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateCondition()), //TODO
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Allergy Intolerance'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreatePatient()), //TODO
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Medication Intolerance'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreatePatient()), //TODO
                 );
               },
             ),
@@ -170,7 +212,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => SignupPage()), //TODO
+            MaterialPageRoute(builder: (context) => CreatePatient()), //TODO
           );
         },
         child: Icon(Icons.add),

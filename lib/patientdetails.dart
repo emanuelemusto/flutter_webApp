@@ -33,7 +33,8 @@ class PatientDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      body: Column(
+      body: SingleChildScrollView(
+      child: Column(
         children: <Widget>[
           Container(
               decoration: BoxDecoration(
@@ -269,6 +270,7 @@ class PatientDetails extends StatelessWidget {
           ),
         ],
       ),
+    ),
     );
   }
 }
