@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'diagnosticDetail.dart';
 import 'clinicalDetail.dart';
+import 'medicationDetails.dart';
 
 // ignore: must_be_immutable
 class PatientDetails extends StatelessWidget {
@@ -1167,11 +1168,10 @@ class _MedicationList extends State<MedicationList> {
                             subtitle: Text(data2[index]["title"].toString().substring(42, 64)),
                             trailing: Icon(Icons.arrow_forward_ios),
                             onTap: () {
-                             /* print(list["entry"][index]);
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => MedicataionDetail(data: list["entry"][index]["resource"])),
-                              );*/
+                                MaterialPageRoute(builder: (context) => MedicationDetails(data: list["entry"][index]["resource"])),
+                              );
                             },
                           );
                         }
