@@ -10,6 +10,8 @@ import 'patientdetails.dart';
 import 'medicview/createSchedule.dart';
 import 'medicview/createDiagnosticReport.dart';
 import 'medicview/createCondition.dart';
+import 'medicview/createAllergy.dart';
+import 'medicview/createMedication.dart';
 
 void main() => runApp(new MyApp());
 
@@ -180,7 +182,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CreateCondition()), //TODO
+                  MaterialPageRoute(builder: (context) => CreateCondition()),
                 );
               },
             ),
@@ -190,17 +192,17 @@ class _MyHomePageState extends State<MyHomePage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CreatePatient()), //TODO
+                  MaterialPageRoute(builder: (context) => CreateAllergy()),
                 );
               },
             ),
             ListTile(
               leading: Icon(Icons.add),
-              title: Text('Add Medication Intolerance'),
+              title: Text('Add Medication'),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CreatePatient()), //TODO
+                  MaterialPageRoute(builder: (context) => CreateMedication()),
                 );
               },
             ),

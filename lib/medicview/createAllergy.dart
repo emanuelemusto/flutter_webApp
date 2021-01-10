@@ -48,6 +48,7 @@ class _CreateAllergy extends State<CreateAllergy> {
   bool _validate9 = false;
 
   Future<http.Response> createDiagnosticReport() {
+    print(issueddateController.text);
     return http.post(
       'http://192.168.1.11:8183/addAllergy',
       headers: <String, String>{
@@ -58,7 +59,7 @@ class _CreateAllergy extends State<CreateAllergy> {
         'clinicalStatus': clinicalStatus,
         'verificationStatus' : verificationStatus,
         'patientId': patientId,
-        'issueddate' : issueddateController.text;
+        'issueddate' : issueddateController.text,
         'lastOccurencedate': lastOccurencedateController.text,
         'category' : category,
         'type' : type,
@@ -565,7 +566,7 @@ class _CreateAllergy extends State<CreateAllergy> {
                   issueddateController.text.isEmpty ? _validate5 = true : _validate5 = false;
                   lastOccurencedateController.text.isEmpty ? _validate6 = true : _validate6 = false;
                   patientName.isEmpty ? _validate7 = true : _validate7 = false;
-                  type.text.isEmpty ? _validate8 = true : _validate8 = false;
+                  type.isEmpty ? _validate8 = true : _validate8 = false;
                   note.text.isEmpty ? _validate9 = true : _validate9 = false;
 
                 });
