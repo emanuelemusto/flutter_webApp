@@ -9,26 +9,56 @@ import 'package:flutter_webapp/components/rounded_button.dart';
 import 'package:flutter_webapp/components/rounded_input_field.dart';
 import 'package:flutter_webapp/components/rounded_password_field.dart';
 import 'package:flutter_webapp/constants.dart';
+import 'package:flutter_webapp/utente.dart';
 import 'package:http/http.dart' as http;
+import 'dart:math';
+import 'package:flutter_session/flutter_session.dart';
 
 class Body extends StatelessWidget {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  User parseUser(String body) {
+    Map<String, dynamic> map = json.decode(body);
+
+    return User.fromJson(map);
+  }
+
+  Future<void> saveData(http.Response response) async {
+    print("tutu " + parseUser(response.body).token.toString());
+    User user = parseUser(response.body);
+
+    var session = FlutterSession();
+    await session.set("token", user.token);
+    await session.set("username", user.username);
+    await session.set("role", user.role);
+
+    dynamic token = await FlutterSession().get("role");
+
+    print(token);
+  }
+
   Future<String> login() async {
-    print("entarto ");
+    //genero un token casuale
+    Random random = new Random();
+    int token = random.nextInt(100); // from 0 upto 99 included
+
+    print(" token " + token.toString());
     final http.Response response = await http.post(
-      'http://192.168.1.13:8183/login',
+      'http://192.168.1.7:8183/login',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
         'username': nameController.text,
         'password': passwordController.text,
+        'token': token.toString(),
       }),
     );
+    saveData(response);
     print("stato " + response.statusCode.toString());
     print("body " + response.body.toString());
+    //print("ecco " + json.decode(response.body));
   }
 
   @override

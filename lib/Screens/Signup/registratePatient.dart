@@ -1,6 +1,9 @@
 import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_webapp/Screens/Login/login_screen.dart';
+import 'package:flutter_webapp/components/rounded_button.dart';
+import 'package:flutter_webapp/constants.dart';
 import 'package:flutter_webapp/patientList.dart';
 
 import 'package:flutter/material.dart';
@@ -10,14 +13,19 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
-export 'createPatient.dart';
+export 'registratePatient.dart';
 
-class SignupPage extends StatefulWidget {
+class SignupPatientPage extends StatefulWidget {
+  final String user;
+  SignupPatientPage({Key key, this.user}) : super(key: key);
   @override
-  _SignupPageState createState() => _SignupPageState();
+  _SignupPatientPageState createState() => _SignupPatientPageState(user: user);
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _SignupPatientPageState extends State<SignupPatientPage> {
+  final String user;
+  _SignupPatientPageState({this.user});
+
   TextEditingController familynameController = TextEditingController();
   TextEditingController firstnameController = TextEditingController();
   String gender;
@@ -44,8 +52,9 @@ class _SignupPageState extends State<SignupPage> {
   bool _validate11 = false;
 
   Future<http.Response> createPatient() {
+    print("verifica per user " + user);
     return http.post(
-      'http://192.168.1.13:8183/addpatient',
+      'http://192.168.43.150:8183/addpatient',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -60,6 +69,7 @@ class _SignupPageState extends State<SignupPage> {
         'city': cityController.text,
         'postCode': postCodeController.text,
         'country': countryController.text,
+        'user': user,
         'addressUse': addressUse,
       }),
     );
@@ -87,7 +97,7 @@ class _SignupPageState extends State<SignupPage> {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Colors.teal, Colors.teal],
+                  colors: [kPrimaryColor, kPrimaryColor],
                 ),
               ),
               child: Column(
@@ -526,15 +536,17 @@ class _SignupPageState extends State<SignupPage> {
                                   new Text("New patient created successfully"),
                               actions: <Widget>[
                                 // usually buttons at the bottom of the dialog
+
                                 new FlatButton(
                                   child: new Text("Close"),
                                   onPressed: () {
-                                    Navigator.push(
+                                    /*  Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               MyHomePage()), //TODO
-                                    );
+                                    ); */
+                                    Navigator.of(context).pop();
                                   },
                                 ),
                               ],
@@ -543,6 +555,14 @@ class _SignupPageState extends State<SignupPage> {
                         );
 
                         this.createPatient();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return LoginScreen();
+                            },
+                          ),
+                        );
                       }
                     },
                     child: Container(
@@ -551,8 +571,8 @@ class _SignupPageState extends State<SignupPage> {
                       decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
-                              Colors.tealAccent,
-                              Colors.teal,
+                              kPrimaryColor,
+                              kPrimaryColor,
                             ],
                           ),
                           borderRadius: BorderRadius.all(Radius.circular(50))),
