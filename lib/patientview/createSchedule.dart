@@ -5,19 +5,25 @@ import 'package:flutter_webapp/patientList.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
-export 'createPatient.dart';
-
 class CreateSchedule extends StatefulWidget {
+  Map<String, dynamic> practitioner;
+
+  // receive data from the FirstScreen as a parameter
+  CreateSchedule({Key key, @required this.practitioner}) : super(key: key);
+
   @override
-  _CreateSchedule createState() => _CreateSchedule();
+  _CreateSchedule createState() => _CreateSchedule(this.practitioner);
 }
 
 class _CreateSchedule extends State<CreateSchedule> {
+  Map<String, dynamic> practitioner;
+
+  _CreateSchedule(this.practitioner);
+
   TextEditingController serviceType = TextEditingController();
   TextEditingController serviceCategory = TextEditingController();
   String patientId;
@@ -25,7 +31,7 @@ class _CreateSchedule extends State<CreateSchedule> {
   TextEditingController timeController = TextEditingController();
   TimeOfDay timeedit;
   String active;
-  String practitionerId; //TODO
+  String practitionerId;
   String patientName;
 
   List<String> data = new List<String>();
@@ -52,9 +58,9 @@ class _CreateSchedule extends State<CreateSchedule> {
         'serviceCategory': serviceCategory.text,
         'serviceType': serviceType.text,
         'patientId': patientId,
-        'practitionerId': practitionerId,
+        'practitionerId': practitioner["id"],
         'planning': dateController.text + " " + timeController.text,
-        'active': active
+        'active': "Disabled"
       }),
     );
   }
@@ -293,81 +299,6 @@ class _CreateSchedule extends State<CreateSchedule> {
                         ),
                       ),
                       onTap: () => _selectedTime(context),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width / 1.2,
-                    height: 45,
-                    padding:
-                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: _validate6 ? Colors.red : Colors.white),
-                        borderRadius: BorderRadius.all(Radius.circular(50)),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(color: Colors.black12, blurRadius: 5)
-                        ]),
-                    child: DropdownButton<String>(
-                      hint: Text("Patient"),
-                      value: patientName,
-                      underline: Container(
-                        height: 0,
-                        color: Colors.tealAccent,
-                      ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          patientId = equalsName(newValue);
-                          patientName = newValue;
-                        });
-                      },
-                      items: data.map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width / 1.2,
-                    height: 45,
-                    padding:
-                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: _validate6 ? Colors.red : Colors.white),
-                        borderRadius: BorderRadius.all(Radius.circular(50)),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(color: Colors.black12, blurRadius: 5)
-                        ]),
-                    child: DropdownButton<String>(
-                      hint: Text("Active"),
-                      value: active,
-                      underline: Container(
-                        height: 0,
-                        color: Colors.tealAccent,
-                      ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          active = newValue;
-                        });
-                      },
-                      items: <String>['Active', 'Disabled']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        //TODO
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
                     ),
                   ),
                   SizedBox(

@@ -391,6 +391,16 @@ class AllergyDetail extends StatelessWidget {
                   ),
 
                   ListTile(
+                    leading: Icon(Icons.description),
+                    title: Text("Type: " + data["resource"]["category"][0] ,
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.grey.shade800,
+                      ),
+                    ),
+                  ),
+
+                  ListTile(
                     leading: Icon(Icons.access_time_outlined),
                     title: Text("Issuded: " + data["resource"]["note"][0]["time"],
                       style: TextStyle(
