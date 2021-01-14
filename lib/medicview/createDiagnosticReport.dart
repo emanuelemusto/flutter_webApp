@@ -1,12 +1,11 @@
 import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_webapp/medicview/uploadFile.dart';
 import 'package:flutter_webapp/patientList.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
@@ -512,6 +511,15 @@ class _CreateDiagnosticReport extends State<CreateDiagnosticReport> {
                               title: new Text("Form Success"),
                               content: new Text("New Report created successfully"),
                               actions: <Widget>[
+                                new FlatButton(
+                                  child: new Text("Add Image"),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => ImagePickerLabPage()),
+                                    );
+                                  },
+                                ),
                                 // usually buttons at the bottom of the dialog
                                 new FlatButton(
                                   child: new Text("Close"),

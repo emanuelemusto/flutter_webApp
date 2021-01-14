@@ -107,6 +107,7 @@ class _ScheduleListDoctor extends State<ScheduleListDoctor> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
+                            list["entry"][index]["resource"]["active"] == false ?
                             TextButton(
                               child: const Text('Confirm'),
                               onPressed: () {
@@ -115,8 +116,11 @@ class _ScheduleListDoctor extends State<ScheduleListDoctor> {
                                 setState(() {
                                 });
                               },
+                            ): Text(
+                              '     '
                             ),
                             const SizedBox(width: 8),
+                            list["entry"][index]["resource"]["active"] == true ?
                             TextButton(
                               child: const Text('Reject'),
                               onPressed: () {
@@ -125,7 +129,7 @@ class _ScheduleListDoctor extends State<ScheduleListDoctor> {
                                 setState(() {
                                 });
                               },
-                            ),
+                            ): Text("      "),
                             const SizedBox(width: 8),
                           ],
                         )
