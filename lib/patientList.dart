@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
 import 'package:http/http.dart' as http;
 import 'medicview/createPatient.dart';
 import 'patientdetails.dart';
@@ -56,8 +57,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Map<String, dynamic> list;
 
   Future<List<dynamic>> getData(String name) async {
+    dynamic token = await FlutterSession().get("token");
+    print("prova token client" + token.toString());
     var response = await http.get(
-        Uri.encodeFull("http://192.168.1.13:8183/STU3/Patient?family=" + name),
+        Uri.encodeFull("http://192.168.1.10:8183/STU3/Patient?family=" +
+            name +
+            "&identifier=urn:foo|" +
+            token.toString()),
         headers: {"Accept": "application/json"});
 
     await Future.delayed(Duration(milliseconds: 15));

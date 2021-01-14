@@ -9,12 +9,14 @@ import 'package:flutter_webapp/components/rounded_button.dart';
 import 'package:flutter_webapp/components/rounded_input_field.dart';
 import 'package:flutter_webapp/components/rounded_password_field.dart';
 import 'package:flutter_webapp/constants.dart';
+import 'package:flutter_webapp/patientList.dart';
 import 'package:flutter_webapp/utente.dart';
 import 'package:http/http.dart' as http;
 import 'dart:math';
 import 'package:flutter_session/flutter_session.dart';
 
 class Body extends StatelessWidget {
+  User user;
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -26,7 +28,7 @@ class Body extends StatelessWidget {
 
   Future<void> saveData(http.Response response) async {
     print("tutu " + parseUser(response.body).token.toString());
-    User user = parseUser(response.body);
+    user = parseUser(response.body);
 
     var session = FlutterSession();
     await session.set("token", user.token);
@@ -38,14 +40,14 @@ class Body extends StatelessWidget {
     print(token);
   }
 
-  Future<String> login() async {
+  Future<String> login(BuildContext context) async {
     //genero un token casuale
     Random random = new Random();
     int token = random.nextInt(100); // from 0 upto 99 included
 
     print(" token " + token.toString());
     final http.Response response = await http.post(
-      'http://192.168.1.7:8183/login',
+      'http://192.168.1.10:8183/login',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -56,6 +58,17 @@ class Body extends StatelessWidget {
       }),
     );
     saveData(response);
+    print(user.role);
+    if (user.role == 'MEDIC') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return MyApp();
+          },
+        ),
+      );
+    }
     print("stato " + response.statusCode.toString());
     print("body " + response.body.toString());
     //print("ecco " + json.decode(response.body));
@@ -95,7 +108,7 @@ class Body extends StatelessWidget {
             RoundedButton(
               text: "LOGIN",
               press: () {
-                login();
+                login(context);
                 print(nameController.text);
                 print(passwordController.text);
               },
