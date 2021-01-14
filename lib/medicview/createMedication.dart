@@ -12,24 +12,22 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 export 'createPatient.dart';
 
-class CreatePatient extends StatefulWidget {
+class CreateMedication extends StatefulWidget {
   @override
-  _CreatePatientState createState() => _CreatePatientState();
+  _CreateMedication createState() => _CreateMedication();
 }
 
-class _CreatePatientState extends State<CreatePatient> {
+class _CreateMedication extends State<CreateMedication> {
 
-  TextEditingController familynameController = TextEditingController();
-  TextEditingController firstnameController = TextEditingController();
-  String gender;
-  TextEditingController dateController = TextEditingController();
-  TextEditingController telecomValueController = TextEditingController();
-  String telecomUse;
-  TextEditingController addressLineController = TextEditingController();
-  TextEditingController cityController = TextEditingController();
-  TextEditingController postCodeController = TextEditingController();
-  TextEditingController countryController = TextEditingController();
-  String addressUse;
+  TextEditingController name = TextEditingController();
+  TextEditingController code = TextEditingController();
+  TextEditingController form = TextEditingController();
+  TextEditingController dateStart = TextEditingController();
+  TextEditingController dateEnd = TextEditingController();
+  String patientName;
+  TextEditingController amount = TextEditingController();
+  String patientId;
+  String practitionerId;
 
   final format = DateFormat("dd/MM/yyyy");
   bool _validate = false;
@@ -39,39 +37,83 @@ class _CreatePatientState extends State<CreatePatient> {
   bool _validate5 = false;
   bool _validate6 = false;
   bool _validate7 = false;
-  bool _validate8 = false;
-  bool _validate9 = false;
-  bool _validate10 = false;
-  bool _validate11 = false;
 
   Future<http.Response> createPatient() {
     return http.post(
-      'http://192.168.1.11:8183/addpatient',
+      'http://192.168.1.11:8183/addMedication',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        'firstname': firstnameController.text,
-        'familyname': familynameController.text,
-        'gender': gender,
-        'date': dateController.text,
-        'telecomValue': telecomValueController.text,
-        'telecomUse': telecomUse,
-        'addressLine': addressLineController.text,
-        'city':  cityController.text,
-        'postCode': postCodeController.text,
-        'country': countryController.text,
-        'addressUse': addressUse,
+        'name': name.text,
+        'code': code.text,
+        'form': form.text,
+        'dateStart': dateStart.text,
+        'dateEnd': dateEnd.text,
+        'patientId': patientId,
+        'amount': amount.text
       }),
     );
   }
 
+  List<String> data = new List<String>();
+
+  Map<String, dynamic> list;
+
+  Future<List<dynamic>> getData() async {
+
+    var response = await http.get(
+        Uri.encodeFull("http://192.168.1.11:8183/STU3/Patient?family=" + "c"), //TODO aspettando l'id del medico
+        headers: {
+          "Accept": "application/json"
+        }
+    );
+
+    await Future.delayed(Duration(milliseconds: 15));
+
+
+    list = json.decode(response.body);
+    print(list["total"]);
+
+    data.clear();
+    var i = 0;
+    while (i < list["total"]) {
+      data.add(
+        list["entry"][i]["resource"]["name"][0]["family"] + " " + list["entry"][i]["resource"]["name"][0]["given"][0] + " " +  list["entry"][i]["resource"]["birthDate"],
+      );
+      i=i+1;
+    }
+
+
+    setState(() {});
+    return data;
+  }
+
+  String equalsName(String value) {
+
+    String id;
+    bool compare = false;
+    var i = 0;
+    while (i < data.length) {
+      compare = data[i] == (value);
+      if(compare) {
+        id = list["entry"][i]["resource"]["id"];
+      }
+      i=i+1;
+    }
+
+
+    setState(() {});
+    return id;
+  }
+
   @override
   void initState() {
-    SystemChrome.setEnabledSystemUIOverlays([]);
     super.initState();
-    String dropdownValue = 'One';
+    getData();
+    String dropdownValue = 'UNKNOWN';
   }
+
 
   String dropdownValue;
 
@@ -85,14 +127,14 @@ class _CreatePatientState extends State<CreatePatient> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height/5.5,
               decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.teal,
-                      Colors.teal
-                    ],
-                  ),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.teal,
+                    Colors.teal
+                  ],
+                ),
 
               ),
               child: Column(
@@ -101,7 +143,7 @@ class _CreatePatientState extends State<CreatePatient> {
                   Spacer(),
                   Align(
                     alignment: Alignment.center,
-                    child: Icon(Icons.person,
+                    child: Icon(Icons.medical_services_outlined,
                       size: 45,
                       color: Colors.white,
                     ),
@@ -115,7 +157,7 @@ class _CreatePatientState extends State<CreatePatient> {
                           bottom: 32,
                           right: 32
                       ),
-                      child: Text('Create new Patient',
+                      child: Text('Create new Medication',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -156,11 +198,11 @@ class _CreatePatientState extends State<CreatePatient> {
                         ]
                     ),
                     child: TextField(
-                      controller: firstnameController,
+                      controller: code,
                       decoration: InputDecoration(
                         suffixIcon: Icon(Icons.drive_file_rename_outline),
                         border: InputBorder.none,
-                        hintText: 'First name',
+                        hintText: 'Code',
                       ),
                     ),
                   ),
@@ -187,11 +229,11 @@ class _CreatePatientState extends State<CreatePatient> {
                         ]
                     ),
                     child: TextField(
-                      controller: familynameController,
+                      controller: name,
                       decoration: InputDecoration(
                         suffixIcon: Icon(Icons.drive_file_rename_outline),
                         border: InputBorder.none,
-                        hintText: 'Family name',
+                        hintText: 'Name',
                       ),
                     ),
                   ),
@@ -219,27 +261,13 @@ class _CreatePatientState extends State<CreatePatient> {
                           )
                         ]
                     ),
-                    child: DropdownButton<String>(
-                      hint: Text("Gender"),
-
-                      underline: Container(
-                        height: 0,
-                        color: Colors.tealAccent,
-
+                    child: TextField(
+                      controller: form,
+                      decoration: InputDecoration(
+                        suffixIcon: Icon(Icons.drive_file_rename_outline),
+                        border: InputBorder.none,
+                        hintText: 'Form',
                       ),
-                      value: gender,
-                      onChanged: (String newValue) {
-                        setState(() {
-                          gender = newValue;
-                        });
-                      },
-                      items: <String>['male', 'female', 'other']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
                     ),
                   ),
                   SizedBox(
@@ -268,19 +296,19 @@ class _CreatePatientState extends State<CreatePatient> {
                     ),
                     child: DateTimeField(
                       format: format,
-                      controller: dateController,
+                      controller: dateStart,
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: 'Date of birth',
+                        hintText: 'Administration start date',
                         suffixIcon: Icon(Icons.calendar_today_sharp,
-                                size: 24,
+                          size: 24,
                         ),
                       ),
 
                       onShowPicker: (context, currentValue) {
                         return showDatePicker(
                             context: context,
-                            firstDate: DateTime(1900),
+                            firstDate: DateTime(1982),
                             initialDate: currentValue ?? DateTime.now(),
                             lastDate: DateTime(2100));
                       },
@@ -296,6 +324,7 @@ class _CreatePatientState extends State<CreatePatient> {
                     padding: EdgeInsets.only(
                         top: 4,left: 16, right: 16, bottom: 4
                     ),
+
                     decoration: BoxDecoration(
                         border: Border.all(color: _validate5 ? Colors.red : Colors.white),
                         borderRadius: BorderRadius.all(
@@ -309,13 +338,24 @@ class _CreatePatientState extends State<CreatePatient> {
                           )
                         ]
                     ),
-                    child: TextField(
-                      controller: telecomValueController,
+                    child: DateTimeField(
+                      format: format,
+                      controller: dateEnd,
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: 'Telecom value',
-                        suffixIcon: Icon(Icons.phone_rounded),
+                        hintText: 'Administration end date',
+                        suffixIcon: Icon(Icons.calendar_today_sharp,
+                          size: 24,
+                        ),
                       ),
+
+                      onShowPicker: (context, currentValue) {
+                        return showDatePicker(
+                            context: context,
+                            firstDate: DateTime(1982),
+                            initialDate: currentValue ?? DateTime.now(),
+                            lastDate: DateTime(2100));
+                      },
                     ),
                   ),
                   SizedBox(
@@ -341,19 +381,19 @@ class _CreatePatientState extends State<CreatePatient> {
                         ]
                     ),
                     child: DropdownButton<String>(
-                      hint:  Text("Telecom use"),
-                      value: telecomUse,
+                      hint:  Text("Patient"),
+                      value: patientName,
                       underline: Container(
                         height: 0,
                         color: Colors.tealAccent,
                       ),
                       onChanged: (String newValue) {
                         setState(() {
-                          telecomUse = newValue;
+                          patientId = equalsName(newValue);
+                          patientName = newValue;
                         });
                       },
-                      items: <String>['home', 'work', 'old', 'mobile']
-                          .map<DropdownMenuItem<String>>((String value) {
+                      items: data.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
@@ -384,175 +424,32 @@ class _CreatePatientState extends State<CreatePatient> {
                         ]
                     ),
                     child: TextField(
-                      controller: addressLineController,
+                      controller: amount,
                       decoration: InputDecoration(
+                        suffixIcon: Icon(Icons.drive_file_rename_outline),
                         border: InputBorder.none,
-                        hintText: 'Address line',
-                        suffixIcon: Icon(Icons.add_road),
+                        hintText: 'Amount',
                       ),
                     ),
                   ),
                   SizedBox(
                     height: 5,
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width/1.2,
-                    height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: _validate8 ? Colors.red : Colors.white),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
-                    child: TextField(
-                      controller: cityController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'City',
-                        suffixIcon: Icon(Icons.location_city_sharp)
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width/1.2,
-                    height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: _validate9 ? Colors.red : Colors.white),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
-                    child: TextField(
-                      controller: postCodeController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Post code',
-                        suffixIcon: Icon(Icons.local_post_office_outlined)
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width/1.2,
-                    height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: _validate10 ? Colors.red : Colors.white),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
-                    child: TextField(
-                      controller: countryController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Country',
-                        suffixIcon: Icon(Icons.flag_outlined)
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width/1.2,
-                    height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: _validate11 ? Colors.red : Colors.white),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
-                    child: DropdownButton<String>(
-                      hint:  Text("Address use"),
-                      value: addressUse,
-                      underline: Container(
-                        height: 0,
-                        color: Colors.tealAccent,
-                      ),
-
-                      onChanged: (String newValue) {
-                        setState(() {
-                          addressUse = newValue;
-                        });
-                      },
-                      items: <String>['home', 'work', 'old']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-
 
                   InkWell(
                     onTap: (){
                       setState(() {
-                        firstnameController.text.isEmpty ? _validate = true : _validate = false;
-                        familynameController.text.isEmpty ? _validate2 = true : _validate = false;
-                        gender == null ? _validate3 = true : _validate = false;
-                        dateController.text.isEmpty ? _validate4 = true : _validate = false;
-                        telecomValueController.text.isEmpty ? _validate5 = true : _validate = false;
-                        telecomUse == null ? _validate6 = true : _validate = false;
-                        addressLineController.text.isEmpty ? _validate7 = true : _validate = false;
-                        cityController.text.isEmpty ? _validate8 = true : _validate = false;
-                        postCodeController.text.isEmpty ? _validate9 = true : _validate = false;
-                        countryController.text.isEmpty ? _validate10 = true : _validate = false;
-                        addressUse == null ? _validate11 = true : _validate = false;
+                        code.text.isEmpty ? _validate = true : _validate = false;
+                        name.text.isEmpty ? _validate2 = true : _validate = false;
+                        form == null ? _validate3 = true : _validate = false;
+                        dateStart.text.isEmpty ? _validate4 = true : _validate = false;
+                        dateEnd.text.isEmpty ? _validate5 = true : _validate = false;
+                        patientName == null ? _validate6 = true : _validate = false;
+                        amount.text.isEmpty ? _validate7 = true : _validate = false;
 
                       });
 
-                      if(_validate & _validate2 & _validate3 & _validate4 & _validate5 & _validate6 & _validate7 & _validate8 & _validate9
-                      & _validate10 & _validate11) {
+                      if(_validate & _validate2 & _validate3 & _validate4 & _validate5 & _validate6 & _validate7 ) {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -579,7 +476,7 @@ class _CreatePatientState extends State<CreatePatient> {
                             // return object of type Dialog
                             return AlertDialog(
                               title: new Text("Form Success"),
-                              content: new Text("New patient created successfully"),
+                              content: new Text("New patient's medication created successfully"),
                               actions: <Widget>[
                                 // usually buttons at the bottom of the dialog
                                 new FlatButton(
