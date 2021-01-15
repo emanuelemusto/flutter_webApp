@@ -24,7 +24,11 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_session: ^0.1.1  
+  flutter_session: ^0.1.1
+  image_picker_modern: any
+  image_picker: any
+  file_picker: ^1.1.1
+  universal_html: ^1.2.4
 
 
 

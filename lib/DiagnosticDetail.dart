@@ -197,7 +197,7 @@ class DiagnosticDetail extends StatelessWidget {
 
                   ListTile(
                     leading: Icon(Icons.access_time_outlined),
-                    title: Text("Issuded: " + data["resource"]["issued"] ,
+                    title: Text("Issued: " + data["resource"]["issued"] ,
                       style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.grey.shade800,
