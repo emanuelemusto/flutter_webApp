@@ -1,4 +1,4 @@
-import 'dart:convert';
+/* import 'dart:convert';
 import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
@@ -23,7 +23,7 @@ class _ImagePickerLabPageState extends State<ImagePickerLabPage> {
     final html.InputElement input = html.document.createElement('input');
     input
       ..type = 'file'
-      ..accept = 'image/*';
+      ..accept = 'image';
 
     input.onChange.listen((e) {
       if (input.files.isEmpty) return;
@@ -35,7 +35,7 @@ class _ImagePickerLabPageState extends State<ImagePickerLabPage> {
           }));
       reader.onLoad.first.then((res) {
         final encoded = reader.result as String;
-        // remove data:image/*;base64 preambule
+        // remove data:image/;base64 preambule
         final stripped =
         encoded.replaceFirst(RegExp(r'data:image/[^;]+;base64,'), '');
 
@@ -93,4 +93,4 @@ class _ImagePickerLabPageState extends State<ImagePickerLabPage> {
         ),
       );
     }
-  }
+  } */
