@@ -12,12 +12,14 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 export 'createPatient.dart';
 
-class SignupPage extends StatefulWidget {
+class CreatePatient extends StatefulWidget {
   @override
-  _SignupPageState createState() => _SignupPageState();
+  _CreatePatientState createState() => _CreatePatientState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+
+class _CreatePatientState extends State<CreatePatient> {
+
   TextEditingController familynameController = TextEditingController();
   TextEditingController firstnameController = TextEditingController();
   String gender;
@@ -45,7 +47,8 @@ class _SignupPageState extends State<SignupPage> {
 
   Future<http.Response> createPatient() {
     return http.post(
-      'http://192.168.1.13:8183/addpatient',
+      'http://192.168.1.11:8183/addpatient',
+
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -194,12 +197,6 @@ class _SignupPageState extends State<SignupPage> {
                         color: Colors.tealAccent,
                       ),
                       value: gender,
-                      /*icon: Align(
-                          alignment: Alignment.centerRight,
-                          child: Icon(Icons.arrow_downward,
-                              size: 24,
-                              color: Colors.teal)
-                      ),*/
                       onChanged: (String newValue) {
                         setState(() {
                           gender = newValue;

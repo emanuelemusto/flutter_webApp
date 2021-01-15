@@ -3,10 +3,18 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+
 import 'package:flutter_session/flutter_session.dart';
+import 'package:flutter_webapp/medicview/createSchedule.dart';
+
 import 'package:http/http.dart' as http;
 import 'medicview/createPatient.dart';
 import 'patientdetails.dart';
+import 'medicview/createSchedule.dart';
+import 'medicview/createDiagnosticReport.dart';
+import 'medicview/createCondition.dart';
+import 'medicview/createAllergy.dart';
+import 'medicview/createMedication.dart';
 
 void main() => runApp(new MyApp());
 
@@ -104,12 +112,109 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('Options menu',
+                style: TextStyle(color: Colors.white,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold),
+              ),
+              decoration: BoxDecoration(
+                color: Colors.teal,
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.person_rounded),
+              title: Text('My Profile'),
+              onTap: () {
+                // Update the state of the app
+                // ...
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Schedule'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateSchedule()), //TODO
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.list_alt_rounded),
+              title: Text('My Schedule'),
+              onTap: () {
+                // Update the state of the app
+                // ...
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Patient'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreatePatient()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Diagnostic Report'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateDiagnosticReport()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Condition'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateCondition()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Allergy Intolerance'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateAllergy()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Medication'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateMedication()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => SignupPage()), //TODO
+            MaterialPageRoute(builder: (context) => CreatePatient()), //TODO
           );
         },
         child: Icon(Icons.add),
