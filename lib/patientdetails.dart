@@ -320,7 +320,7 @@ class _DiagnosticData extends State<DiagnosticData> {
 
 
     var response = await http.get(
-        Uri.encodeFull("http://192.168.1.11:8183/STU3/DiagnosticReport?_id=" + data["id"]),
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/DiagnosticReport?_id=" + data["id"]),
         headers: {
           "Accept": "application/json"
         }
@@ -636,7 +636,7 @@ class _ClinicalData extends State<ClinicalData> {
 
 
     var response = await http.get(
-        Uri.encodeFull("http://192.168.1.11:8183/STU3/AllergyIntolerance?_id=" + data["id"]),
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/AllergyIntolerance?_id=" + data["id"]),
         headers: {
           "Accept": "application/json"
         }
@@ -667,7 +667,7 @@ class _ClinicalData extends State<ClinicalData> {
 
 
     var response = await http.get(
-        Uri.encodeFull("http://192.168.1.11:8183/STU3/Condition?_id=" + data["id"]),
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/Condition?_id=" + data["id"]),
         headers: {
           "Accept": "application/json"
         }
@@ -988,7 +988,7 @@ class _MedicationList extends State<MedicationList> {
   Future<List<dynamic>> getData() async {
     var response = await http.get(
         Uri.encodeFull(
-            "http://192.168.1.11:8183/STU3/Medication?_id=" + data["id"]),
+            "http://127.0.0.1:8183/STU3/Medication?_id=" + data["id"]),
         headers: {
           "Accept": "application/json"
         }

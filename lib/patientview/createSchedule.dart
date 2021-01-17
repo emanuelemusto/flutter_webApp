@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:numberpicker/numberpicker.dart';
+import 'package:time_picker_widget/time_picker_widget.dart';
 
 class CreateSchedule extends StatefulWidget {
   Map<String, dynamic> practitioner;
@@ -38,6 +40,10 @@ class _CreateSchedule extends State<CreateSchedule> {
 
   Map<String, dynamic> list;
 
+  List<DateTime> date = new List<DateTime>();
+
+  Map<String, dynamic> list2;
+
   final format = DateFormat("dd/MM/yyyy");
   bool _validate = false;
   bool _validate2 = false;
@@ -67,7 +73,7 @@ class _CreateSchedule extends State<CreateSchedule> {
 
   Future<List<dynamic>> getData() async {
     var response = await http.get(
-        Uri.encodeFull("http://192.168.1.11:8183/STU3/Patient?family=" + "c"),
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/Patient?family=" + "c"),
         //TODO aspettando l'id del medico
         headers: {"Accept": "application/json"});
 
@@ -93,6 +99,50 @@ class _CreateSchedule extends State<CreateSchedule> {
     return data;
   }
 
+  Future<List<dynamic>> getData2() async {
+    var response = await http.get(
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/Schedule?actor=" + "40"),
+        //TODO aspettando l'id del medico
+        headers: {"Accept": "application/json"});
+
+    await Future.delayed(Duration(milliseconds: 15));
+
+    list2 = json.decode(response.body);
+    print(list2["total"]);
+    var monday=1;
+    var now = new DateTime.now();
+
+    while(now.weekday!=monday)
+    {
+      now=now.subtract(new Duration(days: 1));
+    }
+
+    print('Recent monday $now');
+
+    DateTime dateTime;
+
+    date.clear();
+    var i = 0;
+    while (i < list2["total"]) {
+      dateTime = DateTime.parse(list2["entry"][i]["resource"]["planningHorizon"]["start"].toString().substring(0,10));
+      date.add(
+          dateTime
+      );
+      i = i + 1;
+    }
+
+    var k = 01;
+    while (k < 53) {
+      date.add(
+          DateTime(now.day-1*k) //TODO aggiungere feriali e giorno libero
+      );
+      k = k + 1;
+    }
+
+    setState(() {});
+    return date;
+  }
+
   String equalsName(String value) {
     String id;
     bool compare = false;
@@ -110,16 +160,27 @@ class _CreateSchedule extends State<CreateSchedule> {
   }
 
   Future<Null> _selectedTime(BuildContext context) async {
-    timeedit = await showTimePicker(
+    timeedit = await showCustomTimePicker(
+        context: context,
+        // It is a must if you provide selectableTimePredicate
+        onFailValidation: (context) => print('Unavailable selection'),
+        initialTime: TimeOfDay.now(),
+        selectableTimePredicate: (time) =>
+        time.hour > 1 &&
+            time.hour < 14 &&
+            time.minute % 10 == 0);
+
+    /*showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
+
       builder: (BuildContext context, Widget child) {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
           child: child,
         );
       },
-    );
+    );*/
 
     final localizations = MaterialLocalizations.of(context);
     final formattedTimeOfDay = localizations.formatTimeOfDay(timeedit);
@@ -137,6 +198,7 @@ class _CreateSchedule extends State<CreateSchedule> {
     SystemChrome.setEnabledSystemUIOverlays([]);
     super.initState();
     getData();
+    getData2();
   }
 
   String dropdownValue;
@@ -265,10 +327,15 @@ class _CreateSchedule extends State<CreateSchedule> {
                       ),
                       onShowPicker: (context, currentValue) {
                         return showDatePicker(
-                            context: context,
-                            firstDate: DateTime.now(),
-                            initialDate: currentValue ?? DateTime.now(),
-                            lastDate: DateTime(2100));
+                          context: context,
+                          firstDate: DateTime.now(),
+                          initialDate: currentValue ?? DateTime.now(),
+                          lastDate: DateTime((DateTime.now().year+1)),
+                            selectableDayPredicate: (DateTime val) {
+                              return !date.contains(val);
+
+                            }
+                        );
                       },
                     ),
                   ),
