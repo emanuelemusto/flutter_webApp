@@ -65,7 +65,7 @@ class Body extends StatelessWidget {
         context,
         MaterialPageRoute(
           builder: (context) {
-            return MyHomePage();
+            return MyHomePage(title: 'Patient List');
           },
         ),
       );

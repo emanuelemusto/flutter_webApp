@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_session/flutter_session.dart';
+import 'package:flutter_webapp/medicview/scheduleList.dart';
 import 'package:flutter_webapp/patientList.dart';
 
 import 'package:flutter/material.dart';
@@ -9,6 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
+
+import '../patientdetails.dart';
 
 export 'createPatient.dart';
 
@@ -44,7 +49,7 @@ class _CreateSchedule extends State<CreateSchedule> {
 
   Future<http.Response> createSchedule() {
     return http.post(
-      'http://192.168.1.11:8183/addSchedulePractitioner',
+      'http://127.0.0.1:8183/addSchedulePractitioner',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -60,9 +65,15 @@ class _CreateSchedule extends State<CreateSchedule> {
   }
 
   Future<List<dynamic>> getData() async {
+    dynamic token = await FlutterSession().get("token");
+    dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-        Uri.encodeFull("http://192.168.1.11:8183/STU3/Patient?family=" + "c"),
-        //TODO aspettando l'id del medico
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/Patient?family=" +
+            "c" +
+            "&identifier=" +
+            user.toString() +
+            "|" +
+            token.toString()),
         headers: {"Accept": "application/json"});
 
     await Future.delayed(Duration(milliseconds: 15));
@@ -78,7 +89,9 @@ class _CreateSchedule extends State<CreateSchedule> {
             " " +
             list["entry"][i]["resource"]["name"][0]["given"][0] +
             " " +
-            list["entry"][i]["resource"]["birthDate"],
+            list["entry"][i]["resource"]["birthDate"] +
+            " " +
+            list["entry"][i]["resource"]["id"],
       );
       i = i + 1;
     }
@@ -87,14 +100,17 @@ class _CreateSchedule extends State<CreateSchedule> {
     return data;
   }
 
+  var k;
   String equalsName(String value) {
     String id;
     bool compare = false;
     var i = 0;
+
     while (i < data.length) {
       compare = data[i] == (value);
       if (compare) {
         id = list["entry"][i]["resource"]["id"];
+        k = i;
       }
       i = i + 1;
     }
@@ -300,9 +316,9 @@ class _CreateSchedule extends State<CreateSchedule> {
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width / 1.2,
-                    height: 45,
+                    height: 80,
                     padding:
-                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
                         border: Border.all(
                             color: _validate6 ? Colors.red : Colors.white),
@@ -311,30 +327,30 @@ class _CreateSchedule extends State<CreateSchedule> {
                         boxShadow: [
                           BoxShadow(color: Colors.black12, blurRadius: 5)
                         ]),
-                    child: DropdownButton<String>(
-                      hint: Text("Patient"),
-                      value: patientName,
-                      underline: Container(
-                        height: 0,
-                        color: Colors.tealAccent,
-                      ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          patientId = equalsName(newValue);
-                          patientName = newValue;
-                        });
-                      },
+                    child: SearchableDropdown.single(
                       items: data.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
                         );
                       }).toList(),
+                      value: patientName,
+                      underline: SizedBox(),
+                      hint: "Patient",
+                      searchHint: "Search Patient",
+                      onChanged: (value) {
+                        setState(() {
+                          patientName = value;
+                          patientId = equalsName(value);
+                        });
+                      },
+                      isExpanded: true,
                     ),
                   ),
                   SizedBox(
                     height: 5,
                   ),
+
                   Container(
                     width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
@@ -435,10 +451,12 @@ class _CreateSchedule extends State<CreateSchedule> {
                                   onPressed: () {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              MyHomePage()), //TODO
+                                      MaterialPageRoute(builder: (context) => ScheduleListDoctor()),
                                     );
+                                     /* MaterialPageRoute(
+                                          builder: (context) => PatientDetails(
+                                              data: list["entry"][k]["resource"])),
+                                    );*/
                                   },
                                 ),
                               ],
