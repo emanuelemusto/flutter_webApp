@@ -1164,7 +1164,7 @@ class _MedicationList extends State<MedicationList> {
                         itemBuilder: (BuildContext content, int index) {
                           return ListTile(
                             leading: Icon(Icons.local_hospital),
-                            title: Text(data2[index]["title"].toString().substring(64, data2[index]["title"].toString().length - 6)),
+                            title: Text(data2[index]["title"].toString().substring(data2[index]["title"].toString().indexOf('@') + 1, data2[index]["title"].toString().length - 6)),
                             subtitle: Text(data2[index]["title"].toString().substring(42, 64)),
                             trailing: Icon(Icons.arrow_forward_ios),
                             onTap: () {
