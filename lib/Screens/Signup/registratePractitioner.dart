@@ -15,16 +15,17 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 export 'registratePatient.dart';
 
-class SignupPatientPage extends StatefulWidget {
+class SignupPractitionerPage extends StatefulWidget {
   final String user;
-  SignupPatientPage({Key key, this.user}) : super(key: key);
+  SignupPractitionerPage({Key key, this.user}) : super(key: key);
   @override
-  _SignupPatientPageState createState() => _SignupPatientPageState(user: user);
+  _SignupPractitionerPageState createState() =>
+      _SignupPractitionerPageState(user: user);
 }
 
-class _SignupPatientPageState extends State<SignupPatientPage> {
+class _SignupPractitionerPageState extends State<SignupPractitionerPage> {
   final String user;
-  _SignupPatientPageState({this.user});
+  _SignupPractitionerPageState({this.user});
 
   TextEditingController familynameController = TextEditingController();
   TextEditingController firstnameController = TextEditingController();
@@ -51,10 +52,10 @@ class _SignupPatientPageState extends State<SignupPatientPage> {
   bool _validate10 = false;
   bool _validate11 = false;
 
-  Future<http.Response> createPatient(BuildContext context) async {
+  Future<String> createPractitioner(BuildContext context) async {
     print("verifica per user " + user);
-    return await http.post(
-      'http://192.168.1.10:8183/addpatient',
+    final http.Response response = await http.post(
+      'http://192.168.1.10:8183/addpractitioner',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -73,15 +74,15 @@ class _SignupPatientPageState extends State<SignupPatientPage> {
         'addressUse': addressUse,
       }),
     );
-
-    Navigator.push(
+    print("stato practitioner" + response.statusCode.toString());
+    /* Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) {
           return LoginScreen();
         },
       ),
-    );
+    ); */
   }
 
   @override
@@ -127,7 +128,7 @@ class _SignupPatientPageState extends State<SignupPatientPage> {
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 32, right: 32),
                       child: Text(
-                        'Create new Patient',
+                        'Create new Practitioner',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -469,7 +470,7 @@ class _SignupPatientPageState extends State<SignupPatientPage> {
                     height: 20,
                   ),
                   InkWell(
-                    onTap: () {
+                    onTap: () async {
                       setState(() {
                         firstnameController.text.isEmpty
                             ? _validate = true
@@ -541,8 +542,8 @@ class _SignupPatientPageState extends State<SignupPatientPage> {
                             // return object of type Dialog
                             return AlertDialog(
                               title: new Text("Form Success"),
-                              content:
-                                  new Text("New patient created successfully"),
+                              content: new Text(
+                                  "New Practitioner created successfully"),
                               actions: <Widget>[
                                 // usually buttons at the bottom of the dialog
 
@@ -563,7 +564,7 @@ class _SignupPatientPageState extends State<SignupPatientPage> {
                           },
                         );
 
-                        this.createPatient(context);
+                        await this.createPractitioner(context);
                       }
                     },
                     child: Container(
