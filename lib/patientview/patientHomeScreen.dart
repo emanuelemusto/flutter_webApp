@@ -361,7 +361,11 @@ class _PatientHomePage extends State<PatientHomePage> {
               ),
             );
           } else {
-            return CircularProgressIndicator();
+            return Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator()
+                )
+            );
           }
         }
     );

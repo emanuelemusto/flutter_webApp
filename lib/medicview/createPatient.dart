@@ -18,7 +18,6 @@ class CreatePatient extends StatefulWidget {
 }
 
 class _CreatePatientState extends State<CreatePatient> {
-
   TextEditingController familynameController = TextEditingController();
   TextEditingController firstnameController = TextEditingController();
   String gender;
@@ -46,7 +45,7 @@ class _CreatePatientState extends State<CreatePatient> {
 
   Future<http.Response> createPatient() {
     return http.post(
-      'http://192.168.1.11:8183/addpatient',
+      'http://127.0.0.1:8183/addpatient',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -58,7 +57,7 @@ class _CreatePatientState extends State<CreatePatient> {
         'telecomValue': telecomValueController.text,
         'telecomUse': telecomUse,
         'addressLine': addressLineController.text,
-        'city':  cityController.text,
+        'city': cityController.text,
         'postCode': postCodeController.text,
         'country': countryController.text,
         'addressUse': addressUse,
@@ -83,17 +82,13 @@ class _CreatePatientState extends State<CreatePatient> {
           children: <Widget>[
             Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height/5.5,
+              height: MediaQuery.of(context).size.height / 5.5,
               decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.teal,
-                      Colors.teal
-                    ],
-                  ),
-
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.teal, Colors.teal],
+                ),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -101,60 +96,47 @@ class _CreatePatientState extends State<CreatePatient> {
                   Spacer(),
                   Align(
                     alignment: Alignment.center,
-                    child: Icon(Icons.person,
+                    child: Icon(
+                      Icons.person,
                       size: 45,
                       color: Colors.white,
                     ),
                   ),
                   Spacer(),
-
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          bottom: 32,
-                          right: 32
-                      ),
-                      child: Text('Create new Patient',
+                      padding: const EdgeInsets.only(bottom: 32, right: 32),
+                      child: Text(
+                        'Create new Patient',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
-                            fontWeight: FontWeight.bold
-                        ),
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-
             Container(
-
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.only(top: 62),
               child: Column(
                 children: <Widget>[
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-
-                        border: Border.all(color: _validate ? Colors.red : Colors.white),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
-
+                        border: Border.all(
+                            color: _validate ? Colors.red : Colors.white),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: TextField(
                       controller: firstnameController,
                       decoration: InputDecoration(
@@ -168,24 +150,18 @@ class _CreatePatientState extends State<CreatePatient> {
                     height: 5,
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        border: Border.all(color: _validate2 ? Colors.red : Colors.white),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        border: Border.all(
+                            color: _validate2 ? Colors.red : Colors.white),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: TextField(
                       controller: familynameController,
                       decoration: InputDecoration(
@@ -198,34 +174,24 @@ class _CreatePatientState extends State<CreatePatient> {
                   SizedBox(
                     height: 5,
                   ),
-
-
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        border: Border.all(color: _validate3 ? Colors.red : Colors.white),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        border: Border.all(
+                            color: _validate3 ? Colors.red : Colors.white),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: DropdownButton<String>(
                       hint: Text("Gender"),
-
                       underline: Container(
                         height: 0,
                         color: Colors.tealAccent,
-
                       ),
                       value: gender,
                       onChanged: (String newValue) {
@@ -245,38 +211,30 @@ class _CreatePatientState extends State<CreatePatient> {
                   SizedBox(
                     height: 5,
                   ),
-
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
-
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        border: Border.all(color: _validate4 ? Colors.red : Colors.white),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        border: Border.all(
+                            color: _validate4 ? Colors.red : Colors.white),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: DateTimeField(
                       format: format,
                       controller: dateController,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Date of birth',
-                        suffixIcon: Icon(Icons.calendar_today_sharp,
-                                size: 24,
+                        suffixIcon: Icon(
+                          Icons.calendar_today_sharp,
+                          size: 24,
                         ),
                       ),
-
                       onShowPicker: (context, currentValue) {
                         return showDatePicker(
                             context: context,
@@ -289,26 +247,19 @@ class _CreatePatientState extends State<CreatePatient> {
                   SizedBox(
                     height: 5,
                   ),
-
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        border: Border.all(color: _validate5 ? Colors.red : Colors.white),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        border: Border.all(
+                            color: _validate5 ? Colors.red : Colors.white),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: TextField(
                       controller: telecomValueController,
                       decoration: InputDecoration(
@@ -322,26 +273,20 @@ class _CreatePatientState extends State<CreatePatient> {
                     height: 5,
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        border: Border.all(color: _validate6 ? Colors.red : Colors.white),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        border: Border.all(
+                            color: _validate6 ? Colors.red : Colors.white),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: DropdownButton<String>(
-                      hint:  Text("Telecom use"),
+                      hint: Text("Telecom use"),
                       value: telecomUse,
                       underline: Container(
                         height: 0,
@@ -365,24 +310,18 @@ class _CreatePatientState extends State<CreatePatient> {
                     height: 5,
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        border: Border.all(color: _validate7 ? Colors.red : Colors.white),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        border: Border.all(
+                            color: _validate7 ? Colors.red : Colors.white),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: TextField(
                       controller: addressLineController,
                       decoration: InputDecoration(
@@ -396,125 +335,97 @@ class _CreatePatientState extends State<CreatePatient> {
                     height: 5,
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        border: Border.all(color: _validate8 ? Colors.red : Colors.white),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        border: Border.all(
+                            color: _validate8 ? Colors.red : Colors.white),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: TextField(
                       controller: cityController,
                       decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'City',
-                        suffixIcon: Icon(Icons.location_city_sharp)
-                      ),
+                          border: InputBorder.none,
+                          hintText: 'City',
+                          suffixIcon: Icon(Icons.location_city_sharp)),
                     ),
                   ),
                   SizedBox(
                     height: 5,
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        border: Border.all(color: _validate9 ? Colors.red : Colors.white),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        border: Border.all(
+                            color: _validate9 ? Colors.red : Colors.white),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: TextField(
                       controller: postCodeController,
                       decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Post code',
-                        suffixIcon: Icon(Icons.local_post_office_outlined)
-                      ),
+                          border: InputBorder.none,
+                          hintText: 'Post code',
+                          suffixIcon: Icon(Icons.local_post_office_outlined)),
                     ),
                   ),
                   SizedBox(
                     height: 5,
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        border: Border.all(color: _validate10 ? Colors.red : Colors.white),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        border: Border.all(
+                            color: _validate10 ? Colors.red : Colors.white),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: TextField(
                       controller: countryController,
                       decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Country',
-                        suffixIcon: Icon(Icons.flag_outlined)
-                      ),
+                          border: InputBorder.none,
+                          hintText: 'Country',
+                          suffixIcon: Icon(Icons.flag_outlined)),
                     ),
                   ),
                   SizedBox(
                     height: 5,
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width/1.2,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(
-                        top: 4,left: 16, right: 16, bottom: 4
-                    ),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        border: Border.all(color: _validate11 ? Colors.red : Colors.white),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(50)
-                        ),
+                        border: Border.all(
+                            color: _validate11 ? Colors.red : Colors.white),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5
-                          )
-                        ]
-                    ),
+                          BoxShadow(color: Colors.black12, blurRadius: 5)
+                        ]),
                     child: DropdownButton<String>(
-                      hint:  Text("Address use"),
+                      hint: Text("Address use"),
                       value: addressUse,
                       underline: Container(
                         height: 0,
                         color: Colors.tealAccent,
                       ),
-
                       onChanged: (String newValue) {
                         setState(() {
                           addressUse = newValue;
@@ -532,27 +443,53 @@ class _CreatePatientState extends State<CreatePatient> {
                   SizedBox(
                     height: 20,
                   ),
-
-
                   InkWell(
-                    onTap: (){
+                    onTap: () {
                       setState(() {
-                        firstnameController.text.isEmpty ? _validate = true : _validate = false;
-                        familynameController.text.isEmpty ? _validate2 = true : _validate = false;
-                        gender == null ? _validate3 = true : _validate = false;
-                        dateController.text.isEmpty ? _validate4 = true : _validate = false;
-                        telecomValueController.text.isEmpty ? _validate5 = true : _validate = false;
-                        telecomUse == null ? _validate6 = true : _validate = false;
-                        addressLineController.text.isEmpty ? _validate7 = true : _validate = false;
-                        cityController.text.isEmpty ? _validate8 = true : _validate = false;
-                        postCodeController.text.isEmpty ? _validate9 = true : _validate = false;
-                        countryController.text.isEmpty ? _validate10 = true : _validate = false;
-                        addressUse == null ? _validate11 = true : _validate = false;
-
+                        firstnameController.text.isEmpty
+                            ? _validate = true
+                            : _validate = false;
+                        familynameController.text.isEmpty
+                            ? _validate2 = true
+                            : _validate2 = false;
+                        gender == null ? _validate3 = true : _validate3 = false;
+                        dateController.text.isEmpty
+                            ? _validate4 = true
+                            : _validate4 = false;
+                        telecomValueController.text.isEmpty
+                            ? _validate5 = true
+                            : _validate5 = false;
+                        telecomUse == null
+                            ? _validate6 = true
+                            : _validate6 = false;
+                        addressLineController.text.isEmpty
+                            ? _validate7 = true
+                            : _validate7 = false;
+                        cityController.text.isEmpty
+                            ? _validate8 = true
+                            : _validate8 = false;
+                        postCodeController.text.isEmpty
+                            ? _validate9 = true
+                            : _validate9 = false;
+                        countryController.text.isEmpty
+                            ? _validate10 = true
+                            : _validate10 = false;
+                        addressUse == null
+                            ? _validate11 = true
+                            : _validate11 = false;
                       });
 
-                      if(_validate & _validate2 & _validate3 & _validate4 & _validate5 & _validate6 & _validate7 & _validate8 & _validate9
-                      & _validate10 & _validate11) {
+                      if (_validate ||
+                          _validate2 ||
+                          _validate3 ||
+                          _validate4 ||
+                          _validate5 ||
+                          _validate6 ||
+                          _validate7 ||
+                          _validate8 ||
+                          _validate9 ||
+                          _validate10 ||
+                          _validate11) {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -579,7 +516,8 @@ class _CreatePatientState extends State<CreatePatient> {
                             // return object of type Dialog
                             return AlertDialog(
                               title: new Text("Form Success"),
-                              content: new Text("New patient created successfully"),
+                              content:
+                                  new Text("New patient created successfully"),
                               actions: <Widget>[
                                 // usually buttons at the bottom of the dialog
                                 new FlatButton(
@@ -587,7 +525,9 @@ class _CreatePatientState extends State<CreatePatient> {
                                   onPressed: () {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => MyHomePage()), //TODO
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              MyHomePage()), //TODO
                                     );
                                   },
                                 ),
@@ -597,13 +537,11 @@ class _CreatePatientState extends State<CreatePatient> {
                         );
 
                         this.createPatient();
-
                       }
-
                     },
                     child: Container(
                       height: 45,
-                      width: MediaQuery.of(context).size.width/1.2,
+                      width: MediaQuery.of(context).size.width / 1.2,
                       decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
@@ -611,16 +549,12 @@ class _CreatePatientState extends State<CreatePatient> {
                               Colors.teal,
                             ],
                           ),
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(50)
-                          )
-                      ),
+                          borderRadius: BorderRadius.all(Radius.circular(50))),
                       child: Center(
-                        child: Text('Create'.toUpperCase(),
+                        child: Text(
+                          'Create'.toUpperCase(),
                           style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold
-                          ),
+                              color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -631,9 +565,7 @@ class _CreatePatientState extends State<CreatePatient> {
                 ],
               ),
             ),
-
           ],
-
         ),
       ),
     );

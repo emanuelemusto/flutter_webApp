@@ -1,15 +1,11 @@
-import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter_session/flutter_session.dart';
-import 'package:flutter_webapp/patientList.dart';
 
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 import '../patientdetails.dart';
@@ -41,9 +37,9 @@ class _CreateMedication extends State<CreateMedication> {
   bool _validate6 = false;
   bool _validate7 = false;
 
-  Future<http.Response> createPatient() {
+  Future<http.Response> createMedication() {
     return http.post(
-      'http://192.168.1.11:8183/addMedication',
+      'http://127.0.0.1:8183/addMedication',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -398,9 +394,6 @@ class _CreateMedication extends State<CreateMedication> {
                           SizedBox(
                             height: 5,
                           ),
-                          SizedBox(
-                            height: 5,
-                          ),
                           InkWell(
                             onTap: () {
                               setState(() {
@@ -479,7 +472,7 @@ class _CreateMedication extends State<CreateMedication> {
                                   },
                                 );
 
-                                this.createPatient();
+                                this.createMedication();
                               }
                             },
                             child: Container(
