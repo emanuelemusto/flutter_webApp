@@ -337,9 +337,12 @@ class _DiagnosticData extends State<DiagnosticData> {
 
   Future<List<dynamic>> getData() async {
     var response = await http.get(
-        Uri.encodeFull(
-            "http://192.168.1.10:8183/STU3/DiagnosticReport?_id=" + data["id"]),
-        headers: {"Accept": "application/json"});
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/DiagnosticReport?_id=" + data["id"]),
+        headers: {
+          "Accept": "application/json"
+        }
+    );
+
 
     list = json.decode(response.body);
     print(list["entry"][0]["resource"]["category"]["text"]);
@@ -652,7 +655,7 @@ class _ClinicalData extends State<ClinicalData> {
     dynamic token = await FlutterSession().get("token");
     dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-        Uri.encodeFull("http://192.168.1.10:8183/STU3/AllergyIntolerance?_id=" +
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/AllergyIntolerance?_id=" +
             data["id"] +
             "&identifier=" +
             user.toString() +
@@ -679,8 +682,9 @@ class _ClinicalData extends State<ClinicalData> {
 
   Future<List<dynamic>> getData2() async {
     var response = await http.get(
+
         Uri.encodeFull(
-            "http://192.168.1.10:8183/STU3/Condition?_id=" + data["id"]),
+            "http://127.0.0.1:8183/STU3/Condition?_id=" + data["id"]),
         headers: {"Accept": "application/json"});
 
     list2 = json.decode(response.body);
@@ -1003,9 +1007,11 @@ class _MedicationList extends State<MedicationList> {
   Future<List<dynamic>> getData() async {
     var response = await http.get(
         Uri.encodeFull(
-            "http://192.168.1.10:8183/STU3/Medication?_id=" + data["id"]),
-        headers: {"Accept": "application/json"});
-
+            "http://127.0.0.1:8183/STU3/Medication?_id=" + data["id"]),
+        headers: {
+          "Accept": "application/json"
+        }
+    );
     list = json.decode(response.body);
 
     data2.clear();
@@ -1169,15 +1175,10 @@ class _MedicationList extends State<MedicationList> {
                         itemBuilder: (BuildContext content, int index) {
                           return ListTile(
                             leading: Icon(Icons.local_hospital),
-                            title: Text(data2[index]["title"]
-                                .toString()
-                                .substring(
-                                    64,
-                                    data2[index]["title"].toString().length -
-                                        6)),
-                            subtitle: Text(data2[index]["title"]
-                                .toString()
-                                .substring(42, 64)),
+
+                            title: Text(data2[index]["title"].toString().substring(data2[index]["title"].toString().indexOf('@') + 1, data2[index]["title"].toString().length - 6)),
+                            subtitle: Text(data2[index]["title"].toString().substring(42, 64)),
+
                             trailing: Icon(Icons.arrow_forward_ios),
                             onTap: () {
                               Navigator.push(

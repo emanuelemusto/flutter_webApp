@@ -4,10 +4,15 @@ import 'dart:convert';
 import 'package:flutter_webapp/patientList.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_webapp/patientview/patientHomeScreen.dart';
+import 'package:flutter_webapp/patientview/scheduleList.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:numberpicker/numberpicker.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
+import 'package:time_picker_widget/time_picker_widget.dart';
 
 class CreateSchedule extends StatefulWidget {
   Map<String, dynamic> practitioner;
@@ -38,6 +43,12 @@ class _CreateSchedule extends State<CreateSchedule> {
 
   Map<String, dynamic> list;
 
+  List<DateTime> date = new List<DateTime>();
+
+  List<String> date2 = new List<String>();
+
+  Map<String, dynamic> list2;
+
   final format = DateFormat("dd/MM/yyyy");
   bool _validate = false;
   bool _validate2 = false;
@@ -50,47 +61,68 @@ class _CreateSchedule extends State<CreateSchedule> {
 
   Future<http.Response> createSchedule() {
     return http.post(
-      'http://192.168.1.11:8183/addSchedulePractitioner',
+      'http://127.0.0.1:8183/addSchedulePractitioner',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
         'serviceCategory': serviceCategory.text,
         'serviceType': serviceType.text,
-        'patientId': patientId,
+        'patientId': "20", //TODO
         'practitionerId': practitioner["id"],
-        'planning': dateController.text + " " + timeController.text,
+        'planning': dateController.text,
         'active': "Disabled"
       }),
     );
   }
 
-  Future<List<dynamic>> getData() async {
+  Future<List<dynamic>> getData2() async {
     var response = await http.get(
-        Uri.encodeFull("http://192.168.1.11:8183/STU3/Patient?family=" + "c"),
-        //TODO aspettando l'id del medico
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/Schedule?actor=" + practitioner["id"]),
         headers: {"Accept": "application/json"});
 
     await Future.delayed(Duration(milliseconds: 15));
 
-    list = json.decode(response.body);
-    print(list["total"]);
+    list2 = json.decode(response.body);
+    print(list2["total"]);
+    var sunday = 7;
+    var now = new DateTime.now();
 
-    data.clear();
-    var i = 0;
-    while (i < list["total"]) {
-      data.add(
-        list["entry"][i]["resource"]["name"][0]["family"] +
-            " " +
-            list["entry"][i]["resource"]["name"][0]["given"][0] +
-            " " +
-            list["entry"][i]["resource"]["birthDate"],
-      );
-      i = i + 1;
+    while (now.weekday != sunday) {
+      now = now.subtract(new Duration(days: 1));
     }
 
+    var time = new DateTime(now.year, now.month, now.day + 8, 9, 0, 0, 0, 0);
+
+    for (int i = 0; i < 6; i++) {
+      for (int j = 0; j < 18; j++) {
+        date2.add(time.toString());
+        time = time.add(new Duration(minutes: 30));
+      }
+      time = time.add(new Duration(hours: 15));
+    }
+
+    print('Recent sunday $time');
+
+    DateTime dateTime;
+
+    var i = 0;
+    while (i < list2["total"]) {
+      dateTime = DateTime.parse(
+          list2["entry"][i]["resource"]["planningHorizon"]["start"].toString());
+      print(dateTime);
+      if (date2.contains(
+          dateTime.toString().substring(0, dateTime.toString().indexOf('Z')))) {
+        date2.remove(
+            dateTime.toString().substring(0, dateTime.toString().indexOf('Z')));
+      }
+      i = i + 1;
+    }
+    print(dateTime.toString().substring(0, dateTime.toString().indexOf('Z')));
+    print(date2);
+
     setState(() {});
-    return data;
+    return date2;
   }
 
   String equalsName(String value) {
@@ -109,34 +141,11 @@ class _CreateSchedule extends State<CreateSchedule> {
     return id;
   }
 
-  Future<Null> _selectedTime(BuildContext context) async {
-    timeedit = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-      builder: (BuildContext context, Widget child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: child,
-        );
-      },
-    );
-
-    final localizations = MaterialLocalizations.of(context);
-    final formattedTimeOfDay = localizations.formatTimeOfDay(timeedit);
-
-    if (timeedit != null) {
-      setState(() {
-        DateTime date = DateFormat.jm().parse(formattedTimeOfDay);
-        timeController.text = DateFormat("HH:mm").format(date);
-      });
-    }
-  }
-
   @override
   void initState() {
     SystemChrome.setEnabledSystemUIOverlays([]);
     super.initState();
-    getData();
+    getData2();
   }
 
   String dropdownValue;
@@ -241,65 +250,39 @@ class _CreateSchedule extends State<CreateSchedule> {
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width / 1.2,
-                    height: 45,
+                    height: 80,
                     padding:
                         EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
                         border: Border.all(
-                            color: _validate4 ? Colors.red : Colors.white),
+                            color: _validate3 ? Colors.red : Colors.white),
                         borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(color: Colors.black12, blurRadius: 5)
                         ]),
-                    child: DateTimeField(
-                      format: format,
-                      controller: dateController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Date of schedule',
-                        suffixIcon: Icon(
-                          Icons.calendar_today_sharp,
-                          size: 24,
-                        ),
-                      ),
-                      onShowPicker: (context, currentValue) {
-                        return showDatePicker(
-                            context: context,
-                            firstDate: DateTime.now(),
-                            initialDate: currentValue ?? DateTime.now(),
-                            lastDate: DateTime(2100));
+                    child: SearchableDropdown.single(
+                      items:
+                          date2.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      value: dateController.text,
+                      underline: SizedBox(),
+                      hint: "Date of Schedule",
+                      searchHint: "Search date",
+                      onChanged: (value) {
+                        setState(() {
+                          dateController.text = value;
+                        });
                       },
+                      isExpanded: true,
                     ),
                   ),
                   SizedBox(
                     height: 5,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width / 1.2,
-                    height: 45,
-                    padding:
-                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: _validate5 ? Colors.red : Colors.white),
-                        borderRadius: BorderRadius.all(Radius.circular(50)),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(color: Colors.black12, blurRadius: 5)
-                        ]),
-                    child: TextField(
-                      controller: timeController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Hour of schedule',
-                        suffixIcon: Icon(
-                          Icons.access_time_outlined,
-                          size: 24,
-                        ),
-                      ),
-                      onTap: () => _selectedTime(context),
-                    ),
                   ),
                   SizedBox(
                     height: 5,
@@ -313,24 +296,14 @@ class _CreateSchedule extends State<CreateSchedule> {
                         serviceType.text.isEmpty
                             ? _validate2 = true
                             : _validate2 = false;
-                        patientId == null
+                        dateController.text == null
                             ? _validate3 = true
                             : _validate3 = false;
-                        dateController.text.isEmpty
-                            ? _validate4 = true
-                            : _validate4 = false;
-                        timeController.text.isEmpty
-                            ? _validate5 = true
-                            : _validate5 = false;
-                        active == null ? _validate6 = true : _validate6 = false;
                       });
 
-                      if (_validate &
-                          _validate2 &
-                          _validate3 &
-                          _validate4 &
-                          _validate5 &
-                          _validate6) {
+                      if (_validate ||
+                          _validate2 ||
+                          _validate3) {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -368,7 +341,7 @@ class _CreateSchedule extends State<CreateSchedule> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              MyHomePage()), //TODO
+                                              ScheduleListPatient()),
                                     );
                                   },
                                 ),

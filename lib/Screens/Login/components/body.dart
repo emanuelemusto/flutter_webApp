@@ -10,6 +10,7 @@ import 'package:flutter_webapp/components/rounded_input_field.dart';
 import 'package:flutter_webapp/components/rounded_password_field.dart';
 import 'package:flutter_webapp/constants.dart';
 import 'package:flutter_webapp/patientList.dart';
+import 'package:flutter_webapp/patientview/patientHomeScreen.dart';
 import 'package:flutter_webapp/utente.dart';
 import 'package:http/http.dart' as http;
 import 'dart:math';
@@ -47,7 +48,7 @@ class Body extends StatelessWidget {
 
     print(" token " + token.toString());
     final http.Response response = await http.post(
-      'http://192.168.1.10:8183/login',
+      'http://127.0.0.1:8183/login',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -64,7 +65,18 @@ class Body extends StatelessWidget {
         context,
         MaterialPageRoute(
           builder: (context) {
-            return MyApp();
+            return MyHomePage(title: 'Patient List');
+          },
+        ),
+      );
+    }
+
+    if (user.role == 'PATIENT') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return PatientHomePage();
           },
         ),
       );
@@ -89,10 +101,10 @@ class Body extends StatelessWidget {
             SizedBox(
               height: size.height * 0.03,
             ),
-            SvgPicture.asset(
+            /*SvgPicture.asset(
               "assets/icons/login.svg",
               height: size.height * 0.35,
-            ),
+            ),*/
             SizedBox(
               height: size.height * 0.03,
             ),

@@ -26,7 +26,7 @@ class _ScheduleListPatient extends State<ScheduleListPatient> {
 
   Future<List<dynamic>> getData() async {
     var response = await http.get(
-        Uri.encodeFull("http://192.168.1.11:8183/STU3/Schedule?_id=" + "20"), //TODO
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/Schedule?_id=" + "20"), //TODO
         headers: {
           "Accept": "application/json"
         }
@@ -44,7 +44,7 @@ class _ScheduleListPatient extends State<ScheduleListPatient> {
       data.add({
         "title": list["entry"][i]["resource"]["serviceCategory"]["text"],
         "planning": "Planning at " + list["entry"][i]["resource"]["planningHorizon"]["start"],
-        "actor": "Doctor: " + list["entry"][i]["resource"]["actor"][0]["reference"].substring(0, list["entry"][i]["resource"]["actor"][0]["reference"].indexOf('/')+1),
+        "actor": "Doctor: " + list["entry"][i]["resource"]["actor"][0]["reference"].substring(0, list["entry"][i]["resource"]["actor"][0]["reference"].indexOf('/')),
         "active": "Confirmed: " + list["entry"][i]["resource"]["active"].toString()
       });
       i=i+1;
@@ -74,7 +74,6 @@ class _ScheduleListPatient extends State<ScheduleListPatient> {
             return Card(
               child: ListTile(
                 title: Text(data[index]["title"]),
-                trailing: Icon(Icons.arrow_forward_ios),
                 subtitle: Text(data[index]["planning"] + "\n" + data[index]["actor"] + "\n" + data[index]["active"],
                 )),
             );

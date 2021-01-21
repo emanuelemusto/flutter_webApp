@@ -69,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
     dynamic user = await FlutterSession().get("username");
     print("prova token client" + token.toString());
     var response = await http.get(
-        Uri.encodeFull("http://192.168.1.10:8183/STU3/Patient?family=" +
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/Patient?family=" +
             name +
             "&identifier=" +
             user.toString() +

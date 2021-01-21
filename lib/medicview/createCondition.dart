@@ -1,12 +1,14 @@
-import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter_webapp/patientList.dart';
 
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
+
+import '../patientdetails.dart';
 
 export 'createPatient.dart';
 
@@ -43,7 +45,7 @@ class _CreateCondition extends State<CreateCondition> {
 
   Future<http.Response> createDiagnosticReport() {
     return http.post(
-      'http://192.168.1.11:8183/addCondition',
+      'http://127.0.0.1:8183/addCondition',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -59,16 +61,18 @@ class _CreateCondition extends State<CreateCondition> {
   }
 
   Future<List<dynamic>> getData() async {
-
+    dynamic token = await FlutterSession().get("token");
+    dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-        Uri.encodeFull("http://192.168.1.11:8183/STU3/Patient?family=" + "c"), //TODO aspettando l'id del medico
-        headers: {
-          "Accept": "application/json"
-        }
-    );
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/Patient?family=" +
+            "c" +
+            "&identifier=" +
+            user.toString() +
+            "|" +
+            token.toString()),
+        headers: {"Accept": "application/json"});
 
     await Future.delayed(Duration(milliseconds: 15));
-
 
     list = json.decode(response.body);
     print(list["total"]);
@@ -77,29 +81,36 @@ class _CreateCondition extends State<CreateCondition> {
     var i = 0;
     while (i < list["total"]) {
       data.add(
-        list["entry"][i]["resource"]["name"][0]["family"] + " " + list["entry"][i]["resource"]["name"][0]["given"][0] + " " +  list["entry"][i]["resource"]["birthDate"],
+        list["entry"][i]["resource"]["name"][0]["family"] +
+            " " +
+            list["entry"][i]["resource"]["name"][0]["given"][0] +
+            " " +
+            list["entry"][i]["resource"]["birthDate"] +
+            " " +
+            list["entry"][i]["resource"]["id"],
       );
-      i=i+1;
+      i = i + 1;
     }
-
 
     setState(() {});
     return data;
   }
 
-  String equalsName(String value) {
+  var k;
 
+  String equalsName(String value) {
     String id;
     bool compare = false;
     var i = 0;
+
     while (i < data.length) {
       compare = data[i] == (value);
-      if(compare) {
+      if (compare) {
         id = list["entry"][i]["resource"]["id"];
+        k = i;
       }
-      i=i+1;
+      i = i + 1;
     }
-
 
     setState(() {});
     return id;
@@ -338,43 +349,33 @@ class _CreateCondition extends State<CreateCondition> {
             ),
 
             Container(
-              width: MediaQuery.of(context).size.width/1.2,
-              height: 45,
-              padding: EdgeInsets.only(
-                  top: 4,left: 16, right: 16, bottom: 4
-              ),
+              width: MediaQuery.of(context).size.width / 1.2,
+              height: 80,
+              padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
               decoration: BoxDecoration(
-                  border: Border.all(color: _validate6 ? Colors.red : Colors.white),
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(50)
-                  ),
+                  border:
+                  Border.all(color: _validate6 ? Colors.red : Colors.white),
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
                   color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 5
-                    )
-                  ]
-              ),
-              child: DropdownButton<String>(
-                hint:  Text("Patient"),
-                value: patientName,
-                underline: Container(
-                  height: 0,
-                  color: Colors.tealAccent,
-                ),
-                onChanged: (String newValue) {
-                  setState(() {
-                    patientId = equalsName(newValue);
-                    patientName = newValue;
-                  });
-                },
+                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)]),
+              child: SearchableDropdown.single(
                 items: data.map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
                   );
                 }).toList(),
+                value: patientName,
+                underline: SizedBox(),
+                hint: "Patient",
+                searchHint: "Search Patient",
+                onChanged: (value) {
+                  setState(() {
+                    patientName = value;
+                    patientId = equalsName(value);
+                  });
+                },
+                isExpanded: true,
               ),
             ),
             SizedBox(
@@ -415,16 +416,15 @@ class _CreateCondition extends State<CreateCondition> {
             InkWell(
               onTap: (){
                 setState(() {
-                  clinicalStatus.isEmpty ? _validate = true : _validate = false;
+                  clinicalStatus.isEmpty ? _validate3 = true : _validate3 = false;
                   name.text.isEmpty ? _validate2 = true : _validate2 = false;
-
                   dateController.text.isEmpty ? _validate4 = true : _validate4 = false;
                   verificationStatus.isEmpty ? _validate5 = true : _validate5 = false;
                   patientId == null ? _validate6 = true : _validate6 = false;
                   description.text.isEmpty ? _validate7 = true : _validate7 = false;
                 });
 
-                if(_validate & _validate2 & _validate3 & _validate4 & _validate5 & _validate6 & _validate7 & _validate8 & _validate9) {
+                if( _validate2 || _validate3 || _validate4 || _validate5 || _validate6 || _validate7 ) {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -459,7 +459,7 @@ class _CreateCondition extends State<CreateCondition> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => MyHomePage()), //TODO
+                                MaterialPageRoute(builder: (context) => ClinicalData(data: list["entry"][k]["resource"])),
                               );
                             },
                           ),

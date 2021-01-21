@@ -1,13 +1,14 @@
-import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter_webapp/medicview/uploadFile.dart';
-import 'package:flutter_webapp/patientList.dart';
 
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
+
+import '../patientdetails.dart';
 
 export 'createPatient.dart';
 
@@ -45,7 +46,7 @@ class _CreateDiagnosticReport extends State<CreateDiagnosticReport> {
 
   Future<http.Response> createDiagnosticReport() {
     return http.post(
-      'http://192.168.1.11:8183/addDiagnosticReport',
+      'http://127.0.0.1:8183/addDiagnosticReport',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -63,9 +64,15 @@ class _CreateDiagnosticReport extends State<CreateDiagnosticReport> {
   }
 
   Future<List<dynamic>> getData() async {
+    dynamic token = await FlutterSession().get("token");
+    dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-        Uri.encodeFull("http://192.168.1.11:8183/STU3/Patient?family=" +
-            "c"), //TODO aspettando l'id del medico
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/Patient?family=" +
+            "c" +
+            "&identifier=" +
+            user.toString() +
+            "|" +
+            token.toString()),
         headers: {"Accept": "application/json"});
 
     await Future.delayed(Duration(milliseconds: 15));
@@ -81,7 +88,9 @@ class _CreateDiagnosticReport extends State<CreateDiagnosticReport> {
             " " +
             list["entry"][i]["resource"]["name"][0]["given"][0] +
             " " +
-            list["entry"][i]["resource"]["birthDate"],
+            list["entry"][i]["resource"]["birthDate"] +
+            " " +
+            list["entry"][i]["resource"]["id"],
       );
       i = i + 1;
     }
@@ -90,14 +99,18 @@ class _CreateDiagnosticReport extends State<CreateDiagnosticReport> {
     return data;
   }
 
+  var k;
+
   String equalsName(String value) {
     String id;
     bool compare = false;
     var i = 0;
+
     while (i < data.length) {
       compare = data[i] == (value);
       if (compare) {
         id = list["entry"][i]["resource"]["id"];
+        k = i;
       }
       i = i + 1;
     }
@@ -285,7 +298,7 @@ class _CreateDiagnosticReport extends State<CreateDiagnosticReport> {
             ),
             Container(
               width: MediaQuery.of(context).size.width / 1.2,
-              height: 45,
+              height: 80,
               padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
               decoration: BoxDecoration(
                   border:
@@ -293,25 +306,24 @@ class _CreateDiagnosticReport extends State<CreateDiagnosticReport> {
                   borderRadius: BorderRadius.all(Radius.circular(50)),
                   color: Colors.white,
                   boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)]),
-              child: DropdownButton<String>(
-                hint: Text("Patient"),
-                value: patientName,
-                underline: Container(
-                  height: 0,
-                  color: Colors.tealAccent,
-                ),
-                onChanged: (String newValue) {
-                  setState(() {
-                    patientId = equalsName(newValue);
-                    patientName = newValue;
-                  });
-                },
+              child: SearchableDropdown.single(
                 items: data.map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
                   );
                 }).toList(),
+                value: patientName,
+                underline: SizedBox(),
+                hint: "Patient",
+                searchHint: "Search Patient",
+                onChanged: (value) {
+                  setState(() {
+                    patientName = value;
+                    patientId = equalsName(value);
+                  });
+                },
+                isExpanded: true,
               ),
             ),
             SizedBox(
@@ -383,9 +395,8 @@ class _CreateDiagnosticReport extends State<CreateDiagnosticReport> {
             InkWell(
               onTap: () {
                 setState(() {
-                  status.isEmpty ? _validate = true : _validate = false;
+                  status.isEmpty ? _validate3 = true : _validate3 = false;
                   name.text.isEmpty ? _validate2 = true : _validate2 = false;
-
                   dateController.text.isEmpty
                       ? _validate4 = true
                       : _validate4 = false;
@@ -398,14 +409,14 @@ class _CreateDiagnosticReport extends State<CreateDiagnosticReport> {
                   display.text.isEmpty ? _validate9 = true : _validate9 = false;
                 });
 
-                if (_validate &
-                    _validate2 &
-                    _validate3 &
-                    _validate4 &
-                    _validate5 &
-                    _validate6 &
-                    _validate7 &
-                    _validate8 &
+                if (_validate ||
+                    _validate2 ||
+                    _validate3 ||
+                    _validate4 ||
+                    _validate5 ||
+                    _validate6 ||
+                    _validate7 ||
+                    _validate8 ||
                     _validate9) {
                   showDialog(
                     context: context,
@@ -451,7 +462,8 @@ class _CreateDiagnosticReport extends State<CreateDiagnosticReport> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MyHomePage()), //TODO
+                                    builder: (context) => DiagnosticData(
+                                        data: list["entry"][k]["resource"])),
                               );
                             },
                           ),
