@@ -44,7 +44,7 @@ class _DoctorList extends State<DoctorList> {
   Future<List<dynamic>> getData(String name) async {
 
     var response = await http.get(
-        Uri.encodeFull("http://192.168.1.11:8183/STU3/Practitioner?family=" + name),
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/Practitioner?family=" + name),
         headers: {
           "Accept": "application/json"
         }
@@ -128,16 +128,7 @@ class _DoctorList extends State<DoctorList> {
         ),
       ),
       backgroundColor: Colors.white,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CreatePatient()), //TODO
-          );
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.teal,
-      ),
+
       appBar: new AppBar(
         elevation: 0.0,
         title: new Text(

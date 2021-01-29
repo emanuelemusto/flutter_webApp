@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
+import 'package:flutter_webapp/medicview/uploadFile.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
@@ -449,10 +450,10 @@ class _CreateDiagnosticReport extends State<CreateDiagnosticReport> {
                           new FlatButton(
                             child: new Text("Add Image"),
                             onPressed: () {
-                              /*  Navigator.push(
+                                Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => ImagePickerLabPage()),
-                                    ); */
+                                      MaterialPageRoute(builder: (context) => FileUploadApp(data: list["entry"][k]["resource"])),
+                                    );
                             },
                           ),
                           // usually buttons at the bottom of the dialog

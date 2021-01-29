@@ -9,6 +9,7 @@ class MedicationDetails extends StatelessWidget {
     "acc": Colors.tealAccent,
     "?": Color(0xFFC8B2BB)
   };
+  
   var IMAGE = {
     "medication": "https://th.bing.com/th/id/OIP.4F_lAFt40gwk4B3am7P0DwHaHa?pid=Api&rs=1"
   };
@@ -50,7 +51,7 @@ class MedicationDetails extends StatelessWidget {
                         height: 10.0,
                       ),
                       Text(
-                        data["text"]["div"].toString().substring(data["text"]["div"].toString().indexOf('@') + 1,  data["text"]["div"].toString().length - 6),
+                        data["text"]["div"].toString().substring(data["text"]["div"].toString().indexOf('@') + 1,  data["text"]["div"].toString().indexOf('#')),
                         style: TextStyle(
                           fontSize: 22.0,
                           color: Colors.white,
@@ -181,7 +182,17 @@ class MedicationDetails extends StatelessWidget {
 
                   ListTile(
                     leading: Icon(Icons.calendar_today_outlined),
-                    title: Text("Administration date end: " + data["text"]["div"].toString().substring(54, 64),
+                    title: Text("Administration date end: " + data["text"]["div"].toString().substring(56, 64),
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.grey.shade800,
+                      ),
+                    ),
+                  ),
+
+                  ListTile(
+                    leading: Icon(Icons.pending_actions),
+                    title: Text("Medical Note: " + data["text"]["div"].toString().substring(data["text"]["div"].toString().indexOf('#') + 1, data["text"]["div"].toString().length -  6),
                       style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.grey.shade800,

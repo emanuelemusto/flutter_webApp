@@ -231,16 +231,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       backgroundColor: Colors.white,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CreatePatient()), //TODO
-          );
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.teal,
-      ),
+
       appBar: new AppBar(
         elevation: 0.0,
         title: new Text(
@@ -331,14 +322,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       title: new Text(
-                        "Wealcome Medical X", //TODO add medical name
+                        "Wealcome Giuseppe", //TODO add medical name
                         style: new TextStyle(
                             color: Colors.white,
                             fontSize: 18.0,
                             letterSpacing: 2.0),
                       ),
                       subtitle: new Text(
-                        "Medical Role", //TODO add medical role
+                        "Medical Role: Dentist", //TODO add medical role
                         style: new TextStyle(
                             color: Colors.white,
                             fontSize: 10.0,

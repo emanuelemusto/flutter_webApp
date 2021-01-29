@@ -1,14 +1,29 @@
-import 'dart:math';
 import 'dart:async';
-import 'dart:convert';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter/foundation.dart';
+import 'dart:html' as html;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'medicview/createPatient.dart';
 
 // ignore: must_be_immutable
 class DiagnosticDetail extends StatelessWidget {
+  static var httpClient = new HttpClient();
+
+  Future<File> _downloadFile(String url, String filename) async {
+    var request = await httpClient.getUrl(Uri.parse(url));
+    var response = await request.close();
+    var bytes = await consolidateHttpClientResponseBytes(response);
+    String dir = (await getApplicationDocumentsDirectory()).path;
+    File file = new File('$dir/$filename');
+    await file.writeAsBytes(bytes);
+    return file;
+  }
+
+  void _downloadFileWeb(String url) {
+      html.window.open(url, 'download.jpg');
+  }
 
   var COLORS = {
     "teal": Colors.teal,
@@ -16,7 +31,8 @@ class DiagnosticDetail extends StatelessWidget {
     "?": Color(0xFFC8B2BB)
   };
   var IMAGE = {
-    "diagnosticReport": "https://www.enviedecrire.com/wp-content/uploads/2014/06/visu-diagnostic-carre.png"
+    "diagnosticReport":
+        "https://www.enviedecrire.com/wp-content/uploads/2014/06/visu-diagnostic-carre.png"
   };
 
   Map<String, dynamic> data;
@@ -27,17 +43,15 @@ class DiagnosticDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      body: Column(
+        body: SingleChildScrollView(
+      child: Column(
         children: <Widget>[
           Container(
               decoration: BoxDecoration(
                   gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [COLORS["teal"], COLORS["teal"]]
-                  )
-              ),
+                      colors: [COLORS["teal"], COLORS["teal"]])),
               child: Container(
                 width: double.infinity,
                 height: 350.0,
@@ -66,17 +80,18 @@ class DiagnosticDetail extends StatelessWidget {
                         height: 10.0,
                       ),
                       Card(
-                        margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 5.0),
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 5.0),
                         clipBehavior: Clip.antiAlias,
                         color: Colors.white,
                         elevation: 5.0,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 22.0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 22.0),
                           child: Row(
                             children: <Widget>[
                               Expanded(
                                 child: Column(
-
                                   children: <Widget>[
                                     Text(
                                       "Id",
@@ -101,7 +116,6 @@ class DiagnosticDetail extends StatelessWidget {
                               ),
                               Expanded(
                                 child: Column(
-
                                   children: <Widget>[
                                     Text(
                                       "status",
@@ -126,7 +140,6 @@ class DiagnosticDetail extends StatelessWidget {
                               ),
                               Expanded(
                                 child: Column(
-
                                   children: <Widget>[
                                     Text(
                                       "Resource Type",
@@ -156,56 +169,94 @@ class DiagnosticDetail extends StatelessWidget {
                     ],
                   ),
                 ),
-              )
-          ),
+              )),
           Container(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30.0,horizontal: 16.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 30.0, horizontal: 16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   ListTile(
                     leading: Icon(Icons.code_outlined),
-                    title: Text("Code: " + data["resource"]["category"]["coding"][0]["code"],
+                    title: Text(
+                      "Code: " +
+                          data["resource"]["category"]["coding"][0]["code"],
                       style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.grey.shade800,
                       ),
                     ),
                   ),
-
                   ListTile(
                     leading: Icon(Icons.drive_file_rename_outline),
-                    title: Text("Display: " + data["resource"]["category"]["coding"][0]["display"],
+                    title: Text(
+                      "Display: " +
+                          data["resource"]["category"]["coding"][0]["display"],
                       style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.grey.shade800,
                       ),
                     ),
                   ),
-
                   ListTile(
                     leading: Icon(Icons.sync_alt_sharp),
-                    title: Text("System: " + data["resource"]["category"]["coding"][0]["system"],
+                    title: Text(
+                      "System: " +
+                          data["resource"]["category"]["coding"][0]["system"],
                       style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.grey.shade800,
                       ),
                     ),
                   ),
-
                   ListTile(
                     leading: Icon(Icons.access_time_outlined),
-                    title: Text("Issued: " + data["resource"]["issued"] ,
+                    title: Text(
+                      "Issued: " +
+                          DateTime.parse(data["resource"]["issued"].toString())
+                              .toUtc()
+                              .toString()
+                              .substring(
+                                  0,
+                                  DateTime.parse(
+                                          data["resource"]["issued"].toString())
+                                      .toUtc()
+                                      .toString()
+                                      .indexOf(" ")),
                       style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.grey.shade800,
                       ),
                     ),
-                  )
-
-
+                  ),
+                  new ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: data["resource"]["image"] == null
+                          ? 0
+                          : data["resource"]["image"].length,
+                      itemBuilder: (BuildContext content, int index) {
+                        return GestureDetector(
+                            onTap: () {
+                              _downloadFileWeb(
+                                  "http://127.0.0.1:8183/loadFile?path=" +
+                                      data["resource"]["image"][index]["link"]
+                                          ["reference"]);
+                            },
+                            child: ListTile(
+                                leading: Icon(Icons.download_rounded),
+                                title: InkWell(
+                                  child: Text(
+                                    "Click for download image of report",
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      color: Colors.blue,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                )));
+                      })
                 ],
               ),
             ),
@@ -215,6 +266,6 @@ class DiagnosticDetail extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
   }
 }

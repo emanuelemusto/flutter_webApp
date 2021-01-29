@@ -9,14 +9,14 @@ import 'medicview/createPatient.dart';
 
 // ignore: must_be_immutable
 class ClinicalDetail extends StatelessWidget {
-
   var COLORS = {
     "teal": Colors.teal,
     "acc": Colors.tealAccent,
     "?": Color(0xFFC8B2BB)
   };
   var IMAGE = {
-    "clinicalReport": "https://www.seekpng.com/png/full/388-3880682_clinical-data-visualization-health-information-management-icon.png"
+    "clinicalReport":
+        "https://www.seekpng.com/png/full/388-3880682_clinical-data-visualization-health-information-management-icon.png"
   };
 
   Map<String, dynamic> data;
@@ -28,17 +28,15 @@ class ClinicalDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     print(data);
     return Scaffold(
-
-      body: Column(
-        children: <Widget>[
+        body: SingleChildScrollView(
+          child: Column(
+          children: <Widget>[
           Container(
               decoration: BoxDecoration(
                   gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [COLORS["teal"], COLORS["teal"]]
-                  )
-              ),
+                      colors: [COLORS["teal"], COLORS["teal"]])),
               child: Container(
                 width: double.infinity,
                 height: 350.0,
@@ -67,17 +65,18 @@ class ClinicalDetail extends StatelessWidget {
                         height: 10.0,
                       ),
                       Card(
-                        margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 5.0),
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 5.0),
                         clipBehavior: Clip.antiAlias,
                         color: Colors.white,
                         elevation: 5.0,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 22.0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 22.0),
                           child: Row(
                             children: <Widget>[
                               Expanded(
                                 child: Column(
-
                                   children: <Widget>[
                                     Text(
                                       "Id",
@@ -102,7 +101,6 @@ class ClinicalDetail extends StatelessWidget {
                               ),
                               Expanded(
                                 child: Column(
-
                                   children: <Widget>[
                                     Text(
                                       "Clinical Status",
@@ -127,7 +125,6 @@ class ClinicalDetail extends StatelessWidget {
                               ),
                               Expanded(
                                 child: Column(
-
                                   children: <Widget>[
                                     Text(
                                       "Resource Type",
@@ -157,47 +154,58 @@ class ClinicalDetail extends StatelessWidget {
                     ],
                   ),
                 ),
-              )
-          ),
+              )),
           Container(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30.0,horizontal: 16.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 30.0, horizontal: 16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   ListTile(
                     leading: Icon(Icons.code_outlined),
-                    title: Text("Verification Status: " + data["resource"]["verificationStatus"],
+                    title: Text(
+                      "Verification Status: " +
+                          data["resource"]["verificationStatus"],
                       style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.grey.shade800,
                       ),
                     ),
                   ),
-
-
                   ListTile(
                     leading: Icon(Icons.description),
-                    title: Text("Description: " + data["resource"]["note"][0]["text"] ,
+                    title: Text(
+                      "Description: " + data["resource"]["note"][0]["text"],
                       style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.grey.shade800,
                       ),
                     ),
                   ),
-
                   ListTile(
                     leading: Icon(Icons.access_time_outlined),
-                    title: Text("Issued: " + data["resource"]["note"][0]["time"],
+                    title: Text(
+                      "Issued: " +
+                          DateTime.parse(data["resource"]["note"][0]["time"]
+                                  .toString())
+                              .toUtc()
+                              .toString()
+                              .substring(
+                                  0,
+                                  DateTime.parse(data["resource"]["note"][0]
+                                              ["time"]
+                                          .toString())
+                                      .toUtc()
+                                      .toString()
+                                      .indexOf(" ")),
                       style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.grey.shade800,
                       ),
                     ),
                   )
-
-
                 ],
               ),
             ),
@@ -207,20 +215,20 @@ class ClinicalDetail extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
   }
 }
 
 // ignore: must_be_immutable
 class AllergyDetail extends StatelessWidget {
-
   var COLORS = {
     "teal": Colors.teal,
     "acc": Colors.tealAccent,
     "?": Color(0xFFC8B2BB)
   };
   var IMAGE = {
-    "clinicalReport": "https://www.seekpng.com/png/full/388-3880682_clinical-data-visualization-health-information-management-icon.png"
+    "clinicalReport":
+        "https://www.seekpng.com/png/full/388-3880682_clinical-data-visualization-health-information-management-icon.png"
   };
 
   Map<String, dynamic> data;
@@ -231,17 +239,15 @@ class AllergyDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      body: Column(
+        body: SingleChildScrollView(
+      child: Column(
         children: <Widget>[
           Container(
               decoration: BoxDecoration(
                   gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [COLORS["teal"], COLORS["teal"]]
-                  )
-              ),
+                      colors: [COLORS["teal"], COLORS["teal"]])),
               child: Container(
                 width: double.infinity,
                 height: 350.0,
@@ -270,17 +276,18 @@ class AllergyDetail extends StatelessWidget {
                         height: 10.0,
                       ),
                       Card(
-                        margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 5.0),
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 5.0),
                         clipBehavior: Clip.antiAlias,
                         color: Colors.white,
                         elevation: 5.0,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 22.0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 22.0),
                           child: Row(
                             children: <Widget>[
                               Expanded(
                                 child: Column(
-
                                   children: <Widget>[
                                     Text(
                                       "Id",
@@ -305,7 +312,6 @@ class AllergyDetail extends StatelessWidget {
                               ),
                               Expanded(
                                 child: Column(
-
                                   children: <Widget>[
                                     Text(
                                       "Clinical Status",
@@ -330,7 +336,6 @@ class AllergyDetail extends StatelessWidget {
                               ),
                               Expanded(
                                 child: Column(
-
                                   children: <Widget>[
                                     Text(
                                       "Resource Type",
@@ -360,67 +365,88 @@ class AllergyDetail extends StatelessWidget {
                     ],
                   ),
                 ),
-              )
-          ),
+              )),
           Container(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30.0,horizontal: 16.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 30.0, horizontal: 16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   ListTile(
                     leading: Icon(Icons.code_outlined),
-                    title: Text("Verification Status: " + data["resource"]["verificationStatus"],
+                    title: Text(
+                      "Verification Status: " +
+                          data["resource"]["verificationStatus"],
                       style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.grey.shade800,
                       ),
                     ),
                   ),
-
-
                   ListTile(
                     leading: Icon(Icons.description),
-                    title: Text("Type: " + data["resource"]["type"] ,
+                    title: Text(
+                      "Type: " + data["resource"]["type"],
                       style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.grey.shade800,
                       ),
                     ),
                   ),
-
                   ListTile(
                     leading: Icon(Icons.description),
-                    title: Text("Type: " + data["resource"]["category"][0] ,
+                    title: Text(
+                      "Type: " + data["resource"]["category"][0],
                       style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.grey.shade800,
                       ),
                     ),
                   ),
-
                   ListTile(
                     leading: Icon(Icons.access_time_outlined),
-                    title: Text("Issuded: " + data["resource"]["note"][0]["time"],
+                    title: Text(
+                      "Issuded: " +
+                          DateTime.parse(data["resource"]["note"][0]["time"]
+                                  .toString())
+                              .toUtc()
+                              .toString()
+                              .substring(
+                                  0,
+                                  DateTime.parse(data["resource"]["note"][0]
+                                              ["time"]
+                                          .toString())
+                                      .toUtc()
+                                      .toString()
+                                      .indexOf(" ")),
                       style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.grey.shade800,
                       ),
                     ),
                   ),
-
                   ListTile(
                     leading: Icon(Icons.access_time_outlined),
-                    title: Text("Last Occurrence: " + data["resource"]["lastOccurrence"],
+                    title: Text(
+                      "Last Occurrence: " + DateTime.parse(data["resource"]["lastOccurrence"]
+                          .toString())
+                          .toUtc()
+                          .toString()
+                          .substring(
+                          0,
+                          DateTime.parse(data["resource"]["lastOccurrence"]
+                              .toString())
+                              .toUtc()
+                              .toString()
+                              .indexOf(" ")),
                       style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.grey.shade800,
                       ),
                     ),
                   ),
-
-
                 ],
               ),
             ),
@@ -430,6 +456,6 @@ class AllergyDetail extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
   }
 }

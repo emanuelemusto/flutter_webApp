@@ -64,7 +64,7 @@ class _CreateSchedule extends State<CreateSchedule> {
         'serviceCategory': serviceCategory.text,
         'serviceType': serviceType.text,
         'patientId': patientId,
-        'practitionerId': practitionerId,
+        'practitionerId': "40", //practitionerId,
         'planning': dateController.text + " " + timeController.text,
         'active': active
       }),
