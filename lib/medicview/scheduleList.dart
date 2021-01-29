@@ -23,7 +23,7 @@ class _ScheduleListDoctor extends State<ScheduleListDoctor> {
 
   Future<List<dynamic>> getData() async {
     var response = await http.get(
-        Uri.encodeFull("http://192.168.1.11:8183/STU3/Schedule?actor=" + "40"),
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/Schedule?actor=" + "40"),
         headers: {"Accept": "application/json"});
 
     list = json.decode(response.body);
@@ -39,7 +39,7 @@ class _ScheduleListDoctor extends State<ScheduleListDoctor> {
         "actor": "Patient: " +
             list["entry"][i]["resource"]["actor"][0]["reference"].substring(
                 list["entry"][i]["resource"]["actor"][0]["reference"]
-                    .indexOf('/')),
+                    .indexOf('/') + 1),
         "active":
             "Confirmed: " + list["entry"][i]["resource"]["active"].toString()
       });

@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_webapp/patientview/createSchedule.dart';
+import 'package:flutter_webapp/patientview/createScheduleDate.dart';
 import 'package:http/http.dart' as http;
 import 'diagnosticDetail.dart';
 import 'clinicalDetail.dart';
@@ -254,7 +255,7 @@ class DoctorDetails extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => CreateSchedule(practitioner: data)),
+                        MaterialPageRoute(builder: (context) => CreateScheduleDate(practitioner: data)),
                       );
                     },
                     color: COLORS[data["gender"]],

@@ -12,22 +12,24 @@ import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:time_picker_widget/time_picker_widget.dart';
 
 class CreateSchedule extends StatefulWidget {
   Map<String, dynamic> practitioner;
+  DateTime now;
 
   // receive data from the FirstScreen as a parameter
-  CreateSchedule({Key key, @required this.practitioner}) : super(key: key);
+  CreateSchedule({Key key, @required this.practitioner, @required this.now}) : super(key: key);
 
   @override
-  _CreateSchedule createState() => _CreateSchedule(this.practitioner);
+  _CreateSchedule createState() => _CreateSchedule(this.practitioner, this.now);
 }
 
 class _CreateSchedule extends State<CreateSchedule> {
   Map<String, dynamic> practitioner;
 
-  _CreateSchedule(this.practitioner);
+  _CreateSchedule(this.practitioner, this.now);
 
   TextEditingController serviceType = TextEditingController();
   TextEditingController serviceCategory = TextEditingController();
@@ -70,11 +72,12 @@ class _CreateSchedule extends State<CreateSchedule> {
         'serviceType': serviceType.text,
         'patientId': "20", //TODO
         'practitionerId': practitioner["id"],
-        'planning': dateController.text,
+        'planning': dateController.toString(),
         'active': "Disabled"
       }),
     );
   }
+  DateTime now;
 
   Future<List<dynamic>> getData2() async {
     var response = await http.get(
@@ -84,23 +87,16 @@ class _CreateSchedule extends State<CreateSchedule> {
     await Future.delayed(Duration(milliseconds: 15));
 
     list2 = json.decode(response.body);
-    print(list2["total"]);
-    var sunday = 7;
-    var now = new DateTime.now();
+    print("coso ciao" + now.toString());
 
-    while (now.weekday != sunday) {
-      now = now.subtract(new Duration(days: 1));
-    }
 
-    var time = new DateTime(now.year, now.month, now.day + 8, 9, 0, 0, 0, 0);
+    var time = new DateTime(now.year, now.month, now.day, 9, 0, 0, 0, 0);
 
-    for (int i = 0; i < 6; i++) {
+
       for (int j = 0; j < 18; j++) {
         date2.add(time.toString());
         time = time.add(new Duration(minutes: 30));
       }
-      time = time.add(new Duration(hours: 15));
-    }
 
     print('Recent sunday $time');
 
@@ -124,6 +120,7 @@ class _CreateSchedule extends State<CreateSchedule> {
     setState(() {});
     return date2;
   }
+
 
   String equalsName(String value) {
     String id;
@@ -248,11 +245,12 @@ class _CreateSchedule extends State<CreateSchedule> {
                   SizedBox(
                     height: 5,
                   ),
+
                   Container(
                     width: MediaQuery.of(context).size.width / 1.2,
                     height: 80,
                     padding:
-                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
                         border: Border.all(
                             color: _validate3 ? Colors.red : Colors.white),
@@ -263,7 +261,7 @@ class _CreateSchedule extends State<CreateSchedule> {
                         ]),
                     child: SearchableDropdown.single(
                       items:
-                          date2.map<DropdownMenuItem<String>>((String value) {
+                      date2.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
@@ -296,7 +294,7 @@ class _CreateSchedule extends State<CreateSchedule> {
                         serviceType.text.isEmpty
                             ? _validate2 = true
                             : _validate2 = false;
-                        dateController.text == null
+                        dateController == null
                             ? _validate3 = true
                             : _validate3 = false;
                       });

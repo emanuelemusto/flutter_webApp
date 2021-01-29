@@ -352,7 +352,16 @@ class _DiagnosticData extends State<DiagnosticData> {
     while (i < list["total"]) {
       data2.add({
         "title": list["entry"][i]["resource"]["category"]["text"],
-        "issued": list["entry"][i]["resource"]["issued"]
+        "issued": DateTime.parse(list["entry"][i]["resource"]["issued"].toString())
+          .toUtc()
+          .toString()
+          .substring(
+      0,
+      DateTime.parse(
+      list["entry"][i]["resource"]["issued"].toString())
+          .toUtc()
+          .toString()
+          .indexOf(" "))
       });
       i = i + 1;
     }
@@ -670,8 +679,19 @@ class _ClinicalData extends State<ClinicalData> {
     while (i < list1["total"]) {
       data2.add({
         "title": list1["entry"][i]["resource"]["code"]["text"],
-        "issued": list1["entry"][i]["resource"]["note"][0]["time"],
-        "type": 1,
+
+        "issued": DateTime.parse(list1["entry"][i]["resource"]["note"][0]["time"].toString())
+          .toUtc()
+          .toString()
+          .substring(
+      0,
+      DateTime.parse(
+      list1["entry"][i]["resource"]["note"][0]["time"].toString())
+          .toUtc()
+          .toString()
+          .indexOf(" ")),
+        "type" : 1,
+
       });
       i = i + 1;
     }
@@ -694,8 +714,18 @@ class _ClinicalData extends State<ClinicalData> {
     while (i < list2["total"]) {
       data3.add({
         "title": list2["entry"][i]["resource"]["code"]["text"],
-        "issued": list2["entry"][i]["resource"]["note"][0]["time"],
-        "type": 2,
+        "issued": DateTime.parse(list2["entry"][i]["resource"]["note"][0]["time"].toString())
+          .toUtc()
+          .toString()
+          .substring(
+      0,
+      DateTime.parse(
+          list2["entry"][i]["resource"]["note"][0]["time"].toString())
+          .toUtc()
+          .toString()
+          .indexOf(" ")),
+        "type" : 2,
+
       });
       i = i + 1;
     }

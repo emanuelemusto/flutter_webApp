@@ -27,6 +27,7 @@ class _CreateMedication extends State<CreateMedication> {
   TextEditingController amount = TextEditingController();
   String patientId;
   String practitionerId;
+  TextEditingController noteController = TextEditingController();
 
   final format = DateFormat("dd/MM/yyyy");
   bool _validate = false;
@@ -36,6 +37,7 @@ class _CreateMedication extends State<CreateMedication> {
   bool _validate5 = false;
   bool _validate6 = false;
   bool _validate7 = false;
+  bool _validate8 = false;
 
   Future<http.Response> createMedication() {
     return http.post(
@@ -48,20 +50,25 @@ class _CreateMedication extends State<CreateMedication> {
             .toString()
             .substring(
                 list2["entry"][int.parse(code.text)]["resource"]["text"]["div"]
-                    .toString()
-                    .indexOf('@') + 1,
+                        .toString()
+                        .indexOf('@') +
+                    1,
                 list2["entry"][int.parse(code.text)]["resource"]["text"]["div"]
                         .toString()
-                        .length - 6),
+                        .length -
+                    6),
         'code': list2["entry"][int.parse(code.text)]["resource"]["code"]["text"]
             .toString(),
         'form': list2["entry"][int.parse(code.text)]["resource"]["form"]["text"]
             .toString(),
-        'manufacturer' : list2["entry"][int.parse(code.text)]["resource"]["manufacturer"]["display"].toString(),
+        'manufacturer': list2["entry"][int.parse(code.text)]["resource"]
+                ["manufacturer"]["display"]
+            .toString(),
         'dateStart': dateStart.text,
         'dateEnd': dateEnd.text,
         'patientId': patientId,
-        'amount': " "
+        'amount': " ",
+        'note' : noteController.text
       }),
     );
   }
@@ -128,7 +135,9 @@ class _CreateMedication extends State<CreateMedication> {
                       .indexOf('@') +
                   1,
               list2["entry"][i]["resource"]["text"]["div"].toString().length -
-                  6));
+                  6) +
+          " " +
+          list2["entry"][i]["resource"]["form"]["text"].toString());
     }
     return data2;
   }
@@ -391,6 +400,32 @@ class _CreateMedication extends State<CreateMedication> {
                           SizedBox(
                             height: 5,
                           ),
+                          Container(
+                            width: MediaQuery.of(context).size.width / 1.2,
+                            height: 45,
+                            padding: EdgeInsets.only(
+                                top: 4, left: 16, right: 16, bottom: 4),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color:
+                                        _validate8 ? Colors.red : Colors.white),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(50)),
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.black12, blurRadius: 5)
+                                ]),
+                            child: TextField(
+                              controller: noteController,
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Medical note'),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
                           SizedBox(
                             height: 5,
                           ),
@@ -402,31 +437,35 @@ class _CreateMedication extends State<CreateMedication> {
                                     : _validate = false;
                                 name.text.isEmpty
                                     ? _validate2 = true
-                                    : _validate = false;
+                                    : _validate2 = false;
                                 form == null
                                     ? _validate3 = true
-                                    : _validate = false;
+                                    : _validate3 = false;
                                 dateStart.text.isEmpty
                                     ? _validate4 = true
-                                    : _validate = false;
+                                    : _validate4 = false;
                                 dateEnd.text.isEmpty
                                     ? _validate5 = true
-                                    : _validate = false;
+                                    : _validate5 = false;
                                 patientName == null
                                     ? _validate6 = true
-                                    : _validate = false;
+                                    : _validate6 = false;
                                 amount.text.isEmpty
                                     ? _validate7 = true
-                                    : _validate = false;
+                                    : _validate7 = false;
+                                noteController.text.isEmpty
+                                    ? _validate8 = true
+                                    : _validate8 = false;
                               });
 
-                              if (_validate &
-                                  _validate2 &
-                                  _validate3 &
-                                  _validate4 &
-                                  _validate5 &
-                                  _validate6 &
-                                  _validate7) {
+                              if (_validate ||
+                                  _validate2 ||
+                                  _validate3 ||
+                                  _validate4 ||
+                                  _validate5 ||
+                                  _validate6 ||
+                                  _validate7 ||
+                                  _validate8) {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
@@ -463,7 +502,11 @@ class _CreateMedication extends State<CreateMedication> {
                                           onPressed: () {
                                             Navigator.push(
                                               context,
-                                              MaterialPageRoute(builder: (context) => MedicationList(data: list["entry"][k]["resource"])),
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MedicationList(
+                                                          data: list["entry"][k]
+                                                              ["resource"])),
                                             );
                                           },
                                         ),
@@ -508,7 +551,7 @@ class _CreateMedication extends State<CreateMedication> {
               ),
             );
           } else {
-            return CircularProgressIndicator();
+            return Scaffold(body: Center(child: CircularProgressIndicator()));
           }
         });
   }

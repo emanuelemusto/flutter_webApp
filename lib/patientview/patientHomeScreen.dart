@@ -37,7 +37,7 @@ class _PatientHomePage extends State<PatientHomePage> {
 
   Future<Map<String, dynamic>> getData() async {
     var response = await http.get(
-        Uri.encodeFull("http://192.168.1.11:8183/STU3/Patient/" + "20"), //TODO id
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/Patient/" + "20"), //TODO id
         headers: {
           "Accept": "application/json"
         }
@@ -418,7 +418,7 @@ class _DiagnosticData extends State<DiagnosticData> {
 
 
     var response = await http.get(
-        Uri.encodeFull("http://192.168.1.11:8183/STU3/DiagnosticReport?_id=" + data["id"]),
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/DiagnosticReport?_id=" + data["id"]),
         headers: {
           "Accept": "application/json"
         }
@@ -434,7 +434,7 @@ class _DiagnosticData extends State<DiagnosticData> {
     while (i < list["total"]) {
       data2.add({
         "title": list["entry"][i]["resource"]["category"]["text"],
-        "issued": list["entry"][i]["resource"]["issued"]
+        "issued": DateTime.parse(list["entry"][i]["resource"]["issued"].toString()).toUtc().toString().substring(0, DateTime.parse(list["entry"][i]["resource"]["issued"].toString()).toUtc().toString().indexOf(" ")),
       });
       i=i+1;
     }
@@ -734,7 +734,7 @@ class _ClinicalData extends State<ClinicalData> {
 
 
     var response = await http.get(
-        Uri.encodeFull("http://192.168.1.11:8183/STU3/AllergyIntolerance?_id=" + data["id"]),
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/AllergyIntolerance?_id=" + data["id"]),
         headers: {
           "Accept": "application/json"
         }
@@ -750,7 +750,7 @@ class _ClinicalData extends State<ClinicalData> {
     while (i < list1["total"]) {
       data2.add({
         "title": list1["entry"][i]["resource"]["code"]["text"],
-        "issued": list1["entry"][i]["resource"]["note"][0]["time"],
+        "issued": DateTime.parse(list1["entry"][i]["resource"]["note"][0]["time"].toString()).toUtc().toString().substring(0, DateTime.parse(list1["entry"][i]["resource"]["note"][0]["time"].toString()).toUtc().toString().indexOf(" ")),
         "type" : 1,
       });
       i=i+1;
@@ -765,7 +765,7 @@ class _ClinicalData extends State<ClinicalData> {
 
 
     var response = await http.get(
-        Uri.encodeFull("http://192.168.1.11:8183/STU3/Condition?_id=" + data["id"]),
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/Condition?_id=" + data["id"]),
         headers: {
           "Accept": "application/json"
         }
@@ -778,7 +778,7 @@ class _ClinicalData extends State<ClinicalData> {
     while (i < list2["total"]) {
       data3.add({
         "title": list2["entry"][i]["resource"]["code"]["text"],
-        "issued": list2["entry"][i]["resource"]["note"][0]["time"],
+        "issued": DateTime.parse(list2["entry"][i]["resource"]["note"][0]["time"].toString()).toUtc().toString().substring(0, DateTime.parse(list2["entry"][i]["resource"]["note"][0]["time"].toString()).toUtc().toString().indexOf(" ")),
         "type" : 2,
       });
       i=i+1;
@@ -1086,7 +1086,7 @@ class _MedicationList extends State<MedicationList> {
   Future<List<dynamic>> getData() async {
     var response = await http.get(
         Uri.encodeFull(
-            "http://192.168.1.11:8183/STU3/Medication?_id=" + data["id"]),
+            "http://127.0.0.1:8183/STU3/Medication?_id=" + data["id"]),
         headers: {
           "Accept": "application/json"
         }
@@ -1262,7 +1262,7 @@ class _MedicationList extends State<MedicationList> {
                         itemBuilder: (BuildContext content, int index) {
                           return ListTile(
                             leading: Icon(Icons.local_hospital),
-                            title: Text(data2[index]["title"].toString().substring(64, data2[index]["title"].toString().length - 6)),
+                            title: Text(data2[index]["title"].toString().substring(data2[index]["title"].toString().indexOf('@') + 1, data2[index]["title"].toString().indexOf('#'))),
                             subtitle: Text(data2[index]["title"].toString().substring(42, 64)),
                             trailing: Icon(Icons.arrow_forward_ios),
                             onTap: () {
