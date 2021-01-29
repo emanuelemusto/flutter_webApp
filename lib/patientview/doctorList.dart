@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
 import 'package:flutter_webapp/doctorDetails.dart';
 import 'package:flutter_webapp/medicview/createSchedule.dart';
 import 'package:flutter_webapp/patientview/patientHomeScreen.dart';
@@ -42,9 +43,14 @@ class _DoctorList extends State<DoctorList> {
   Map<String, dynamic> list;
 
   Future<List<dynamic>> getData(String name) async {
-
+    dynamic token = await FlutterSession().get("token");
+    dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-        Uri.encodeFull("http://127.0.0.1:8183/STU3/Practitioner?family=" + name),
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/Practitioner?family=" + name+
+            "&identifier=" +
+            user.toString() +
+            "|" +
+            token.toString()),
         headers: {
           "Accept": "application/json"
         }

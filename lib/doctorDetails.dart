@@ -236,6 +236,22 @@ class DoctorDetails extends StatelessWidget {
                           );
                         }
                     ),
+                    new ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: data["language"] == null ? 0 : 1,
+                        itemBuilder: (BuildContext content, int index) {
+                          return ListTile(
+                              leading: Icon(Icons.credit_card_rounded),
+                              title: InkWell(
+                                child: Text(
+                                  "Codice Fiscale:" + data["language"],
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    color: Colors.grey.shade800,
+                                  ),
+                                ),
+                              ));
+                        })
 
                   ],
                 ),

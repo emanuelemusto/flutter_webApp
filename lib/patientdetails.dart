@@ -219,6 +219,22 @@ class PatientDetails extends StatelessWidget {
                             ),
                           );
                         }),
+                    new ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: data["language"] == null ? 0 : 1,
+                        itemBuilder: (BuildContext content, int index) {
+                          return ListTile(
+                              leading: Icon(Icons.credit_card_rounded),
+                              title: InkWell(
+                                child: Text(
+                                  "Codice Fiscale:" + data["language"],
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    color: Colors.grey.shade800,
+                                  ),
+                                ),
+                              ));
+                        })
                   ],
                 ),
               ),
@@ -336,13 +352,16 @@ class _DiagnosticData extends State<DiagnosticData> {
   _DiagnosticData({Key key, @required this.data});
 
   Future<List<dynamic>> getData() async {
+    dynamic token = await FlutterSession().get("token");
+    dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-        Uri.encodeFull("http://127.0.0.1:8183/STU3/DiagnosticReport?_id=" + data["id"]),
-        headers: {
-          "Accept": "application/json"
-        }
-    );
-
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/DiagnosticReport?_id=" +
+            data["id"] +
+            "&identifier=" +
+            user.toString() +
+            "|" +
+            token.toString()),
+        headers: {"Accept": "application/json"});
 
     list = json.decode(response.body);
     print(list["entry"][0]["resource"]["category"]["text"]);
@@ -352,16 +371,17 @@ class _DiagnosticData extends State<DiagnosticData> {
     while (i < list["total"]) {
       data2.add({
         "title": list["entry"][i]["resource"]["category"]["text"],
-        "issued": DateTime.parse(list["entry"][i]["resource"]["issued"].toString())
-          .toUtc()
-          .toString()
-          .substring(
-      0,
-      DateTime.parse(
-      list["entry"][i]["resource"]["issued"].toString())
-          .toUtc()
-          .toString()
-          .indexOf(" "))
+        "issued":
+            DateTime.parse(list["entry"][i]["resource"]["issued"].toString())
+                .toUtc()
+                .toString()
+                .substring(
+                    0,
+                    DateTime.parse(
+                            list["entry"][i]["resource"]["issued"].toString())
+                        .toUtc()
+                        .toString()
+                        .indexOf(" "))
       });
       i = i + 1;
     }
@@ -679,19 +699,18 @@ class _ClinicalData extends State<ClinicalData> {
     while (i < list1["total"]) {
       data2.add({
         "title": list1["entry"][i]["resource"]["code"]["text"],
-
-        "issued": DateTime.parse(list1["entry"][i]["resource"]["note"][0]["time"].toString())
-          .toUtc()
-          .toString()
-          .substring(
-      0,
-      DateTime.parse(
-      list1["entry"][i]["resource"]["note"][0]["time"].toString())
-          .toUtc()
-          .toString()
-          .indexOf(" ")),
-        "type" : 1,
-
+        "issued": DateTime.parse(
+                list1["entry"][i]["resource"]["note"][0]["time"].toString())
+            .toUtc()
+            .toString()
+            .substring(
+                0,
+                DateTime.parse(list1["entry"][i]["resource"]["note"][0]["time"]
+                        .toString())
+                    .toUtc()
+                    .toString()
+                    .indexOf(" ")),
+        "type": 1,
       });
       i = i + 1;
     }
@@ -701,10 +720,15 @@ class _ClinicalData extends State<ClinicalData> {
   }
 
   Future<List<dynamic>> getData2() async {
+    dynamic token = await FlutterSession().get("token");
+    dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-
-        Uri.encodeFull(
-            "http://127.0.0.1:8183/STU3/Condition?_id=" + data["id"]),
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/Condition?_id=" +
+            data["id"] +
+            "&identifier=" +
+            user.toString() +
+            "|" +
+            token.toString()),
         headers: {"Accept": "application/json"});
 
     list2 = json.decode(response.body);
@@ -714,18 +738,18 @@ class _ClinicalData extends State<ClinicalData> {
     while (i < list2["total"]) {
       data3.add({
         "title": list2["entry"][i]["resource"]["code"]["text"],
-        "issued": DateTime.parse(list2["entry"][i]["resource"]["note"][0]["time"].toString())
-          .toUtc()
-          .toString()
-          .substring(
-      0,
-      DateTime.parse(
-          list2["entry"][i]["resource"]["note"][0]["time"].toString())
-          .toUtc()
-          .toString()
-          .indexOf(" ")),
-        "type" : 2,
-
+        "issued": DateTime.parse(
+                list2["entry"][i]["resource"]["note"][0]["time"].toString())
+            .toUtc()
+            .toString()
+            .substring(
+                0,
+                DateTime.parse(list2["entry"][i]["resource"]["note"][0]["time"]
+                        .toString())
+                    .toUtc()
+                    .toString()
+                    .indexOf(" ")),
+        "type": 2,
       });
       i = i + 1;
     }
@@ -1035,13 +1059,16 @@ class _MedicationList extends State<MedicationList> {
   _MedicationList({Key key, @required this.data});
 
   Future<List<dynamic>> getData() async {
+    dynamic token = await FlutterSession().get("token");
+    dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-        Uri.encodeFull(
-            "http://127.0.0.1:8183/STU3/Medication?_id=" + data["id"]),
-        headers: {
-          "Accept": "application/json"
-        }
-    );
+        Uri.encodeFull("http://127.0.0.1:8183/STU3/Medication?_id=" +
+            data["id"] +
+            "&identifier=" +
+            user.toString() +
+            "|" +
+            token.toString()),
+        headers: {"Accept": "application/json"});
     list = json.decode(response.body);
 
     data2.clear();
@@ -1205,10 +1232,18 @@ class _MedicationList extends State<MedicationList> {
                         itemBuilder: (BuildContext content, int index) {
                           return ListTile(
                             leading: Icon(Icons.local_hospital),
-
-                            title: Text(data2[index]["title"].toString().substring(data2[index]["title"].toString().indexOf('@') + 1, data2[index]["title"].toString().length - 6)),
-                            subtitle: Text(data2[index]["title"].toString().substring(42, 64)),
-
+                            title: Text(data2[index]["title"]
+                                .toString()
+                                .substring(
+                                    data2[index]["title"]
+                                            .toString()
+                                            .indexOf('@') +
+                                        1,
+                                    data2[index]["title"].toString().length -
+                                        6)),
+                            subtitle: Text(data2[index]["title"]
+                                .toString()
+                                .substring(42, 64)),
                             trailing: Icon(Icons.arrow_forward_ios),
                             onTap: () {
                               Navigator.push(

@@ -246,32 +246,12 @@ class _CreateScheduleDate extends State<CreateScheduleDate> {
                           },
                         );
                       } else {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            // return object of type Dialog
-                            return AlertDialog(
-                              title: new Text("Form Success"),
-                              content:
-                                  new Text("Day selected"),
-                              actions: <Widget>[
-                                // usually buttons at the bottom of the dialog
-                                new FlatButton(
-                                  child: new Text("Continue"),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              CreateSchedule(practitioner: practitioner , now: _selectedDate)),
-                                    );
-                                  },
-                                ),
-                              ],
-                            );
-                          },
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  CreateSchedule(practitioner: practitioner , now: _selectedDate)),
                         );
-
                       }
                     },
                     child: Container(
