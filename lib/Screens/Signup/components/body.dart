@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_webapp/Screens/Login/login_screen.dart';
 import 'package:flutter_webapp/Screens/Signup/components/background.dart';
 import 'package:flutter_webapp/Screens/Signup/registratePatient.dart';
+import 'package:flutter_webapp/Screens/Signup/registratePractitioner.dart';
 import 'package:flutter_webapp/components/already_have_an_account_acheck.dart';
 import 'package:flutter_webapp/components/rounded_button.dart';
 import 'package:flutter_webapp/components/rounded_input_field.dart';
@@ -45,7 +46,7 @@ class _BodyState extends State<Body> {
       print(ruolo);
 
       final http.Response response = await http.post(
-        'http://192.168.1.9:8183/registrazione',
+        'http://192.168.1.10:8183/registrazione',
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -73,7 +74,9 @@ class _BodyState extends State<Body> {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return LoginScreen();
+              return SignupPractitionerPage(
+                user: nameController.text,
+              );
             },
           ),
         );
