@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
+import '../constants.dart';
 import '../patientdetails.dart';
 
 export 'createPatient.dart';
@@ -41,7 +42,7 @@ class _CreateMedication extends State<CreateMedication> {
 
   Future<http.Response> createMedication() {
     return http.post(
-      'http://127.0.0.1:8183/addMedication',
+      urlServer + '/addMedication',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -85,7 +86,7 @@ class _CreateMedication extends State<CreateMedication> {
     dynamic token = await FlutterSession().get("token");
     dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-        Uri.encodeFull("http://127.0.0.1:8183/STU3/Patient?family=" +
+        Uri.encodeFull(urlServer + "/STU3/Patient?family=" +
             "c" +
             "&identifier=" +
             user.toString() +
@@ -119,7 +120,7 @@ class _CreateMedication extends State<CreateMedication> {
 
   Future<List<dynamic>> getMedicationApproved() async {
     var response = await http.get(
-        Uri.encodeFull("http://127.0.0.1:8183/STU3/Medication?status=true"),
+        Uri.encodeFull(urlServer + "/STU3/Medication?status=true"),
         headers: {"Accept": "application/json"});
 
     list2 = json.decode(response.body);

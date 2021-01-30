@@ -46,7 +46,7 @@ class _BodyState extends State<Body> {
       print(ruolo);
 
       final http.Response response = await http.post(
-        'http://192.168.1.10:8183/registrazione',
+        urlServer + '/registrazione',
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

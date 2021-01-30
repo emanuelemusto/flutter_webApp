@@ -1,18 +1,15 @@
-import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:flutter_webapp/medicview/scheduleList.dart';
-import 'package:flutter_webapp/patientList.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
+import '../constants.dart';
 import '../patientdetails.dart';
 
 export 'createPatient.dart';
@@ -30,7 +27,7 @@ class _CreateSchedule extends State<CreateSchedule> {
   TextEditingController timeController = TextEditingController();
   TimeOfDay timeedit;
   String active;
-  String practitionerId; //TODO
+  String practitionerId;
   String patientName;
 
   List<String> data = new List<String>();
@@ -43,6 +40,9 @@ class _CreateSchedule extends State<CreateSchedule> {
 
   Map<String, dynamic> list2;
 
+  dynamic idPractioner;
+
+
 
   final format = DateFormat("dd/MM/yyyy");
   bool _validate = false;
@@ -50,13 +50,11 @@ class _CreateSchedule extends State<CreateSchedule> {
   bool _validate3 = false;
   bool _validate4 = false;
   bool _validate5 = false;
-  bool _validate6 = false;
-  bool _validate7 = false;
-  bool _validate8 = false;
 
   Future<http.Response> createSchedule() {
+
     return http.post(
-      'http://127.0.0.1:8183/addSchedulePractitioner',
+      urlServer + '/addSchedulePractitioner',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -64,7 +62,7 @@ class _CreateSchedule extends State<CreateSchedule> {
         'serviceCategory': serviceCategory.text,
         'serviceType': serviceType.text,
         'patientId': patientId,
-        'practitionerId': "40", //practitionerId,
+        'practitionerId': idPractioner.toString(),
         'planning': dateController.text + " " + timeController.text,
         'active': active
       }),
@@ -72,10 +70,11 @@ class _CreateSchedule extends State<CreateSchedule> {
   }
 
   Future<List<dynamic>> getData() async {
+    idPractioner = await FlutterSession().get("id");
     dynamic token = await FlutterSession().get("token");
     dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-        Uri.encodeFull("http://127.0.0.1:8183/STU3/Patient?family=" +
+        Uri.encodeFull(urlServer + "/STU3/Patient?family=" +
             "c" +
             "&identifier=" +
             user.toString() +
@@ -150,7 +149,7 @@ class _CreateSchedule extends State<CreateSchedule> {
   }
   Future<List<dynamic>> getData2() async {
     var response = await http.get(
-        Uri.encodeFull("http://127.0.0.1:8183/STU3/Schedule?actor=" + "40"),
+        Uri.encodeFull(urlServer + "/STU3/Schedule?actor=" + "40"),
         headers: {"Accept": "application/json"});
 
     await Future.delayed(Duration(milliseconds: 15));

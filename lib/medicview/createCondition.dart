@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
+import '../constants.dart';
 import '../patientdetails.dart';
 
 export 'createPatient.dart';
@@ -45,7 +46,7 @@ class _CreateCondition extends State<CreateCondition> {
 
   Future<http.Response> createDiagnosticReport() {
     return http.post(
-      'http://127.0.0.1:8183/addCondition',
+      urlServer + '/addCondition',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -64,7 +65,7 @@ class _CreateCondition extends State<CreateCondition> {
     dynamic token = await FlutterSession().get("token");
     dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-        Uri.encodeFull("http://127.0.0.1:8183/STU3/Patient?family=" +
+        Uri.encodeFull(urlServer + "/STU3/Patient?family=" +
             "c" +
             "&identifier=" +
             user.toString() +

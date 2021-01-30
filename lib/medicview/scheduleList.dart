@@ -3,7 +3,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
 import 'package:http/http.dart' as http;
+
+import '../constants.dart';
 
 class ScheduleListDoctor extends StatefulWidget {
   ScheduleListDoctor({Key key, this.title}) : super(key: key);
@@ -22,8 +25,9 @@ class _ScheduleListDoctor extends State<ScheduleListDoctor> {
   Map<String, dynamic> list;
 
   Future<List<dynamic>> getData() async {
+    dynamic idPractioner = await FlutterSession().get("id");
     var response = await http.get(
-        Uri.encodeFull("http://127.0.0.1:8183/STU3/Schedule?actor=" + "40"),
+        Uri.encodeFull(urlServer + "/STU3/Schedule?actor=" + idPractioner.toString()),
         headers: {"Accept": "application/json"});
 
     list = json.decode(response.body);
@@ -52,7 +56,7 @@ class _ScheduleListDoctor extends State<ScheduleListDoctor> {
 
   Future<http.Response> confirmSchedule(int index) {
     return http.post(
-      'http://192.168.1.11:8183/confirmSchedule',
+      urlServer + '/confirmSchedule',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -64,7 +68,7 @@ class _ScheduleListDoctor extends State<ScheduleListDoctor> {
 
   Future<http.Response> rejectSchedule(int index) {
     return http.post(
-      'http://192.168.1.11:8183/rejectSchedule',
+      urlServer + '/rejectSchedule',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

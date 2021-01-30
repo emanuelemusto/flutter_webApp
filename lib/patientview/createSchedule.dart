@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_session/flutter_session.dart';
+import 'package:flutter_webapp/constants.dart';
 import 'package:flutter_webapp/patientList.dart';
 
 import 'package:flutter/material.dart';
@@ -51,6 +53,8 @@ class _CreateSchedule extends State<CreateSchedule> {
 
   Map<String, dynamic> list2;
 
+  String idPat;
+
   final format = DateFormat("dd/MM/yyyy");
   bool _validate = false;
   bool _validate2 = false;
@@ -63,14 +67,14 @@ class _CreateSchedule extends State<CreateSchedule> {
 
   Future<http.Response> createSchedule() {
     return http.post(
-      'http://127.0.0.1:8183/addSchedulePractitioner',
+      urlServer + '/addSchedulePractitioner',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
         'serviceCategory': serviceCategory.text,
         'serviceType': serviceType.text,
-        'patientId': "20", //TODO
+        'patientId': idPat.toString(),
         'practitionerId': practitioner["id"],
         'planning': dateController.toString(),
         'active': "Disabled"
@@ -80,8 +84,9 @@ class _CreateSchedule extends State<CreateSchedule> {
   DateTime now;
 
   Future<List<dynamic>> getData2() async {
+    idPat = await FlutterSession().get("id");
     var response = await http.get(
-        Uri.encodeFull("http://127.0.0.1:8183/STU3/Schedule?actor=" + practitioner["id"]),
+        Uri.encodeFull(urlServer + "http://127.0.0.1:8183/STU3/Schedule?actor=" + practitioner["id"]),
         headers: {"Accept": "application/json"});
 
     await Future.delayed(Duration(milliseconds: 15));

@@ -1,17 +1,12 @@
-import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter_webapp/Screens/Login/login_screen.dart';
-import 'package:flutter_webapp/components/rounded_button.dart';
-import 'package:flutter_webapp/constants.dart';
-import 'package:flutter_webapp/patientList.dart';
 
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_webapp/constants.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 export 'registratePatient.dart';
 
@@ -55,7 +50,7 @@ class _SignupPractitionerPageState extends State<SignupPractitionerPage> {
   Future<String> createPractitioner(BuildContext context) async {
     print("verifica per user " + user);
     final http.Response response = await http.post(
-      'http://192.168.1.10:8183/addpractitioner',
+      urlServer + '/addpractitioner',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

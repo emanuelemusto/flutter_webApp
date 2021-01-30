@@ -3,6 +3,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
+import 'package:flutter_webapp/constants.dart';
 import 'package:http/http.dart' as http;
 
 
@@ -25,8 +27,9 @@ class _ScheduleListPatient extends State<ScheduleListPatient> {
   Map<String, dynamic> list;
 
   Future<List<dynamic>> getData() async {
+    dynamic idPat = await FlutterSession().get("id");
     var response = await http.get(
-        Uri.encodeFull("http://127.0.0.1:8183/STU3/Schedule?_id=" + "20"), //TODO
+        Uri.encodeFull(urlServer + "/STU3/Schedule?_id=" + idPat.toString()),
         headers: {
           "Accept": "application/json"
         }

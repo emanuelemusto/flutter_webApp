@@ -3,6 +3,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
+import 'package:flutter_webapp/constants.dart';
 import 'package:flutter_webapp/patientview/doctorList.dart';
 import 'package:flutter_webapp/patientview/scheduleList.dart';
 import '../diagnosticDetail.dart';
@@ -36,8 +38,9 @@ class _PatientHomePage extends State<PatientHomePage> {
   Map<String, dynamic> list;
 
   Future<Map<String, dynamic>> getData() async {
+    dynamic idPat = await FlutterSession().get("id");
     var response = await http.get(
-        Uri.encodeFull("http://127.0.0.1:8183/STU3/Patient/" + "20"), //TODO id
+        Uri.encodeFull(urlServer + "/STU3/Patient/" + idPat.toString()),
         headers: {
           "Accept": "application/json"
         }
@@ -415,10 +418,14 @@ class _DiagnosticData extends State<DiagnosticData> {
   _DiagnosticData({Key key, @required this.data});
 
   Future<List<dynamic>> getData() async {
-
-
+    dynamic token = await FlutterSession().get("token");
+    dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-        Uri.encodeFull("http://127.0.0.1:8183/STU3/DiagnosticReport?_id=" + data["id"]),
+        Uri.encodeFull(urlServer+ "/STU3/DiagnosticReport?_id=" + data["id"] +
+            "&identifier=" +
+            user.toString() +
+            "|" +
+            token.toString()),
         headers: {
           "Accept": "application/json"
         }
@@ -731,10 +738,14 @@ class _ClinicalData extends State<ClinicalData> {
   _ClinicalData({Key key, @required this.data});
 
   Future<List<dynamic>> getData() async {
-
-
+    dynamic token = await FlutterSession().get("token");
+    dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-        Uri.encodeFull("http://127.0.0.1:8183/STU3/AllergyIntolerance?_id=" + data["id"]),
+        Uri.encodeFull(urlServer + "/STU3/AllergyIntolerance?_id=" + data["id"]+
+            "&identifier=" +
+            user.toString() +
+            "|" +
+            token.toString()),
         headers: {
           "Accept": "application/json"
         }
@@ -762,10 +773,14 @@ class _ClinicalData extends State<ClinicalData> {
   }
 
   Future<List<dynamic>> getData2() async {
-
-
+    dynamic token = await FlutterSession().get("token");
+    dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-        Uri.encodeFull("http://127.0.0.1:8183/STU3/Condition?_id=" + data["id"]),
+        Uri.encodeFull(urlServer + "/STU3/Condition?_id=" + data["id"]+
+            "&identifier=" +
+            user.toString() +
+            "|" +
+            token.toString()),
         headers: {
           "Accept": "application/json"
         }
@@ -1084,9 +1099,15 @@ class _MedicationList extends State<MedicationList> {
   _MedicationList({Key key, @required this.data});
 
   Future<List<dynamic>> getData() async {
+    dynamic token = await FlutterSession().get("token");
+    dynamic user = await FlutterSession().get("username");
     var response = await http.get(
         Uri.encodeFull(
-            "http://127.0.0.1:8183/STU3/Medication?_id=" + data["id"]),
+            urlServer + "/STU3/Medication?_id=" + data["id"]+
+                "&identifier=" +
+                user.toString() +
+                "|" +
+                token.toString()),
         headers: {
           "Accept": "application/json"
         }

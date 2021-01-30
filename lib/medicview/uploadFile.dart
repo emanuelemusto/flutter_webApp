@@ -1,14 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_webapp/diagnosticDetail.dart';
-import 'package:flutter_webapp/medicview/uploadApp.dart';
-import 'package:flutter_webapp/patientList.dart';
-import 'package:flutter_webapp/patientdetails.dart';
-import 'dart:html' as html;
-import 'dart:typed_data';
 import 'dart:async';
 import 'dart:convert';
-import 'package:http_parser/http_parser.dart';
+import 'dart:html' as html;
+import 'dart:typed_data';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_webapp/patientdetails.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+
+import '../constants.dart';
 
 class FileUploadApp extends StatefulWidget {
   FileUploadApp({Key key, @required this.data}) : super(key: key);
@@ -51,7 +51,7 @@ class _FileUploadAppState extends State<FileUploadApp> {
 
   Future<String> makeRequest() async {
     var url = Uri.parse(
-        "http://127.0.0.1:8183/uploadFile");
+        urlServer + "/uploadFile");
     var request = new http.MultipartRequest("POST", url);
     request.files.add(await http.MultipartFile.fromBytes('file', _selectedFile,
         contentType: new MediaType('application', 'octet-stream'),

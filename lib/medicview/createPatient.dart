@@ -1,14 +1,14 @@
-import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter_webapp/patientList.dart';
 
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_webapp/patientList.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+
+import '../constants.dart';
 
 export 'createPatient.dart';
 
@@ -45,7 +45,7 @@ class _CreatePatientState extends State<CreatePatient> {
 
   Future<http.Response> createPatient() {
     return http.post(
-      'http://127.0.0.1:8183/addpatient',
+      urlServer + '/addpatient',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

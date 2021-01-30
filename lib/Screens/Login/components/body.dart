@@ -24,17 +24,19 @@ class Body extends StatelessWidget {
   User parseUser(String body) {
     Map<String, dynamic> map = json.decode(body);
 
+    print(map);
     return User.fromJson(map);
   }
 
   Future<void> saveData(http.Response response) async {
-    print("tutu " + parseUser(response.body).token.toString());
+    print("tu " + parseUser(response.body).token.toString());
     user = parseUser(response.body);
 
     var session = FlutterSession();
     await session.set("token", user.token);
     await session.set("username", user.username);
     await session.set("role", user.role);
+    await session.set("id", user.id);
 
     dynamic token = await FlutterSession().get("role");
 
@@ -44,11 +46,11 @@ class Body extends StatelessWidget {
   Future<String> login(BuildContext context) async {
     //genero un token casuale
     Random random = new Random();
-    int token = random.nextInt(100); // from 0 upto 99 included
+    int token = random.nextInt(100); // from 0 up to 99 included
 
     print(" token " + token.toString());
     final http.Response response = await http.post(
-      'http://127.0.0.1:8183/login',
+      urlServer + '/login',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

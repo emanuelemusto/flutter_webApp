@@ -4,6 +4,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
+import 'package:flutter_webapp/constants.dart';
+import 'package:flutter_webapp/medicview/DoctorDetails.dart';
 import 'package:flutter_webapp/medicview/createSchedule.dart';
 import 'package:flutter_webapp/medicview/scheduleList.dart';
 import 'package:flutter_webapp/patientview/patientHomeScreen.dart';
@@ -64,12 +66,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Map<String, dynamic> list;
 
+  Map<String, dynamic> list2;
+
   Future<List<dynamic>> getData(String name) async {
     dynamic token = await FlutterSession().get("token");
     dynamic user = await FlutterSession().get("username");
     print("prova token client" + token.toString());
     var response = await http.get(
-        Uri.encodeFull("http://127.0.0.1:8183/STU3/Patient?family=" +
+        Uri.encodeFull(urlServer + "/STU3/Patient?family=" +
             name +
             "&identifier=" +
             user.toString() +
@@ -107,9 +111,24 @@ class _MyHomePageState extends State<MyHomePage> {
     return data;
   }
 
+  Future<Map<String, dynamic>> getData2() async {
+    dynamic idPra = await FlutterSession().get("id");
+    var response = await http.get(
+        Uri.encodeFull(urlServer + "/STU3/Practitioner/" + idPra.toString()),
+        headers: {
+          "Accept": "application/json"
+        }
+    );
+    list2 = json.decode(response.body);
+    await Future.delayed(Duration(milliseconds: 2));
+    setState(() {});
+    return list2;
+  }
+
   @override
   void initState() {
     super.initState();
+    getData2();
   }
 
   @override
@@ -135,10 +154,9 @@ class _MyHomePageState extends State<MyHomePage> {
               leading: Icon(Icons.person_rounded),
               title: Text('My Profile'),
               onTap: () {
-                //TODO
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PatientHomePage()),
+                  MaterialPageRoute(builder: (context) => DoctorDetails(data: list2)),
                 );
               },
             ),
@@ -307,7 +325,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   new Transform.translate(
                     offset: Offset(0.0, 50.0),
                     child: new ListTile(
-                      //TODO
+
                       leading: new CircleAvatar(
                         child: new Container(
                           decoration: new BoxDecoration(
@@ -322,14 +340,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       title: new Text(
-                        "Wealcome Giuseppe", //TODO add medical name
+                        "Welcome Doc",
                         style: new TextStyle(
                             color: Colors.white,
                             fontSize: 18.0,
                             letterSpacing: 2.0),
                       ),
                       subtitle: new Text(
-                        "Medical Role: Dentist", //TODO add medical role
+                        "Role: Medic",
                         style: new TextStyle(
                             color: Colors.white,
                             fontSize: 10.0,

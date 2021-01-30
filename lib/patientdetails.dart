@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
+import 'package:flutter_webapp/constants.dart';
 import 'package:http/http.dart' as http;
 import 'diagnosticDetail.dart';
 import 'clinicalDetail.dart';
@@ -355,7 +356,8 @@ class _DiagnosticData extends State<DiagnosticData> {
     dynamic token = await FlutterSession().get("token");
     dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-        Uri.encodeFull("http://127.0.0.1:8183/STU3/DiagnosticReport?_id=" +
+        Uri.encodeFull(urlServer +
+            "/STU3/DiagnosticReport?_id=" +
             data["id"] +
             "&identifier=" +
             user.toString() +
@@ -684,7 +686,8 @@ class _ClinicalData extends State<ClinicalData> {
     dynamic token = await FlutterSession().get("token");
     dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-        Uri.encodeFull("http://127.0.0.1:8183/STU3/AllergyIntolerance?_id=" +
+        Uri.encodeFull(urlServer +
+            "/STU3/AllergyIntolerance?_id=" +
             data["id"] +
             "&identifier=" +
             user.toString() +
@@ -723,7 +726,8 @@ class _ClinicalData extends State<ClinicalData> {
     dynamic token = await FlutterSession().get("token");
     dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-        Uri.encodeFull("http://127.0.0.1:8183/STU3/Condition?_id=" +
+        Uri.encodeFull(urlServer +
+            "/STU3/Condition?_id=" +
             data["id"] +
             "&identifier=" +
             user.toString() +
@@ -1062,7 +1066,8 @@ class _MedicationList extends State<MedicationList> {
     dynamic token = await FlutterSession().get("token");
     dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-        Uri.encodeFull("http://127.0.0.1:8183/STU3/Medication?_id=" +
+        Uri.encodeFull(urlServer +
+            "/STU3/Medication?_id=" +
             data["id"] +
             "&identifier=" +
             user.toString() +
