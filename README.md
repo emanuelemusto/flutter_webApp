@@ -19,3 +19,7 @@ Run the following commands to use the latest version of the Flutter SDK from the
 flutter channel beta
 flutter upgrade
 flutter config --enable-web
+
+Step 4:
+
+Login with "mario","rossi" for be a Patient or with "giuseppe","verdi" for be a Doctor.
