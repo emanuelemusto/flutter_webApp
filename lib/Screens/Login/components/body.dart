@@ -46,7 +46,7 @@ class Body extends StatelessWidget {
   Future<String> login(BuildContext context) async {
     //genero un token casuale
     Random random = new Random();
-    int token = random.nextInt(100); // from 0 up to 99 included
+    int token = random.nextInt(100000);
 
     print(" token " + token.toString());
     final http.Response response = await http.post(

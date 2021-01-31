@@ -1,12 +1,18 @@
-import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
+import 'package:flutter_webapp/medicview/doctorDetails.dart';
 import 'package:http/http.dart' as http;
 
 import '../constants.dart';
+import '../patientList.dart';
+import 'createAllergy.dart';
+import 'createCondition.dart';
+import 'createDiagnosticReport.dart';
+import 'createMedication.dart';
+import 'createSchedule.dart';
 
 class ScheduleListDoctor extends StatefulWidget {
   ScheduleListDoctor({Key key, this.title}) : super(key: key);
@@ -88,8 +94,138 @@ class _ScheduleListDoctor extends State<ScheduleListDoctor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("My Schedule"),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                child: Text(
+                  'Options menu',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold),
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.teal,
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.person_rounded),
+                title: Text('My Profile'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DocDetails()),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.list_alt_rounded),
+                title: Text('My Schedule'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ScheduleListDoctor()),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.search),
+                title: Text('Search Patient'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyHomePage()),
+                  );
+                },
+              ),
+              Divider(
+                color: Colors.grey,
+                height: 0.5,
+                thickness: 1,
+                indent: 0,
+                endIndent: 0,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'Add',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.add),
+                title: Text('Add Schedule'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CreateSchedule()),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.add),
+                title: Text('Add Patient'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CreatePatient()),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.add),
+                title: Text('Add Diagnostic Report'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CreateDiagnosticReport()),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.add),
+                title: Text('Add Condition'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CreateCondition()),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.add),
+                title: Text('Add Allergy Intolerance'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CreateAllergy()),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.add),
+                title: Text('Add Medication'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CreateMedication()),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+        backgroundColor: Colors.white,
+
+        appBar: new AppBar(
+          elevation: 0.0,
+          title: new Text(
+            "My Schedule",
+            style: TextStyle(color: Colors.white),
+          ),
         ),
         body: Center(
             child: ListView.builder(

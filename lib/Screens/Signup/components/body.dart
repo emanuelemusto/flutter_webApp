@@ -130,10 +130,10 @@ class _BodyState extends State<Body> {
           SizedBox(
             height: size.height * 0.03,
           ),
-          SvgPicture.asset(
+          /*SvgPicture.asset(
             "assets/icons/signup.svg",
             height: size.height * 0.3,
-          ),
+          ),*/
           SizedBox(
             height: size.height * 0.03,
           ),

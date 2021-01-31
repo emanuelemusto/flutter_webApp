@@ -5,7 +5,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:flutter_webapp/constants.dart';
+import 'package:flutter_webapp/patientview/patientHomeScreen.dart';
 import 'package:http/http.dart' as http;
+
+import 'doctorList.dart';
 
 
 class ScheduleListPatient extends StatefulWidget {
@@ -68,8 +71,53 @@ class _ScheduleListPatient extends State<ScheduleListPatient> {
   Widget build(BuildContext context) {
 
       return Scaffold(
-        appBar: AppBar(
-          title: Text("My Schedule"),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                child: Text('Options menu',
+                  style: TextStyle(color: Colors.white,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold),
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.teal,
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.person_rounded),
+                title: Text('My Profile'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PatientHomePage()),
+                  );
+                },
+              ),
+
+              ListTile(
+                leading: Icon(Icons.search),
+                title: Text('Search Doctor'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DoctorList()),
+                  );
+                },
+              ),
+
+            ],
+          ),
+        ),
+        backgroundColor: Colors.white,
+
+        appBar: new AppBar(
+          elevation: 0.0,
+          title: new Text(
+            "Schedule List",
+            style: TextStyle(color: Colors.white),
+          ),
         ),
         body: ListView.builder(
           itemCount: data.length,

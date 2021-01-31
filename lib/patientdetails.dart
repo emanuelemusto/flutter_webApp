@@ -5,10 +5,18 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:flutter_webapp/constants.dart';
+import 'package:flutter_webapp/medicview/doctorDetails.dart';
+import 'package:flutter_webapp/patientList.dart';
 import 'package:http/http.dart' as http;
 import 'diagnosticDetail.dart';
 import 'clinicalDetail.dart';
 import 'medicationDetails.dart';
+import 'medicview/createAllergy.dart';
+import 'medicview/createCondition.dart';
+import 'medicview/createDiagnosticReport.dart';
+import 'medicview/createMedication.dart';
+import 'medicview/createSchedule.dart';
+import 'medicview/scheduleList.dart';
 
 // ignore: must_be_immutable
 class PatientDetails extends StatelessWidget {
@@ -36,6 +44,140 @@ class PatientDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text(
+                'Options menu',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold),
+              ),
+              decoration: BoxDecoration(
+                color: COLORS[data["gender"]],
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.person_rounded),
+              title: Text('My Profile'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DocDetails()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.list_alt_rounded),
+              title: Text('My Schedule'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ScheduleListDoctor()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.search),
+              title: Text('Search Patient'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyHomePage()),
+                );
+              },
+            ),
+            Divider(
+              color: Colors.grey,
+              height: 0.5,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'Add',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Schedule'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateSchedule()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Patient'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreatePatient()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Diagnostic Report'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CreateDiagnosticReport()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Condition'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateCondition()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Allergy Intolerance'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateAllergy()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Medication'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateMedication()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      backgroundColor: Colors.white,
+
+      appBar: new AppBar(
+        backgroundColor: COLORS[data["gender"]],
+        elevation: 0.0,
+        title: new Text(
+          "Patient details",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -395,6 +537,140 @@ class _DiagnosticData extends State<DiagnosticData> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text(
+                'Options menu',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold),
+              ),
+              decoration: BoxDecoration(
+                color: COLORS[data["gender"]],
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.person_rounded),
+              title: Text('My Profile'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DocDetails()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.list_alt_rounded),
+              title: Text('My Schedule'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ScheduleListDoctor()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.search),
+              title: Text('Search Patient'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyHomePage()),
+                );
+              },
+            ),
+            Divider(
+              color: Colors.grey,
+              height: 0.5,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'Add',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Schedule'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateSchedule()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Patient'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreatePatient()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Diagnostic Report'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CreateDiagnosticReport()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Condition'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateCondition()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Allergy Intolerance'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateAllergy()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Medication'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateMedication()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      backgroundColor: Colors.white,
+
+      appBar: new AppBar(
+        backgroundColor: COLORS[data["gender"]],
+        elevation: 0.0,
+        title: new Text(
+          "Patient details",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
       resizeToAvoidBottomInset: false, // set it to false
       body: SingleChildScrollView(
         child: Column(
@@ -765,6 +1041,140 @@ class _ClinicalData extends State<ClinicalData> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text(
+                'Options menu',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold),
+              ),
+              decoration: BoxDecoration(
+                color: COLORS[data["gender"]],
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.person_rounded),
+              title: Text('My Profile'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DocDetails()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.list_alt_rounded),
+              title: Text('My Schedule'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ScheduleListDoctor()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.search),
+              title: Text('Search Patient'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyHomePage()),
+                );
+              },
+            ),
+            Divider(
+              color: Colors.grey,
+              height: 0.5,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'Add',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Schedule'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateSchedule()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Patient'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreatePatient()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Diagnostic Report'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CreateDiagnosticReport()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Condition'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateCondition()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Allergy Intolerance'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateAllergy()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Medication'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateMedication()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      backgroundColor: Colors.white,
+
+      appBar: new AppBar(
+        backgroundColor: COLORS[data["gender"]],
+        elevation: 0.0,
+        title: new Text(
+          "Patient details",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
       resizeToAvoidBottomInset: false, // set it to false
       body: SingleChildScrollView(
         child: Column(
@@ -1090,6 +1500,140 @@ class _MedicationList extends State<MedicationList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text(
+                'Options menu',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold),
+              ),
+              decoration: BoxDecoration(
+                color: COLORS[data["gender"]],
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.person_rounded),
+              title: Text('My Profile'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DocDetails()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.list_alt_rounded),
+              title: Text('My Schedule'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ScheduleListDoctor()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.search),
+              title: Text('Search Patient'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyHomePage()),
+                );
+              },
+            ),
+            Divider(
+              color: Colors.grey,
+              height: 0.5,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'Add',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Schedule'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateSchedule()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Patient'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreatePatient()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Diagnostic Report'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CreateDiagnosticReport()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Condition'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateCondition()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Allergy Intolerance'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateAllergy()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Add Medication'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateMedication()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      backgroundColor: Colors.white,
+
+      appBar: new AppBar(
+        backgroundColor: COLORS[data["gender"]],
+        elevation: 0.0,
+        title: new Text(
+          "Patient details",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
       resizeToAvoidBottomInset: false, // set it to false
       body: SingleChildScrollView(
         child: Column(

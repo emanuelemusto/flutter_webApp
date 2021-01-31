@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:flutter_webapp/constants.dart';
-import 'package:flutter_webapp/medicview/DoctorDetails.dart';
+import 'package:flutter_webapp/medicview/doctorDetails.dart';
 import 'package:flutter_webapp/medicview/createSchedule.dart';
 import 'package:flutter_webapp/medicview/scheduleList.dart';
 import 'package:flutter_webapp/patientview/patientHomeScreen.dart';
@@ -156,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => DoctorDetails(data: list2)),
+                  MaterialPageRoute(builder: (context) => DocDetails()),
                 );
               },
             ),
@@ -167,6 +167,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ScheduleListDoctor()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.search),
+              title: Text('Search Patient'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyHomePage()),
                 );
               },
             ),
