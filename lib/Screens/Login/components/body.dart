@@ -21,6 +21,33 @@ class Body extends StatelessWidget {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  showAlertDialog(BuildContext context, String message) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Dati errati"),
+      content: Text(message),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   User parseUser(String body) {
     Map<String, dynamic> map = json.decode(body);
 
@@ -44,7 +71,6 @@ class Body extends StatelessWidget {
   }
 
   Future<String> login(BuildContext context) async {
-    //genero un token casuale
     Random random = new Random();
     int token = random.nextInt(100000);
 
@@ -55,33 +81,40 @@ class Body extends StatelessWidget {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        'username': nameController.text,
-        'password': passwordController.text,
+        'username': nameController.text.trim(),
+        'password': passwordController.text.trim(),
         'token': token.toString(),
       }),
     );
-    saveData(response);
-    print(user.role);
-    if (user.role == 'MEDIC') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return MyHomePage(title: 'Patient List');
-          },
-        ),
-      );
-    }
 
-    if (user.role == 'PATIENT') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return PatientHomePage();
-          },
-        ),
-      );
+    if (response.statusCode != 503) {
+      print("user.role");
+      saveData(response);
+
+      if (user.role == 'MEDIC') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return MyHomePage(title: 'Patient List');
+            },
+          ),
+        );
+      }
+
+      if (user.role == 'PATIENT') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return PatientHomePage();
+            },
+          ),
+        );
+      }
+    } else {
+      print("non loggato");
+      showAlertDialog(context, "Username o Password errati");
     }
     print("stato " + response.statusCode.toString());
     print("body " + response.body.toString());
