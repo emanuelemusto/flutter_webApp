@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_webapp/Screens/Login/components/background.dart';
 import 'package:flutter_webapp/Screens/Signup/signup_screen.dart';
 import 'package:flutter_webapp/components/already_have_an_account_acheck.dart';
