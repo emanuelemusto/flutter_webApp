@@ -59,11 +59,6 @@ class _CreateSchedule extends State<CreateSchedule> {
   bool _validate = false;
   bool _validate2 = false;
   bool _validate3 = false;
-  bool _validate4 = false;
-  bool _validate5 = false;
-  bool _validate6 = false;
-  bool _validate7 = false;
-  bool _validate8 = false;
 
   Future<http.Response> createSchedule() {
     return http.post(
@@ -76,7 +71,7 @@ class _CreateSchedule extends State<CreateSchedule> {
         'serviceType': serviceType.text,
         'patientId': idPat.toString(),
         'practitionerId': practitioner["id"],
-        'planning': dateController.toString(),
+        'planning': dateController.text,
         'active': "Disabled"
       }),
     );
