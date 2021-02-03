@@ -5,6 +5,10 @@ Download or clone this repo by using the link below:
 
 https://github.com/emanuelemusto/flutter_webApp.git
 
+and install flutter
+
+https://flutter.dev/docs/get-started/install
+
 Step 2:
 
 Go to project root and execute the following command in console to get the required dependencies:
@@ -21,5 +25,6 @@ flutter upgrade
 flutter config --enable-web
 
 Step 4:
+run the following command: "flutter run -d chrome" if you want run on browser
 
 Login with "mario","rossi" for be a Patient or with "giuseppe","verdi" for be a Doctor.
