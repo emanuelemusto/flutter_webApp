@@ -33,7 +33,8 @@ class _ScheduleListDoctor extends State<ScheduleListDoctor> {
   Future<List<dynamic>> getData() async {
     dynamic idPractioner = await FlutterSession().get("id");
     var response = await http.get(
-        Uri.encodeFull(urlServer + "/STU3/Schedule?actor=" + idPractioner.toString()),
+        Uri.encodeFull(
+            urlServer + "/STU3/Schedule?actor=" + idPractioner.toString()),
         headers: {"Accept": "application/json"});
 
     list = json.decode(response.body);
@@ -45,11 +46,24 @@ class _ScheduleListDoctor extends State<ScheduleListDoctor> {
       data.add({
         "title": list["entry"][i]["resource"]["serviceCategory"]["text"],
         "planning": "Planning: " +
-            list["entry"][i]["resource"]["planningHorizon"]["start"],
+            DateTime.parse(list["entry"][i]["resource"]["planningHorizon"]
+                        ["start"]
+                    .toString())
+                .toUtc()
+                .toString()
+                .substring(
+                    0,
+                    DateTime.parse(list["entry"][i]["resource"]
+                                ["planningHorizon"]["start"]
+                            .toString())
+                        .toUtc()
+                        .toString()
+                        .indexOf(".")),
         "actor": "Patient: " +
             list["entry"][i]["resource"]["actor"][0]["reference"].substring(
                 list["entry"][i]["resource"]["actor"][0]["reference"]
-                    .indexOf('/') + 1),
+                        .indexOf('/') +
+                    1),
         "active":
             "Confirmed: " + list["entry"][i]["resource"]["active"].toString()
       });
@@ -66,9 +80,8 @@ class _ScheduleListDoctor extends State<ScheduleListDoctor> {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
-        'id': list["entry"][index]["resource"]["id"]
-      }),
+      body: jsonEncode(
+          <String, String>{'id': list["entry"][index]["resource"]["id"]}),
     );
   }
 
@@ -78,12 +91,10 @@ class _ScheduleListDoctor extends State<ScheduleListDoctor> {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
-        'id': list["entry"][index]["resource"]["id"]
-      }),
+      body: jsonEncode(
+          <String, String>{'id': list["entry"][index]["resource"]["id"]}),
     );
   }
-
 
   @override
   void initState() {
@@ -126,7 +137,8 @@ class _ScheduleListDoctor extends State<ScheduleListDoctor> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ScheduleListDoctor()),
+                    MaterialPageRoute(
+                        builder: (context) => ScheduleListDoctor()),
                   );
                 },
               ),
@@ -219,7 +231,6 @@ class _ScheduleListDoctor extends State<ScheduleListDoctor> {
           ),
         ),
         backgroundColor: Colors.white,
-
         appBar: new AppBar(
           elevation: 0.0,
           title: new Text(
@@ -247,29 +258,27 @@ class _ScheduleListDoctor extends State<ScheduleListDoctor> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
-                            list["entry"][index]["resource"]["active"] == false ?
-                            TextButton(
-                              child: const Text('Confirm'),
-                              onPressed: () {
-                                confirmSchedule(index);
-                                getData();
-                                setState(() {
-                                });
-                              },
-                            ): Text(
-                              '     '
-                            ),
+                            list["entry"][index]["resource"]["active"] == false
+                                ? TextButton(
+                                    child: const Text('Confirm'),
+                                    onPressed: () {
+                                      confirmSchedule(index);
+                                      getData();
+                                      setState(() {});
+                                    },
+                                  )
+                                : Text('     '),
                             const SizedBox(width: 8),
-                            list["entry"][index]["resource"]["active"] == true ?
-                            TextButton(
-                              child: const Text('Reject'),
-                              onPressed: () {
-                                rejectSchedule(index);
-                                getData();
-                                setState(() {
-                                });
-                              },
-                            ): Text("      "),
+                            list["entry"][index]["resource"]["active"] == true
+                                ? TextButton(
+                                    child: const Text('Reject'),
+                                    onPressed: () {
+                                      rejectSchedule(index);
+                                      getData();
+                                      setState(() {});
+                                    },
+                                  )
+                                : Text("      "),
                             const SizedBox(width: 8),
                           ],
                         )

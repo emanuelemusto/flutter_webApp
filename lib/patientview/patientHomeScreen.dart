@@ -293,7 +293,22 @@ class _PatientHomePage extends State<PatientHomePage> {
                                   );
                                 }
                             ),
-
+                            new ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: list["language"] == null ? 0 : 1,
+                                itemBuilder: (BuildContext content, int index) {
+                                  return ListTile(
+                                      leading: Icon(Icons.credit_card_rounded),
+                                      title: InkWell(
+                                        child: Text(
+                                          "Codice Fiscale:" + list["language"],
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                            color: Colors.grey.shade800,
+                                          ),
+                                        ),
+                                      ));
+                                })
                           ],
                         ),
                       ),

@@ -49,7 +49,16 @@ class _ScheduleListPatient extends State<ScheduleListPatient> {
     while (i < list["total"]) {
       data.add({
         "title": list["entry"][i]["resource"]["serviceCategory"]["text"],
-        "planning": "Planning at " + list["entry"][i]["resource"]["planningHorizon"]["start"],
+        "planning": "Planning at " + DateTime.parse(list["entry"][i]["resource"]["planningHorizon"]["start"].toString())
+            .toUtc()
+            .toString()
+            .substring(
+            0,
+            DateTime.parse(
+                list["entry"][i]["resource"]["planningHorizon"]["start"].toString())
+                .toUtc()
+                .toString()
+                .indexOf(".")),
         "actor": "Doctor: " + list["entry"][i]["resource"]["actor"][0]["reference"].substring(0, list["entry"][i]["resource"]["actor"][0]["reference"].indexOf('/')),
         "active": "Confirmed: " + list["entry"][i]["resource"]["active"].toString()
       });

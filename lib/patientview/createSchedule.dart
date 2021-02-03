@@ -53,7 +53,7 @@ class _CreateSchedule extends State<CreateSchedule> {
 
   Map<String, dynamic> list2;
 
-  String idPat;
+  var idPat;
 
   final format = DateFormat("dd/MM/yyyy");
   bool _validate = false;
@@ -86,7 +86,7 @@ class _CreateSchedule extends State<CreateSchedule> {
   Future<List<dynamic>> getData2() async {
     idPat = await FlutterSession().get("id");
     var response = await http.get(
-        Uri.encodeFull(urlServer + "http://127.0.0.1:8183/STU3/Schedule?actor=" + practitioner["id"]),
+        Uri.encodeFull(urlServer + "/STU3/Schedule?actor=" + practitioner["id"]),
         headers: {"Accept": "application/json"});
 
     await Future.delayed(Duration(milliseconds: 15));
