@@ -9,6 +9,8 @@ and install flutter
 
 https://flutter.dev/docs/get-started/install
 
+install Android Studio
+
 Step 2:
 
 Go to project root and execute the following command in console to get the required dependencies:
