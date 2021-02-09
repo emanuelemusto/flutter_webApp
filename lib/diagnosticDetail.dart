@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter_webapp/constants.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
-import 'dart:html' as html;
+import 'package:universal_html/html.dart' as html;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
