@@ -54,7 +54,7 @@ class _SignupPatientPageState extends State<SignupPatientPage> {
   Future<http.Response> createPatient(BuildContext context) async {
     print("verifica per user " + user);
     return await http.post(
-      'http://192.168.1.10:8183/addpatient',
+      urlServer + '/addpatient'',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
