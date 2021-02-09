@@ -13,12 +13,14 @@ import '../constants.dart';
 class FileUploadApp extends StatefulWidget {
   FileUploadApp({Key key, @required this.data}) : super(key: key);
   Map<String, dynamic> data;
+
   @override
   createState() => _FileUploadAppState(data: data);
 }
 
 class _FileUploadAppState extends State<FileUploadApp> {
   _FileUploadAppState({Key key, @required this.data});
+
   Map<String, dynamic> data;
   List<int> _selectedFile;
   Uint8List _bytesData;
@@ -50,12 +52,17 @@ class _FileUploadAppState extends State<FileUploadApp> {
   }
 
   Future<String> makeRequest() async {
-    var url = Uri.parse(
-        urlServer + "/uploadFile");
+    var url = Uri.parse(urlServer + "/uploadFile");
     var request = new http.MultipartRequest("POST", url);
     request.files.add(await http.MultipartFile.fromBytes('file', _selectedFile,
         contentType: new MediaType('application', 'octet-stream'),
-        filename: DateTime.now().year.toString() + DateTime.now().month.toString() + DateTime.now().day.toString() + DateTime.now().hour.toString() + DateTime.now().minute.toString() + DateTime.now().second.toString() + ".jpg"));
+        filename: DateTime.now().year.toString() +
+            DateTime.now().month.toString() +
+            DateTime.now().day.toString() +
+            DateTime.now().hour.toString() +
+            DateTime.now().minute.toString() +
+            DateTime.now().second.toString() +
+            ".jpg"));
 
     request.send().then((response) {
       print("test");
@@ -66,35 +73,36 @@ class _FileUploadAppState extends State<FileUploadApp> {
     showDialog(
         barrierDismissible: false,
         context: context,
-        child: new AlertDialog(
-          title: new Text("Details"),
-          //content: new Text("Hello World"),
-          content: new SingleChildScrollView(
-            child: new ListBody(
-              children: <Widget>[
-                new Text("Upload successful"),
-              ],
+        builder: (BuildContext context) {
+          return new AlertDialog(
+            title: new Text("Details"),
+            //content: new Text("Hello World"),
+            content: new SingleChildScrollView(
+              child: new ListBody(
+                children: <Widget>[
+                  new Text("Upload successful"),
+                ],
+              ),
             ),
-          ),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text('Close'),
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => DiagnosticData(
-                      data: data)),
-                      (Route<dynamic> route) => false,
-                );
-              },
-            ),
-          ],
-        ));
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text('Close'),
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DiagnosticData(data: data)),
+                    (Route<dynamic> route) => false,
+                  );
+                },
+              ),
+            ],
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -102,7 +110,6 @@ class _FileUploadAppState extends State<FileUploadApp> {
         ),
         body: Center(
           child: new Form(
-            autovalidate: true,
             key: _formKey,
             child: Padding(
               padding: const EdgeInsets.only(top: 16.0, left: 28),
