@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
 
@@ -7,10 +6,11 @@ import 'package:flutter_session/flutter_session.dart';
 import 'package:flutter_webapp/constants.dart';
 import 'package:flutter_webapp/patientview/doctorList.dart';
 import 'package:flutter_webapp/patientview/scheduleList.dart';
-import '../diagnosticDetail.dart';
-import '../clinicalDetail.dart';
-import '../medicationDetails.dart';
 import 'package:http/http.dart' as http;
+
+import '../clinicalDetail.dart';
+import '../diagnosticDetail.dart';
+import '../medicationDetails.dart';
 
 class PatientHomePage extends StatefulWidget {
   @override

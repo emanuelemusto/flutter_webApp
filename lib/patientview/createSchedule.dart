@@ -1,21 +1,14 @@
-import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter_session/flutter_session.dart';
-import 'package:flutter_webapp/constants.dart';
-import 'package:flutter_webapp/patientList.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_webapp/patientview/patientHomeScreen.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_session/flutter_session.dart';
+import 'package:flutter_webapp/constants.dart';
 import 'package:flutter_webapp/patientview/scheduleList.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:numberpicker/numberpicker.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:time_picker_widget/time_picker_widget.dart';
 
 class CreateSchedule extends StatefulWidget {
   Map<String, dynamic> practitioner;

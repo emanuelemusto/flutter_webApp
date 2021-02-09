@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
 
@@ -8,8 +7,9 @@ import 'package:flutter_webapp/constants.dart';
 import 'package:flutter_webapp/medicview/doctorDetails.dart';
 import 'package:flutter_webapp/patientList.dart';
 import 'package:http/http.dart' as http;
-import 'diagnosticDetail.dart';
+
 import 'clinicalDetail.dart';
+import 'diagnosticDetail.dart';
 import 'medicationDetails.dart';
 import 'medicview/createAllergy.dart';
 import 'medicview/createCondition.dart';

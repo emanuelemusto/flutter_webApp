@@ -1,22 +1,21 @@
-import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:flutter_webapp/constants.dart';
-import 'package:flutter_webapp/medicview/doctorDetails.dart';
 import 'package:flutter_webapp/medicview/createSchedule.dart';
+import 'package:flutter_webapp/medicview/doctorDetails.dart';
 import 'package:flutter_webapp/medicview/scheduleList.dart';
-import 'package:flutter_webapp/patientview/patientHomeScreen.dart';
 import 'package:http/http.dart' as http;
-import 'medicview/createPatient.dart';
-import 'patientdetails.dart';
-import 'medicview/createSchedule.dart';
-import 'medicview/createDiagnosticReport.dart';
-import 'medicview/createCondition.dart';
+
 import 'medicview/createAllergy.dart';
+import 'medicview/createCondition.dart';
+import 'medicview/createDiagnosticReport.dart';
 import 'medicview/createMedication.dart';
+import 'medicview/createPatient.dart';
+import 'medicview/createSchedule.dart';
+import 'patientdetails.dart';
 
 void main() => runApp(new MyApp());
 
