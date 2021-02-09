@@ -2,6 +2,7 @@ How to Use
 Step 1:
 
 Download or clone this repo by using the link below:
+change ip and port in file constant.dart
 
 https://github.com/emanuelemusto/flutter_webApp.git
 
@@ -23,6 +24,8 @@ Set up web support
 Run the following commands to use the latest version of the Flutter SDK from the beta channel and enable web support:
 
 flutter channel beta
+flutter build
+cd /build/web
 flutter upgrade
 flutter config --enable-web
 
