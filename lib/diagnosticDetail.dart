@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:ext_storage/ext_storage.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_webapp/constants.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:universal_html/html.dart' as html;
 
 import 'package:flutter/cupertino.dart';
@@ -12,18 +15,24 @@ import 'package:flutter/material.dart';
 class DiagnosticDetail extends StatelessWidget {
   static var httpClient = new HttpClient();
 
-  Future<File> _downloadFile(String url, String filename) async {
-    var request = await httpClient.getUrl(Uri.parse(url));
-    var response = await request.close();
-    var bytes = await consolidateHttpClientResponseBytes(response);
-    String dir = (await getApplicationDocumentsDirectory()).path;
-    File file = new File('$dir/$filename');
-    await file.writeAsBytes(bytes);
-    return file;
+  void requestPermission() {
+    PermissionHandler().requestPermissions([PermissionGroup.storage]);
   }
 
-  void _downloadFileWeb(String url) {
-    html.window.open(url, 'download.jpg');
+  void _downloadFileWeb(String url) async {
+    try {
+      if (Platform.isAndroid || Platform.isIOS) {
+        FlutterDownloader.initialize();
+        final taskId = await FlutterDownloader.enqueue(
+          url: url,
+          savedDir: (await getApplicationDocumentsDirectory()).path,
+          showNotification: true,
+          openFileFromNotification: true,
+        );
+      } else {}
+    } catch (e) {
+      html.window.open(url, 'download.jpg');
+    }
   }
 
   var COLORS = {

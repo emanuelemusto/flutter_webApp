@@ -55,7 +55,6 @@ class Body extends StatelessWidget {
   }
 
   Future<void> saveData(http.Response response) async {
-    print("tu " + parseUser(response.body).token.toString());
     user = parseUser(response.body);
 
     var session = FlutterSession();
