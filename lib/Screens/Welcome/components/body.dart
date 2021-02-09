@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_webapp/Screens/Login/login_screen.dart';
 import 'package:flutter_webapp/Screens/Signup/signup_screen.dart';
 import 'package:flutter_webapp/components/rounded_button.dart';

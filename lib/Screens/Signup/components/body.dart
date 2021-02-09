@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_session/flutter_session.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_webapp/Screens/Login/login_screen.dart';
 import 'package:flutter_webapp/Screens/Signup/components/background.dart';
 import 'package:flutter_webapp/Screens/Signup/registratePatient.dart';

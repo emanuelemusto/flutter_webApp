@@ -1,5 +1,5 @@
 name: flutter_webapp
-description: A new Flutter application.
+description: A flutter web app for a fhir server
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -34,13 +34,9 @@ dependencies:
   path_provider: ^1.6.27
   syncfusion_flutter_datepicker: any
 
-
-
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  flutter_svg: ^0.19.1
 
   http: ^0.12.1
   datetime_picker_formfield: ^1.0.0
