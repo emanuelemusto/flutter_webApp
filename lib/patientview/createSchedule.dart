@@ -287,7 +287,7 @@ class _CreateSchedule extends State<CreateSchedule> {
                         serviceType.text.isEmpty
                             ? _validate2 = true
                             : _validate2 = false;
-                        dateController == null
+                        dateController.text.isEmpty
                             ? _validate3 = true
                             : _validate3 = false;
                       });

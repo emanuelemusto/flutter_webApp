@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'package:universal_html/html.dart' as html;
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
@@ -24,6 +26,15 @@ class _FileUploadAppState extends State<FileUploadApp> {
   List<int> _selectedFile;
   Uint8List _bytesData;
   GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  File _image;
+
+  _imgFromGallery() async {
+    File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = image;
+    });
+  }
 
   startWebFilePicker() async {
     html.InputElement uploadInput = html.FileUploadInputElement();
@@ -50,6 +61,55 @@ class _FileUploadAppState extends State<FileUploadApp> {
     });
   }
 
+  Future<String> makeRequestMobile() async {
+    var url = Uri.parse(urlServer + "/uploadFile");
+    var request = new http.MultipartRequest("POST", url);
+    request.files.add(await http.MultipartFile.fromPath('file', _image.path,
+        contentType: new MediaType('application', 'octet-stream'),
+        filename: DateTime.now().year.toString() +
+            DateTime.now().month.toString() +
+            DateTime.now().day.toString() +
+            DateTime.now().hour.toString() +
+            DateTime.now().minute.toString() +
+            DateTime.now().second.toString() +
+            ".jpg"));
+
+    request.send().then((response) {
+      print(response.statusCode);
+      if (response.statusCode == 200) print("Uploaded!");
+    });
+
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+            title: new Text("Details"),
+            //content: new Text("Hello World"),
+            content: new SingleChildScrollView(
+              child: new ListBody(
+                children: <Widget>[
+                  new Text("Upload successful"),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text('Close'),
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DiagnosticData(data: data)),
+                    (Route<dynamic> route) => false,
+                  );
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   Future<String> makeRequest() async {
     var url = Uri.parse(urlServer + "/uploadFile");
     var request = new http.MultipartRequest("POST", url);
@@ -64,7 +124,6 @@ class _FileUploadAppState extends State<FileUploadApp> {
             ".jpg"));
 
     request.send().then((response) {
-      print("test");
       print(response.statusCode);
       if (response.statusCode == 200) print("Uploaded!");
     });
@@ -127,7 +186,15 @@ class _FileUploadAppState extends State<FileUploadApp> {
                             textColor: Colors.white,
                             child: Text('Select a file'),
                             onPressed: () {
-                              startWebFilePicker();
+                              try {
+                                if (Platform.isAndroid || Platform.isIOS) {
+                                  _imgFromGallery();
+                                } else {
+                                  startWebFilePicker();
+                                }
+                              } catch (e) {
+                                startWebFilePicker();
+                              }
                             },
                           ),
                           Divider(
@@ -138,7 +205,15 @@ class _FileUploadAppState extends State<FileUploadApp> {
                             elevation: 8.0,
                             textColor: Colors.white,
                             onPressed: () {
-                              makeRequest();
+                              try {
+                                if (Platform.isAndroid || Platform.isIOS) {
+                                  makeRequestMobile();
+                                } else {
+                                  makeRequest();
+                                }
+                              } catch (e) {
+                                makeRequest();
+                              }
                             },
                             child: Text('Send file to server'),
                           ),
