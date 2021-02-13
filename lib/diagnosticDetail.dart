@@ -42,7 +42,7 @@ class DiagnosticDetail extends StatelessWidget {
   };
   var IMAGE = {
     "diagnosticReport":
-        "https://www.enviedecrire.com/wp-content/uploads/2014/06/visu-diagnostic-carre.png"
+        "assets/icons/dr.png"
   };
 
   Map<String, dynamic> data;

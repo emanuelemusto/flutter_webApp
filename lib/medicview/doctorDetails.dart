@@ -47,14 +47,10 @@ class _DoctorDetails extends State<DocDetails> {
     "?": Color(0xFFC8B2BB)
   };
   var IMAGE = {
-    "male":
-        "https://library.kissclipart.com/20190406/cwq/kissclipart-surgeon-icon-png-clipart-computer-icons-clip-art-e1b95eb686c71747.jpg",
-    "female":
-        "https://library.kissclipart.com/20190406/cwq/kissclipart-surgeon-icon-png-clipart-computer-icons-clip-art-e1b95eb686c71747.jpg",
-    "?":
-        "https://library.kissclipart.com/20190406/cwq/kissclipart-surgeon-icon-png-clipart-computer-icons-clip-art-e1b95eb686c71747.jpg",
-    "null":
-        "https://library.kissclipart.com/20190406/cwq/kissclipart-surgeon-icon-png-clipart-computer-icons-clip-art-e1b95eb686c71747.jpg",
+    "male": 'assets/icons/doctor.png',
+    "female": 'assets/icons/doctor.png',
+    "?": 'assets/icons/doctor.png',
+    "null" : "assets/icons/null.jpg"
   };
 
   Map<String, dynamic> list2;
@@ -222,7 +218,7 @@ class _DoctorDetails extends State<DocDetails> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 CircleAvatar(
-                                  backgroundImage: NetworkImage(
+                                  backgroundImage: AssetImage(
                                     IMAGE[data["gender"]],
                                   ),
                                   radius: 50.0,

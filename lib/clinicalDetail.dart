@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -9,10 +8,8 @@ class ClinicalDetail extends StatelessWidget {
     "acc": Colors.tealAccent,
     "?": Color(0xFFC8B2BB)
   };
-  var IMAGE = {
-    "clinicalReport":
-        "https://www.seekpng.com/png/full/388-3880682_clinical-data-visualization-health-information-management-icon.png"
-  };
+
+  var IMAGE = {"clinicalReport": "assets/icons/clr.png"};
 
   Map<String, dynamic> data;
 
@@ -24,8 +21,8 @@ class ClinicalDetail extends StatelessWidget {
     print(data);
     return Scaffold(
         body: SingleChildScrollView(
-          child: Column(
-          children: <Widget>[
+      child: Column(
+        children: <Widget>[
           Container(
               decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -221,10 +218,8 @@ class AllergyDetail extends StatelessWidget {
     "acc": Colors.tealAccent,
     "?": Color(0xFFC8B2BB)
   };
-  var IMAGE = {
-    "clinicalReport":
-        "https://www.seekpng.com/png/full/388-3880682_clinical-data-visualization-health-information-management-icon.png"
-  };
+
+  var IMAGE = {"clinicalReport": "assets/icons/clr.png"};
 
   Map<String, dynamic> data;
 
@@ -425,17 +420,19 @@ class AllergyDetail extends StatelessWidget {
                   ListTile(
                     leading: Icon(Icons.access_time_outlined),
                     title: Text(
-                      "Last Occurrence: " + DateTime.parse(data["resource"]["lastOccurrence"]
-                          .toString())
-                          .toUtc()
-                          .toString()
-                          .substring(
-                          0,
-                          DateTime.parse(data["resource"]["lastOccurrence"]
-                              .toString())
+                      "Last Occurrence: " +
+                          DateTime.parse(
+                                  data["resource"]["lastOccurrence"].toString())
                               .toUtc()
                               .toString()
-                              .indexOf(" ")),
+                              .substring(
+                                  0,
+                                  DateTime.parse(data["resource"]
+                                              ["lastOccurrence"]
+                                          .toString())
+                                      .toUtc()
+                                      .toString()
+                                      .indexOf(" ")),
                       style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.grey.shade800,

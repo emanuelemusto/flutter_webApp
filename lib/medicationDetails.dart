@@ -11,7 +11,7 @@ class MedicationDetails extends StatelessWidget {
   };
   
   var IMAGE = {
-    "medication": "https://th.bing.com/th/id/OIP.4F_lAFt40gwk4B3am7P0DwHaHa?pid=Api&rs=1"
+    "medication": "assets/icons/med.png"
   };
 
   Map<String, dynamic> data;
