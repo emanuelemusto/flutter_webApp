@@ -9,6 +9,7 @@ import 'package:flutter_webapp/medicview/doctorDetails.dart';
 import 'package:flutter_webapp/medicview/scheduleList.dart';
 import 'package:http/http.dart' as http;
 
+import 'Screens/Login/login_screen.dart';
 import 'medicview/createAllergy.dart';
 import 'medicview/createCondition.dart';
 import 'medicview/createDiagnosticReport.dart';
@@ -28,7 +29,7 @@ var IMAGE = {
   "male": 'assets/icons/patientm.png',
   "female": 'assets/icons/patientf.png',
   "?": 'assets/icons/patientm.png',
-  "null" : 'assets/icons/null.jpg'
+  "null": 'assets/icons/null.jpg'
 };
 List data;
 
@@ -80,6 +81,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
     await Future.delayed(Duration(milliseconds: 15));
 
+    if (response.body.length < 500) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return LoginScreen();
+          },
+        ),
+      );
+    }
+    print("-->" + response.body.length.toString());
     list = json.decode(response.body);
     print(list["total"]);
 

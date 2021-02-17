@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
+import '../Screens/Login/login_screen.dart';
 import '../constants.dart';
 import '../patientdetails.dart';
 
@@ -71,7 +72,8 @@ class _CreateAllergy extends State<CreateAllergy> {
     dynamic token = await FlutterSession().get("token");
     dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-        Uri.encodeFull(urlServer + "/STU3/Patient?family=" +
+        Uri.encodeFull(urlServer +
+            "/STU3/Patient?family=" +
             "c" +
             "&identifier=" +
             user.toString() +
@@ -80,7 +82,17 @@ class _CreateAllergy extends State<CreateAllergy> {
         headers: {"Accept": "application/json"});
 
     await Future.delayed(Duration(milliseconds: 15));
-
+    if (response.body.length < 500) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return LoginScreen();
+          },
+        ),
+      );
+    }
+    print("-->" + response.body.length.toString());
     list = json.decode(response.body);
     print(list["total"]);
 

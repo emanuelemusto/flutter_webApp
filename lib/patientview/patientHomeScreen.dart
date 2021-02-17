@@ -8,6 +8,7 @@ import 'package:flutter_webapp/patientview/doctorList.dart';
 import 'package:flutter_webapp/patientview/scheduleList.dart';
 import 'package:http/http.dart' as http;
 
+import '../Screens/Login/login_screen.dart';
 import '../clinicalDetail.dart';
 import '../diagnosticDetail.dart';
 import '../medicationDetails.dart';
@@ -29,7 +30,7 @@ class _PatientHomePage extends State<PatientHomePage> {
     "male": 'assets/icons/patientm.png',
     "female": 'assets/icons/patientf.png',
     "?": 'assets/icons/patientm.png',
-    "null" : "assets/icons/null.jpg"
+    "null": "assets/icons/null.jpg"
   };
 
   Map<String, dynamic> list;
@@ -139,7 +140,8 @@ class _PatientHomePage extends State<PatientHomePage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 CircleAvatar(
-                                  backgroundImage: AssetImage(IMAGE[list["gender"]]),
+                                  backgroundImage:
+                                      AssetImage(IMAGE[list["gender"]]),
                                   radius: 50.0,
                                 ),
                                 SizedBox(
@@ -425,7 +427,7 @@ class _DiagnosticData extends State<DiagnosticData> {
     "male": 'assets/icons/patientm.png',
     "female": 'assets/icons/patientf.png',
     "?": 'assets/icons/patientm.png',
-    "null" : "assets/icons/null.jpg"
+    "null": "assets/icons/null.jpg"
   };
 
   var data;
@@ -808,7 +810,7 @@ class _ClinicalData extends State<ClinicalData> {
     "male": 'assets/icons/patientm.png',
     "female": 'assets/icons/patientf.png',
     "?": 'assets/icons/patientm.png',
-    "null" : "assets/icons/null.jpg"
+    "null": "assets/icons/null.jpg"
   };
 
   var data;
@@ -838,6 +840,18 @@ class _ClinicalData extends State<ClinicalData> {
         headers: {"Accept": "application/json"});
 
     list1 = json.decode(response.body);
+
+    if (response.body.length < 500) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return LoginScreen();
+          },
+        ),
+      );
+    }
+    print("-->" + response.body.length.toString());
 
     data2.clear();
     var i = 0;
@@ -878,6 +892,18 @@ class _ClinicalData extends State<ClinicalData> {
         headers: {"Accept": "application/json"});
 
     list2 = json.decode(response.body);
+
+    if (response.body.length < 500) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return LoginScreen();
+          },
+        ),
+      );
+    }
+    print("-->" + response.body.length.toString());
 
     var i = 0;
     data3.clear();
@@ -1249,7 +1275,7 @@ class _MedicationList extends State<MedicationList> {
     "male": 'assets/icons/patientm.png',
     "female": 'assets/icons/patientf.png',
     "?": 'assets/icons/patientm.png',
-    "null" : "assets/icons/null.jpg"
+    "null": "assets/icons/null.jpg"
   };
 
   var data;
@@ -1275,6 +1301,18 @@ class _MedicationList extends State<MedicationList> {
         headers: {"Accept": "application/json"});
 
     list = json.decode(response.body);
+
+    if (response.body.length < 500) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return LoginScreen();
+          },
+        ),
+      );
+    }
+    print("-->" + response.body.length.toString());
 
     data2.clear();
     var i = 0;

@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
+import '../Screens/Login/login_screen.dart';
 import '../constants.dart';
 
 export 'createPatient.dart';
@@ -41,8 +42,6 @@ class _CreateSchedule extends State<CreateSchedule> {
 
   dynamic idPractioner;
 
-
-
   final format = DateFormat("dd/MM/yyyy");
   bool _validate = false;
   bool _validate2 = false;
@@ -51,7 +50,6 @@ class _CreateSchedule extends State<CreateSchedule> {
   bool _validate5 = false;
 
   Future<http.Response> createSchedule() {
-
     return http.post(
       urlServer + '/addSchedulePractitioner',
       headers: <String, String>{
@@ -73,7 +71,8 @@ class _CreateSchedule extends State<CreateSchedule> {
     dynamic token = await FlutterSession().get("token");
     dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-        Uri.encodeFull(urlServer + "/STU3/Patient?family=" +
+        Uri.encodeFull(urlServer +
+            "/STU3/Patient?family=" +
             "c" +
             "&identifier=" +
             user.toString() +
@@ -82,6 +81,18 @@ class _CreateSchedule extends State<CreateSchedule> {
         headers: {"Accept": "application/json"});
 
     await Future.delayed(Duration(milliseconds: 15));
+
+    if (response.body.length < 500) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return LoginScreen();
+          },
+        ),
+      );
+    }
+    print("-->" + response.body.length.toString());
 
     list = json.decode(response.body);
     print(list["total"]);
@@ -146,6 +157,7 @@ class _CreateSchedule extends State<CreateSchedule> {
       });
     }
   }
+
   Future<List<dynamic>> getData2() async {
     var response = await http.get(
         Uri.encodeFull(urlServer + "/STU3/Schedule?actor=" + "40"),
@@ -307,7 +319,7 @@ class _CreateSchedule extends State<CreateSchedule> {
                     width: MediaQuery.of(context).size.width / 1.2,
                     height: 80,
                     padding:
-                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
                         border: Border.all(
                             color: _validate3 ? Colors.red : Colors.white),
@@ -318,7 +330,7 @@ class _CreateSchedule extends State<CreateSchedule> {
                         ]),
                     child: SearchableDropdown.single(
                       items:
-                      date2.map<DropdownMenuItem<String>>((String value) {
+                          date2.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
@@ -343,7 +355,7 @@ class _CreateSchedule extends State<CreateSchedule> {
                     width: MediaQuery.of(context).size.width / 1.2,
                     height: 80,
                     padding:
-                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
                         border: Border.all(
                             color: _validate4 ? Colors.red : Colors.white),
@@ -375,7 +387,6 @@ class _CreateSchedule extends State<CreateSchedule> {
                   SizedBox(
                     height: 5,
                   ),
-
                   Container(
                     width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
@@ -472,9 +483,11 @@ class _CreateSchedule extends State<CreateSchedule> {
                                   onPressed: () {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => ScheduleListDoctor()),
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ScheduleListDoctor()),
                                     );
-                                     /* MaterialPageRoute(
+                                    /* MaterialPageRoute(
                                           builder: (context) => PatientDetails(
                                               data: list["entry"][k]["resource"])),
                                     );*/

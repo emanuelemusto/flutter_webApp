@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
+import '../Screens/Login/login_screen.dart';
 import '../constants.dart';
 import '../patientdetails.dart';
 
@@ -19,7 +20,6 @@ class CreateCondition extends StatefulWidget {
 }
 
 class _CreateCondition extends State<CreateCondition> {
-
   TextEditingController name = TextEditingController();
   String clinicalStatus;
   String patientId;
@@ -55,8 +55,8 @@ class _CreateCondition extends State<CreateCondition> {
         'clinicalStatus': clinicalStatus,
         'patientId': patientId,
         'date': dateController.text,
-        'verificationStatus' : verificationStatus,
-        'description' : description.text,
+        'verificationStatus': verificationStatus,
+        'description': description.text,
       }),
     );
   }
@@ -65,7 +65,8 @@ class _CreateCondition extends State<CreateCondition> {
     dynamic token = await FlutterSession().get("token");
     dynamic user = await FlutterSession().get("username");
     var response = await http.get(
-        Uri.encodeFull(urlServer + "/STU3/Patient?family=" +
+        Uri.encodeFull(urlServer +
+            "/STU3/Patient?family=" +
             "c" +
             "&identifier=" +
             user.toString() +
@@ -74,6 +75,18 @@ class _CreateCondition extends State<CreateCondition> {
         headers: {"Accept": "application/json"});
 
     await Future.delayed(Duration(milliseconds: 15));
+
+    if (response.body.length < 500) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return LoginScreen();
+          },
+        ),
+      );
+    }
+    print("-->" + response.body.length.toString());
 
     list = json.decode(response.body);
     print(list["total"]);
@@ -134,17 +147,13 @@ class _CreateCondition extends State<CreateCondition> {
           children: <Widget>[
             Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height/5.5,
+              height: MediaQuery.of(context).size.height / 5.5,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.teal,
-                    Colors.teal
-                  ],
+                  colors: [Colors.teal, Colors.teal],
                 ),
-
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -152,55 +161,42 @@ class _CreateCondition extends State<CreateCondition> {
                   Spacer(),
                   Align(
                     alignment: Alignment.center,
-                    child: Icon(Icons.list_alt_rounded,
+                    child: Icon(
+                      Icons.list_alt_rounded,
                       size: 45,
                       color: Colors.white,
                     ),
                   ),
                   Spacer(),
-
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          bottom: 32,
-                          right: 32
-                      ),
-                      child: Text('Create a new Patient\'s Condition',
+                      padding: const EdgeInsets.only(bottom: 32, right: 32),
+                      child: Text(
+                        'Create a new Patient\'s Condition',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
-                            fontWeight: FontWeight.bold
-                        ),
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-
             SizedBox(
               height: 15,
             ),
             Container(
-              width: MediaQuery.of(context).size.width/1.2,
+              width: MediaQuery.of(context).size.width / 1.2,
               height: 45,
-              padding: EdgeInsets.only(
-                  top: 4,left: 16, right: 16, bottom: 4
-              ),
+              padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
               decoration: BoxDecoration(
-                  border: Border.all(color: _validate2 ? Colors.red : Colors.white),
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(50)
-                  ),
+                  border:
+                      Border.all(color: _validate2 ? Colors.red : Colors.white),
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
                   color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 5
-                    )
-                  ]
-              ),
+                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)]),
               child: TextField(
                 controller: name,
                 decoration: InputDecoration(
@@ -213,31 +209,20 @@ class _CreateCondition extends State<CreateCondition> {
               height: 5,
             ),
             Container(
-              width: MediaQuery.of(context).size.width/1.2,
+              width: MediaQuery.of(context).size.width / 1.2,
               height: 45,
-              padding: EdgeInsets.only(
-                  top: 4,left: 16, right: 16, bottom: 4
-              ),
+              padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
               decoration: BoxDecoration(
-                  border: Border.all(color: _validate3 ? Colors.red : Colors.white),
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(50)
-                  ),
+                  border:
+                      Border.all(color: _validate3 ? Colors.red : Colors.white),
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
                   color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 5
-                    )
-                  ]
-              ),
+                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)]),
               child: DropdownButton<String>(
                 hint: Text("Clinical Status"),
-
                 underline: Container(
                   height: 0,
                   color: Colors.tealAccent,
-
                 ),
                 value: clinicalStatus,
                 onChanged: (String newValue) {
@@ -245,7 +230,7 @@ class _CreateCondition extends State<CreateCondition> {
                     clinicalStatus = newValue;
                   });
                 },
-                items: <String>['ACTIVE', 'INACTIVE', 'NULL','RESOLVED']
+                items: <String>['ACTIVE', 'INACTIVE', 'NULL', 'RESOLVED']
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -257,33 +242,21 @@ class _CreateCondition extends State<CreateCondition> {
             SizedBox(
               height: 5, //
             ),
-
             Container(
-              width: MediaQuery.of(context).size.width/1.2,
+              width: MediaQuery.of(context).size.width / 1.2,
               height: 45,
-              padding: EdgeInsets.only(
-                  top: 4,left: 16, right: 16, bottom: 4
-              ),
+              padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
               decoration: BoxDecoration(
-                  border: Border.all(color: _validate5 ? Colors.red : Colors.white),
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(50)
-                  ),
+                  border:
+                      Border.all(color: _validate5 ? Colors.red : Colors.white),
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
                   color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 5
-                    )
-                  ]
-              ),
+                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)]),
               child: DropdownButton<String>(
                 hint: Text("Verification Status"),
-
                 underline: Container(
                   height: 0,
                   color: Colors.tealAccent,
-
                 ),
                 value: verificationStatus,
                 onChanged: (String newValue) {
@@ -291,8 +264,13 @@ class _CreateCondition extends State<CreateCondition> {
                     verificationStatus = newValue;
                   });
                 },
-                items: <String>['CONFIRMED', 'DIFFERENTIAL', 'NULL','REFUTED', 'UNKNOWN']
-                    .map<DropdownMenuItem<String>>((String value) {
+                items: <String>[
+                  'CONFIRMED',
+                  'DIFFERENTIAL',
+                  'NULL',
+                  'REFUTED',
+                  'UNKNOWN'
+                ].map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
@@ -303,39 +281,27 @@ class _CreateCondition extends State<CreateCondition> {
             SizedBox(
               height: 5, //
             ),
-
-
             Container(
-              width: MediaQuery.of(context).size.width/1.2,
+              width: MediaQuery.of(context).size.width / 1.2,
               height: 45,
-              padding: EdgeInsets.only(
-                  top: 4,left: 16, right: 16, bottom: 4
-              ),
-
+              padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
               decoration: BoxDecoration(
-                  border: Border.all(color: _validate4 ? Colors.red : Colors.white),
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(50)
-                  ),
+                  border:
+                      Border.all(color: _validate4 ? Colors.red : Colors.white),
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
                   color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 5
-                    )
-                  ]
-              ),
+                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)]),
               child: DateTimeField(
                 format: format,
                 controller: dateController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Date',
-                  suffixIcon: Icon(Icons.calendar_today_sharp,
+                  suffixIcon: Icon(
+                    Icons.calendar_today_sharp,
                     size: 24,
                   ),
                 ),
-
                 onShowPicker: (context, currentValue) {
                   return showDatePicker(
                       context: context,
@@ -348,14 +314,13 @@ class _CreateCondition extends State<CreateCondition> {
             SizedBox(
               height: 5,
             ),
-
             Container(
               width: MediaQuery.of(context).size.width / 1.2,
               height: 80,
               padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
               decoration: BoxDecoration(
                   border:
-                  Border.all(color: _validate6 ? Colors.red : Colors.white),
+                      Border.all(color: _validate6 ? Colors.red : Colors.white),
                   borderRadius: BorderRadius.all(Radius.circular(50)),
                   color: Colors.white,
                   boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)]),
@@ -383,24 +348,15 @@ class _CreateCondition extends State<CreateCondition> {
               height: 5,
             ),
             Container(
-              width: MediaQuery.of(context).size.width/1.2,
+              width: MediaQuery.of(context).size.width / 1.2,
               height: 45,
-              padding: EdgeInsets.only(
-                  top: 4,left: 16, right: 16, bottom: 4
-              ),
+              padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
               decoration: BoxDecoration(
-                  border: Border.all(color: _validate7 ? Colors.red : Colors.white),
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(50)
-                  ),
+                  border:
+                      Border.all(color: _validate7 ? Colors.red : Colors.white),
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
                   color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 5
-                    )
-                  ]
-              ),
+                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)]),
               child: TextField(
                 controller: description,
                 decoration: InputDecoration(
@@ -408,24 +364,35 @@ class _CreateCondition extends State<CreateCondition> {
                   hintText: 'description',
                 ),
               ),
-
             ),
             SizedBox(
               height: 5,
             ),
-
             InkWell(
-              onTap: (){
+              onTap: () {
                 setState(() {
-                  clinicalStatus.isEmpty ? _validate3 = true : _validate3 = false;
+                  clinicalStatus.isEmpty
+                      ? _validate3 = true
+                      : _validate3 = false;
                   name.text.isEmpty ? _validate2 = true : _validate2 = false;
-                  dateController.text.isEmpty ? _validate4 = true : _validate4 = false;
-                  verificationStatus.isEmpty ? _validate5 = true : _validate5 = false;
+                  dateController.text.isEmpty
+                      ? _validate4 = true
+                      : _validate4 = false;
+                  verificationStatus.isEmpty
+                      ? _validate5 = true
+                      : _validate5 = false;
                   patientId == null ? _validate6 = true : _validate6 = false;
-                  description.text.isEmpty ? _validate7 = true : _validate7 = false;
+                  description.text.isEmpty
+                      ? _validate7 = true
+                      : _validate7 = false;
                 });
 
-                if( _validate2 || _validate3 || _validate4 || _validate5 || _validate6 || _validate7 ) {
+                if (_validate2 ||
+                    _validate3 ||
+                    _validate4 ||
+                    _validate5 ||
+                    _validate6 ||
+                    _validate7) {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -452,7 +419,8 @@ class _CreateCondition extends State<CreateCondition> {
                       // return object of type Dialog
                       return AlertDialog(
                         title: new Text("Form Success"),
-                        content: new Text("New Patient\'s Condition created successfully"),
+                        content: new Text(
+                            "New Patient\'s Condition created successfully"),
                         actions: <Widget>[
                           // usually buttons at the bottom of the dialog
                           new FlatButton(
@@ -460,7 +428,9 @@ class _CreateCondition extends State<CreateCondition> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => ClinicalData(data: list["entry"][k]["resource"])),
+                                MaterialPageRoute(
+                                    builder: (context) => ClinicalData(
+                                        data: list["entry"][k]["resource"])),
                               );
                             },
                           ),
@@ -470,13 +440,11 @@ class _CreateCondition extends State<CreateCondition> {
                   );
 
                   this.createDiagnosticReport();
-
                 }
-
               },
               child: Container(
                 height: 45,
-                width: MediaQuery.of(context).size.width/1.2,
+                width: MediaQuery.of(context).size.width / 1.2,
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
@@ -484,16 +452,12 @@ class _CreateCondition extends State<CreateCondition> {
                         Colors.teal,
                       ],
                     ),
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(50)
-                    )
-                ),
+                    borderRadius: BorderRadius.all(Radius.circular(50))),
                 child: Center(
-                  child: Text('Create'.toUpperCase(),
+                  child: Text(
+                    'Create'.toUpperCase(),
                     style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold
-                    ),
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
