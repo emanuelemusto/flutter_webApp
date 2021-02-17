@@ -76,7 +76,7 @@ class _CreateCondition extends State<CreateCondition> {
 
     await Future.delayed(Duration(milliseconds: 15));
 
-    if (response.body.length < 500) {
+    if (response.body.length <= 50) {
       Navigator.push(
         context,
         MaterialPageRoute(

@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     await Future.delayed(Duration(milliseconds: 15));
 
-    if (response.body.length < 500) {
+    if (response.body.length <= 50) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -93,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     print("-->" + response.body.length.toString());
     list = json.decode(response.body);
-    print(list["total"]);
+    print(list);
 
     data.clear();
     var i = 0;

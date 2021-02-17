@@ -841,7 +841,7 @@ class _ClinicalData extends State<ClinicalData> {
 
     list1 = json.decode(response.body);
 
-    if (response.body.length < 500) {
+    if (response.body.length <= 50) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -893,7 +893,7 @@ class _ClinicalData extends State<ClinicalData> {
 
     list2 = json.decode(response.body);
 
-    if (response.body.length < 500) {
+    if (response.body.length <= 50) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -1302,7 +1302,7 @@ class _MedicationList extends State<MedicationList> {
 
     list = json.decode(response.body);
 
-    if (response.body.length < 500) {
+    if (response.body.length <= 50) {
       Navigator.push(
         context,
         MaterialPageRoute(

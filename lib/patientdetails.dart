@@ -499,7 +499,7 @@ class _DiagnosticData extends State<DiagnosticData> {
             token.toString()),
         headers: {"Accept": "application/json"});
 
-    if (response.body.length < 500) {
+    if (response.body.length <= 50) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -972,7 +972,7 @@ class _ClinicalData extends State<ClinicalData> {
             token.toString()),
         headers: {"Accept": "application/json"});
 
-    if (response.body.length < 500) {
+    if (response.body.length <= 50) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -1023,7 +1023,7 @@ class _ClinicalData extends State<ClinicalData> {
             token.toString()),
         headers: {"Accept": "application/json"});
 
-    if (response.body.length < 500) {
+    if (response.body.length <= 50) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -1504,7 +1504,7 @@ class _MedicationList extends State<MedicationList> {
             token.toString()),
         headers: {"Accept": "application/json"});
 
-    if (response.body.length < 500) {
+    if (response.body.length <= 50) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -1818,8 +1818,9 @@ class _MedicationList extends State<MedicationList> {
                                             .toString()
                                             .indexOf('@') +
                                         1,
-                                    data2[index]["title"].toString().length -
-                                        6)),
+                                data2[index]["title"]
+                                    .toString()
+                                    .indexOf('#'))),
                             subtitle: Text(data2[index]["title"]
                                 .toString()
                                 .substring(42, 64)),
