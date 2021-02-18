@@ -24,7 +24,7 @@ flutter pub get
 ```
 ### Step 3
 
- _set your ip and server port on file constant.dart_
+ _set your ip and server port on file lib/constant.dart_
 
 
 ### Step 4
