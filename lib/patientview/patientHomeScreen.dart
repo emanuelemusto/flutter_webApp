@@ -34,6 +34,7 @@ class _PatientHomePage extends State<PatientHomePage> {
   };
 
   Map<String, dynamic> list;
+  Future<Map<String, dynamic>> list2;
 
   Future<Map<String, dynamic>> getData() async {
     dynamic idPat = await FlutterSession().get("id");
@@ -41,7 +42,7 @@ class _PatientHomePage extends State<PatientHomePage> {
         Uri.encodeFull(urlServer + "/STU3/Patient/" + idPat.toString()),
         headers: {"Accept": "application/json"});
     list = json.decode(response.body);
-    await Future.delayed(Duration(milliseconds: 2));
+    await Future.delayed(Duration(seconds: 2));
     setState(() {});
     return list;
   }
@@ -49,13 +50,13 @@ class _PatientHomePage extends State<PatientHomePage> {
   @override
   void initState() {
     super.initState();
-    getData();
+    list2 = getData();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>>(
-        future: getData(),
+        future: list2,
         builder: (context, AsyncSnapshot<Map<String, dynamic>> load) {
           if (load.hasData) {
             return Scaffold(

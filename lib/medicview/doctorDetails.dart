@@ -22,20 +22,13 @@ class DocDetails extends StatefulWidget {
 // ignore: must_be_immutable
 class _DoctorDetails extends State<DocDetails> {
 
-
-  @override
-  void initState() {
-    super.initState();
-    getData2();
-  }
-
   Future<Map<String, dynamic>> getData2() async {
     dynamic idPra = await FlutterSession().get("id");
     var response = await http.get(
         Uri.encodeFull(urlServer + "/STU3/Practitioner/" + idPra.toString()),
         headers: {"Accept": "application/json"});
     list2 = json.decode(response.body);
-    await Future.delayed(Duration(milliseconds: 2));
+    await Future.delayed(Duration(seconds: 2));
     setState(() {});
     data = list2;
     return data;
@@ -54,12 +47,19 @@ class _DoctorDetails extends State<DocDetails> {
   };
 
   Map<String, dynamic> list2;
+  Future<Map<String, dynamic>> list3;
   var data;
+
+  @override
+  void initState() {
+    super.initState();
+    list3 = getData2();
+  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>>(
-        future: getData2(),
+        future: list3,
         builder: (context, AsyncSnapshot<Map<String, dynamic>> load) {
           if (load.hasData) {
             return Scaffold(

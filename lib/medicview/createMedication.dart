@@ -81,6 +81,8 @@ class _CreateMedication extends State<CreateMedication> {
 
   List<String> data2 = new List<String>();
 
+  Future<List<dynamic>> data3;
+
   Map<String, dynamic> list2;
 
   Future<List<dynamic>> getData() async {
@@ -197,6 +199,7 @@ class _CreateMedication extends State<CreateMedication> {
   void initState() {
     super.initState();
     getData();
+    data3 = getMedicationApproved();
   }
 
   String dropdownValue;
@@ -204,7 +207,7 @@ class _CreateMedication extends State<CreateMedication> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<dynamic>>(
-        future: getMedicationApproved(),
+        future: data3,
         builder: (context, AsyncSnapshot<List<dynamic>> load) {
           if (load.hasData) {
             return Scaffold(
