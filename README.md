@@ -34,7 +34,7 @@ Set up web support Run the following commands to use the latest version of the F
 ```sh
 flutter channel beta 
 flutter build
-cd /build/web 
+cd build/web 
 flutter upgrade 
 flutter config --enable-web
 ```
@@ -42,7 +42,9 @@ flutter config --enable-web
 for using remote web verison using following commands:
 
 ```sh
-flutter build web cd build/web python3 -m http.server 8000
+flutter build web 
+cd build/web 
+python3 -m http.server 8000
 ```
 
 ### Step 5
