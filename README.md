@@ -2,7 +2,7 @@
 
 ## How to Use 
  
-### Step 1:
+### Step 1
 
 Download or clone this repo by using the link below: change ip and port in file constant.dart
 
@@ -16,17 +16,18 @@ install Android Studio
 
 [Android Studio download][ANDROIDSTUDIO]
 
-### Step 2:
+### Step 2
 
 Go to project root and execute the following command in console to get the required dependencies:
 ```sh
 flutter pub get
 ```
+### Step 3
 
-##### _set your ip and server port on file constant.dart_
+ _set your ip and server port on file constant.dart_
 
 
-### Step 3:
+### Step 4
 
 Set up web support Run the following commands to use the latest version of the Flutter SDK from the beta channel and enable web support:
 ```sh
@@ -38,7 +39,7 @@ for using remote web verison using following commands:
 flutter build web cd /build/web python3 -m http.server 8000
 ```
 
-### Step 4 
+### Step 5
 
 To create apk using command: 
 ```sh
