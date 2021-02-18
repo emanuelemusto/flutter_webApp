@@ -32,7 +32,11 @@ flutter pub get
 Set up web support Run the following commands to use the latest version of the Flutter SDK from the beta channel and enable web support:
 
 ```sh
-flutter channel beta flutter build cd build/web flutter upgrade flutter config --enable-web
+flutter channel beta 
+flutter build
+cd /build/web 
+flutter upgrade 
+flutter config --enable-web
 ```
 
 for using remote web verison using following commands:
