@@ -6,6 +6,7 @@ import 'package:flutter_session/flutter_session.dart';
 import 'package:flutter_webapp/medicview/doctorDetails.dart';
 import 'package:http/http.dart' as http;
 
+import '../Screens/Login/login_screen.dart';
 import '../constants.dart';
 import '../patientList.dart';
 import 'createAllergy.dart';
@@ -31,11 +32,28 @@ class _ScheduleListDoctor extends State<ScheduleListDoctor> {
   Map<String, dynamic> list;
 
   Future<List<dynamic>> getData() async {
+    dynamic token = await FlutterSession().get("token");
+    dynamic user = await FlutterSession().get("username");
     dynamic idPractioner = await FlutterSession().get("id");
     var response = await http.get(
-        Uri.encodeFull(
-            urlServer + "/STU3/Schedule?actor=" + idPractioner.toString()),
+        Uri.encodeFull(urlServer +
+            "/STU3/Schedule?actor=" +
+            idPractioner.toString() +
+            "&identifier=" +
+            user.toString() +
+            "|" +
+            token.toString()),
         headers: {"Accept": "application/json"});
+    if (response.body.length <= 50) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return LoginScreen();
+          },
+        ),
+      );
+    }
 
     list = json.decode(response.body);
     print(list["total"]);
